@@ -31,8 +31,6 @@ services:
           property: connectionString
       - key: APP_URL
         sync: false
-      - key: NODE_ENV
-        value: production
       - key: TICKET_QR_SECRET
         value: "f976b30939a8fd2a43ec890cf915fb2447ffe717e4857dcafd1e64d02ffa688d"
       - key: ABLY_API_KEY
