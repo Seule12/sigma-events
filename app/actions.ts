@@ -37,7 +37,7 @@ function diagErrDetail(e: unknown): Record<string, unknown> {
   };
 }
 
-export async function diagAction(): Promise<Record<string, unknown>> {
+export async function diagAction(): Promise<void> {
   const out: Record<string, unknown> = {};
   try {
     out.read_count = await prisma.rateLimitHit.count();
@@ -61,7 +61,7 @@ export async function diagAction(): Promise<Record<string, unknown>> {
     const msg = String(e);
     out.write_tx = msg.includes("ROLLBACK_MARKER") ? "ok (rollback)" : { error: true, ...diagErrDetail(e) };
   }
-  return out;
+  console.error("[DIAG-ACTION]", JSON.stringify(out));
 }
 // ⚠️ Fin du diagnostic temporaire.
 
