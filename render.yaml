@@ -1,0 +1,108 @@
+# ============================================================
+# SIGMA EVENTS — Blueprint Render
+# Déploiement : web (Next.js) + PostgreSQL managé + worker email.
+# ============================================================
+
+databases:
+  - name: sigma-events-db
+    plan: free
+    databaseName: sigma
+    user: sigma
+
+services:
+  - type: web
+    name: sigma-events
+    runtime: node
+    plan: free
+    buildCommand: |
+      npm ci
+      npx prisma generate --schema prisma/schema.prisma
+      npx prisma generate --schema prisma/schema.postgres.prisma
+      npm run build
+    startCommand: |
+      npx prisma migrate deploy --schema prisma/schema.postgres.prisma
+      npm run start
+    envVars:
+      - key: NODE_VERSION
+        value: 22
+      - key: DATABASE_URL
+        fromDatabase:
+          name: sigma-events-db
+          property: connectionString
+      - key: APP_URL
+        sync: false
+      - key: NODE_ENV
+        value: production
+      - key: TICKET_QR_SECRET
+        value: "f976b30939a8fd2a43ec890cf915fb2447ffe717e4857dcafd1e64d02ffa688d"
+      - key: ABLY_API_KEY
+        value: "B7xXRg.LQljtg:-gYj-3Oe-BNWl7DR2HSl2ne9n1JZPBS31FdMwhPalWQ"
+      - key: CLOUDAMQP_URL
+        value: "amqps://olpzodtx:pOioEb9RKxGhPfhr-8VwQt66LnamTrRq@seal.lmq.cloudamqp.com/olpzodtx"
+      - key: RESEND_API_KEY
+        value: "re_SuAEZ8TR_3WRd6aU4Hdx41WPHzkxnBFFU"
+      - key: EMAIL_FROM
+        value: "Sigma Security <onboarding@resend.dev>"
+      - key: KKIA_PUBLIC_KEY
+        value: "a16bcd70951311f1b881ad2d7b892a71"
+      - key: KKIA_PRIVATE_KEY
+        value: "tpk_a16bf481951311f1b881ad2d7b892a71"
+      - key: KKIA_SECRET_KEY
+        value: "tsk_a16bf482951311f1b881ad2d7b892a71"
+      - key: KKIA_SANDBOX
+        value: "true"
+      - key: DODO_API_KEY
+        sync: false
+      - key: DODO_PRODUCT_ID
+        value: "ticket"
+      - key: DODO_WEBHOOK_SECRET
+        sync: false
+      - key: INFOBIP_API_KEY
+        value: "872782b3d09dcb4ef67d0e21e4efdba3-4e2492c7-9bbe-4e2f-b124-35916e7350a5"
+      - key: INFOBIP_BASE_URL
+        value: "w4ke4y.api.infobip.com"
+      - key: INFOBIP_SENDER
+        value: "SIGMA"
+      - key: WHATSAPP_TOKEN
+        sync: false
+      - key: WHATSAPP_PHONE_NUMBER_ID
+        sync: false
+      - key: GOOGLE_CLIENT_ID
+        value: "712981999496-n1kr6ifnkceca5sbr4k8rm3vhpb1cikp.apps.googleusercontent.com"
+      - key: GOOGLE_CLIENT_SECRET
+        value: "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"
+      - key: FACEBOOK_CLIENT_ID
+        sync: false
+      - key: FACEBOOK_CLIENT_SECRET
+        sync: false
+      - key: FEDAPAY_SECRET_KEY
+        sync: false
+      - key: FEDAPAY_ENV
+        value: "sandbox"
+      - key: PAYOUT_ADMIN_THRESHOLD
+        value: "100000"
+
+  - type: worker
+    name: sigma-events-worker
+    runtime: node
+    plan: free
+    buildCommand: |
+      npm ci
+      npx prisma generate --schema prisma/schema.prisma
+      npx prisma generate --schema prisma/schema.postgres.prisma
+    startCommand: npm run worker
+    envVars:
+      - key: NODE_VERSION
+        value: 22
+      - key: DATABASE_URL
+        fromDatabase:
+          name: sigma-events-db
+          property: connectionString
+      - key: CLOUDAMQP_URL
+        sync: false
+      - key: RESEND_API_KEY
+        sync: false
+      - key: EMAIL_FROM
+        value: "Sigma Security <onboarding@resend.dev>"
+      - key: APP_URL
+        sync: false

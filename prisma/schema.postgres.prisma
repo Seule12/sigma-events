@@ -1,0 +1,385 @@
+// ============================================================
+// SCHÉMA POSTGRESQL (production — Supabase)
+// Généré automatiquement depuis prisma/schema.prisma par
+// scripts/sync-postgres-schema.mjs — NE PAS modifier à la main.
+// ============================================================
+// Sigma Security — Modèle de données
+// Plateforme de contrôle d'accès et de sécurité événementielle
+
+generator client {
+  provider = "prisma-client"
+  output   = "../app/generated/prisma-pg"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ============ ENUMS ============
+
+enum Role {
+  SUPER_ADMIN // Administration de la plateforme (espace /admin)
+  ORGANIZER   // Organisateur : gère les événements (dashboard)
+  AGENT       // Agent de contrôle : scanne les billets
+}
+
+enum EventStatus {
+  DRAFT  // Brouillon
+  LIVE   // En cours
+  DONE   // Terminé
+}
+
+enum TicketStatus {
+  ISSUED      // Émis, non utilisé
+  ENTERED     // Déjà entré (1 billet = 1 entrée)
+  BLACKLISTED // Liste noire
+}
+
+// Mode d'accès de l'événement (choisi à la création) :
+//  - PUBLIC    : billetterie publique uniquement (les participants achètent)
+//  - INVITE    : invitations privées uniquement (liste d'invités, aucun paiement)
+//  - COMBINED  : les deux — une partie des places vendue, une autre réservée aux invités
+enum EventMode {
+  PUBLIC
+  INVITE
+  COMBINED
+}
+
+// Cycle de vie d'une invitation / d'un billet (concept « gestion des accès ») :
+//  CRÉÉ → GÉNÉRÉ → ENVOYÉ → OUVERT → CONFIRMÉ → ENTRÉ
+// États additionnels : ANNULÉ, REFUSÉ, LISTE NOIRE (géré par TicketStatus.BLACKLISTED)
+enum InvitationStatus {
+  CREATED   // Invité ajouté à la liste (manuel ou CSV), rien n'a été généré
+  GENERATED // Billet / invitation QR généré (code + QR existent)
+  SENT      // Envoyé au destinataire (WhatsApp / Email / SMS)
+  OPENED    // Le destinataire a ouvert le lien de son invitation
+  CONFIRMED // Présence confirmée (par l'invité ou l'organisateur)
+  ENTERED   // Toutes les personnes autorisées sont entrées
+  CANCELLED // Invitation annulée
+}
+
+// Mode de livraison du billet choisi par le client après paiement
+enum DeliveryMethod {
+  DOWNLOAD  // Téléchargement direct — gratuit
+  EMAIL     // Envoi par email — frais de service
+  WHATSAPP  // Envoi sur WhatsApp — frais de service
+}
+
+// Profil du compte à l'inscription (segmentation du modèle économique)
+enum UserProfileType {
+  PARTICULIER  // Événements personnels (mariage, anniversaire, cérémonie…)
+  ORGANISATION // Entreprise, école, association, ONG, institution…
+  PRO          // Professionnel de l'événementiel (agence, promoteur…)
+}enum OrderStatus {
+  PENDING // Commande créée, paiement non validé
+  PAID    // Paiement validé, billet émis
+  CANCELLED // Annulé
+}
+
+// Cycle de vie d'une demande de retrait de l'organisateur (payout) :
+//  PENDING (demandé, en attente de validation admin) → PROCESSING (virement
+//  FedaPay lancé) → PAID (versé) | FAILED (échec du virement) | CANCELLED (refusé)
+enum PayoutStatus {
+  PENDING // créé, OTP envoyé, en attente de confirmation OTP par l'organisateur
+  PENDING_ADMIN // OTP confirmé, montant > seuil → validation admin requise en plus
+  PROCESSING
+  PAID
+  FAILED
+  CANCELLED
+}
+
+enum CheckInStatus {
+  VALID            // Entrée autorisée ✅
+  ENTRY            // Entrée partielle : invitation multi-personnes, il reste des entrées (ex : 2/4) ✅
+  ALREADY_SCANNED  // Billet déjà utilisé 🟡
+  INVALID          // Billet inconnu / falsifié 🔴
+  FULL             // Capacité maximale atteinte 🔴
+  BLACKLISTED      // Billet en liste noire 🔴
+  TOO_EARLY        // Avant le début de l'événement (moins de 2 h d'avance) 🟠
+  EXPIRED          // Événement terminé 🔴
+  WRONG_ZONE       // Billet non autorisé pour cette porte / zone 🟠 (accréditations)
+  SUSPENDED        // Entrées temporairement suspendues par l'organisateur (fonction urgence) 🔴
+}
+
+// Cycle de vie d'un terminal de contrôle (SIGMA Scanner) :
+//  INACTIVE  → créé par l'organisateur avec un code d'activation temporaire
+//  ACTIVE    → code validé par un agent (terminal associé à un événement + porte + agent)
+//  DISABLED  → désactivé par l'organisateur (peut être réactivé)
+//  REVOKED   → révoqué définitivement (ne peut plus scanner)
+enum TerminalStatus {
+  INACTIVE
+  ACTIVE
+  DISABLED
+  REVOKED
+}
+
+// ============ MODÈLES ============
+
+model User {
+  id             String          @id @default(cuid())
+  name           String
+  phone          String?         @unique // requis pour l'inscription classique ; null si compte social
+  pin            String? // Code à 4 chiffres (hash) ; null si compte social (connexion via le fournisseur)
+  // Compte social (Google / Facebook / Apple) : email unique + identité chez le fournisseur.
+  email          String?         @unique // email du compte social (ou pro pour Organisation/PRO)
+  authProvider   String? // GOOGLE | FACEBOOK | APPLE (null = compte téléphone + PIN)
+  providerId     String? // identifiant de l'utilisateur chez le fournisseur
+  role           Role            @default(ORGANIZER)
+  profileType    UserProfileType @default(PARTICULIER) // profil choisi à l'inscription
+  // Informations de profil enrichies (inscription selon le type de compte) :
+  //  - ORGANISATION : nom de la structure + email professionnel
+  //  - PRO          : nom de l'agence / structure + email pro + responsable + téléphone
+  //                   professionnel + volume d'activité
+  orgName             String? // nom de l'agence / structure (organisation, pro)
+  orgEmail            String? // email professionnel (organisation, pro)
+  responsibleName     String? // PRO : nom du responsable de l'agence / structure
+  proPhone            String? // PRO : téléphone professionnel de l'agence
+  avgEventsPerMonth   String? // PRO : nb moyen d'événements/mois (1-2, 3-5, 6-10, 10+)
+  avgParticipants     String? // PRO : nb moyen de participants (moins de 100, 100-500, 500-2000, 2000+)
+  active         Boolean         @default(true) // compte bloqué/débloqué par l'admin
+  commissionRate Int             @default(3) // commission Sigma (%) appliquée au prix billet (modèle FedaPay, brief 2026)
+  createdAt      DateTime        @default(now())
+
+  organizedEvents  Event[]   @relation("OrganizedEvents")
+  assignments      EventAgent[]
+  checkIns         CheckIn[]
+  sessions         Session[]
+  terminals        Terminal[]
+  payoutsRequested Payout[]  @relation("PayoutsRequested")
+  payoutsProcessed Payout[]  @relation("PayoutsProcessed")
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  token     String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  expiresAt DateTime
+}
+
+model Event {
+  id          String      @id @default(cuid())
+  organizerId String
+  organizer   User        @relation("OrganizedEvents", fields: [organizerId], references: [id])
+  name        String
+  type        String?
+  location    String
+  date        DateTime
+  endDate     DateTime? // fin de l'événement (défaut : date + 8 h si absente)
+  capacity    Int         @default(0)
+  status      EventStatus @default(DRAFT) // DRAFT (brouillon) / LIVE (annoncé) / DONE (terminé)
+  mode        EventMode   @default(PUBLIC) // billetterie publique / invitations privées / combiné
+  salesSlug     String?     @unique // lien public de vente : /acheter/<slug>
+  salesOpen     Boolean     @default(true) // ventes en ligne ouvertes (l'organisateur peut fermer)
+  // Zones d'accès de l'événement (accréditations professionnelles), ex :
+  // "main, vip, backstage, parking". Les terminaux (portes) et les catégories de
+  // billets se réfèrent à ces zones pour contrôler qui entre où (WRONG_ZONE).
+  zones         String?     // liste séparée par des virgules
+  description   String?     // présentation affichée sur la boutique
+  imageUrl      String?     // image de couverture (boutique + billet)
+  doorsOpen     String?     // heure d'ouverture des portes (ex : "18:00")
+  contactName   String?     // nom du contact affiché aux clients
+  contactPhone  String?     // téléphone du contact (WhatsApp)
+  salesAtDoor   Boolean     @default(true) // vente à la porte le jour J (boutique ouverte pendant l'événement)
+  maxPerCustomer Int        @default(10) // quantité max de billets par client (1 à 10)
+  // Fonction urgence (SIGMA Scanner) : l'organisateur peut suspendre TOUTES les
+  // entrées immédiatement. Les terminaux hors-ligne affichent l'état bloqué au
+  // prochain rafraîchissement des données.
+  entranceBlocked Boolean    @default(false)
+  createdAt   DateTime    @default(now())
+
+  categories      TicketCategory[]
+  orders          Order[]
+  tickets         Ticket[]
+  checkIns        CheckIn[]
+  agents          EventAgent[]
+  capacityAlerts  CapacityAlert[]
+  terminals       Terminal[]
+}
+
+model TicketCategory {
+  id        String   @id @default(cuid())
+  eventId   String
+  event     Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  name      String // ex : VIP, Standard
+  capacity  Int
+  price     Int      @default(0) // prix du billet en FCFA (0 = gratuit)
+  color     String? // couleur d'affichage
+  // Zones d'accès autorisées pour ce type de billet (accréditations), ex : "main,vip".
+  // Vide/null = toutes les zones autorisées. Le scanner compare à la zone de sa porte.
+  zones     String?
+  tickets   Ticket[]
+  orders    Order[]
+}
+
+model Ticket {
+  id          String       @id @default(cuid())
+  eventId     String
+  event       Event        @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  categoryId  String?
+  category    TicketCategory? @relation(fields: [categoryId], references: [id])
+  code        String       @unique // identifiant unique du billet / invitation (UUID)
+  guestName   String
+  guestPhone  String?
+  guestEmail  String?      // email de l'invité (envoi de l'invitation par email)
+  guestCount  Int          @default(1) // nombre de personnes autorisées (le « +1 » : 2 = 1 invité + 1 accompagnant)
+  entriesCount Int         @default(0) // entrées déjà comptées (invitation multi-personnes, ex : 2/4)
+  inviteStatus InvitationStatus @default(CREATED) // cycle de vie de l'invitation
+  status      TicketStatus @default(ISSUED)
+  blacklistReason String?
+  createdAt   DateTime     @default(now())
+
+  checkIns CheckIn[]
+  orderId  String?
+  order    Order?     @relation(fields: [orderId], references: [id], onDelete: SetNull)
+}
+
+model Order {
+  id            String          @id @default(cuid())
+  reference     String          @unique // ex : SIG-4F2A9C (affiché sur la facture)
+  eventId       String
+  event         Event           @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  categoryId    String?
+  category      TicketCategory? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  customerName  String
+  customerPhone String
+  customerEmail String?
+  amount        Int             @default(0) // montant TOTAL payé en FCFA (prix × quantité)
+  quantity      Int             @default(1) // nombre de billets achetés dans cette commande
+  status        OrderStatus     @default(PENDING)
+  paymentMethod String? // ex : MTN_MOMO (paiement simulé en attendant la passerelle)
+  // Paiement réel (passerelle externe) : identifiant du paiement côté fournisseur
+  // (ex. payment_id Dodo) + fournisseur utilisé ("dodo"). Null = paiement simulé.
+  externalPaymentId   String?  @unique
+  externalProvider    String?
+  externalStatus      String? // statut côté fournisseur (pending / completed / failed)
+  deliveryMethod DeliveryMethod? // téléchargement / email / WhatsApp (choisi avant le paiement)
+  deliveryFee   Int             @default(0) // frais de livraison (0 / 25 / 75 FCFA)
+  tickets       Ticket[]
+  createdAt     DateTime        @default(now())
+  paidAt        DateTime?
+}
+
+// Code de vérification OTP à l'inscription (envoyé par SMS via la passerelle).
+model OtpCode {
+  id        String   @id @default(cuid())
+  phone     String
+  code      String // code à 6 chiffres
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  consumed  Boolean  @default(false)
+  purpose   String   @default("inscription") // inscription | recuperation | retrait
+
+  @@index([phone])
+}
+
+model CheckIn {
+  id        String        @id @default(cuid())
+  ticketId  String?
+  ticket    Ticket?       @relation(fields: [ticketId], references: [id], onDelete: SetNull)
+  eventId   String
+  event     Event         @relation(fields: [eventId], references: [id])
+  agentId   String?
+  agent     User?         @relation(fields: [agentId], references: [id])
+  terminalId String?
+  terminal  Terminal?     @relation(fields: [terminalId], references: [id], onDelete: SetNull)
+  status    CheckInStatus
+  lat       Float?
+  lng       Float?
+  source    String        @default("ONLINE") // ONLINE | OFFLINE (sync hors-ligne) | TERMINAL
+  syncId    String?       @unique // id client (UUID) : rend la sync hors-ligne idempotente
+  scannedAt DateTime      @default(now())
+}
+
+model CapacityAlert {
+  id          String   @id @default(cuid())
+  eventId     String
+  event       Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  threshold   Int      // 80 | 90 | 100 (pourcentage de la capacité)
+  triggeredAt DateTime @default(now())
+
+  @@unique([eventId, threshold])
+}
+
+model EventAgent {
+  id      String @id @default(cuid())
+  eventId String
+  event   Event  @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  agentId String
+  agent   User   @relation(fields: [agentId], references: [id], onDelete: Cascade)
+
+  @@unique([eventId, agentId])
+}
+
+// Terminal de contrôle (SIGMA Scanner) : un téléphone/tablette affecté à une porte.
+// L'organisateur crée le terminal avec un code d'activation temporaire ; l'agent
+// saisit ce code dans l'app scanner pour associer terminal + événement + porte + agent.
+model Terminal {
+  id      String @id @default(cuid())
+  eventId String
+  event   Event  @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  // Porte / zone du terminal, ex : "Porte A — Entrée principale"
+  name  String
+  zone  String? // ex : "main" | "vip" | "backstage" (droit d'accès de la porte)
+  code  String  @unique // identifiant court du terminal, ex : T-9281
+
+  status TerminalStatus @default(INACTIVE)
+
+  // Activation : code alphanumérique à 6 caractères temporaire (valable 15 min)
+  activationCode       String?
+  activationCodeExpiresAt DateTime?
+  // Token d'authentification du terminal (renouvelable, court) — stocké localement
+  // dans l'app scanner, envoyé dans chaque requête API.
+  token        String?  @unique
+  tokenExpiresAt DateTime?
+
+  // Agent qui a activé / utilise le terminal
+  agentId String?
+  agent   User?   @relation(fields: [agentId], references: [id], onDelete: SetNull)
+
+  // Activité en direct
+  lastSeenAt   DateTime?
+  lastScanAt   DateTime?
+  scansCount   Int      @default(0)
+  createdAt    DateTime @default(now())
+
+  checkIns CheckIn[]
+
+  @@index([eventId])
+}
+
+// Rate limiting persistant (anti-bot / anti-bruteforce) : remplace la mémoire
+// par instance par une table partagée entre tous les serveurs (production multi-instance).
+// Chaque « hit » est une ligne ; la fenêtre glissante est calculée par requête Prisma
+// (compter les hits dans [now - window, now]) et une purge périodique nettoie les anciens.
+model RateLimitHit {
+  id        Int      @id @default(autoincrement())
+  key       String // ex : "otp:22997000000", "checkin:user:evt"
+  createdAt DateTime @default(now())
+
+  @@index([key, createdAt])
+}
+
+// Demande de retrait de l'organisateur : virement de son solde (montant reversé)
+// vers son compte mobile money via l'API Payouts de FedaPay (lib/fedapay.ts).
+model Payout {
+  id          String       @id @default(cuid())
+  organizerId String
+  organizer   User         @relation("PayoutsRequested", fields: [organizerId], references: [id], onDelete: Cascade)
+  amount      Int // montant demandé en FCFA (≤ solde disponible après commission)
+  phone       String // numéro mobile money de destination (format +229…)
+  network     String // réseau : MTN_MOMO | MOOV_MONEY | CELTIIS (cf. lib/momo.ts)
+  status      PayoutStatus @default(PENDING)
+  fedapayId   String?      @unique // référence du virement côté FedaPay
+  otpVerifiedAt DateTime? // OTP confirmé par l'organisateur (sécurisation du retrait)
+  adminNote   String? // motif de refus / commentaire de l'admin
+  createdAt   DateTime     @default(now())
+  processedAt DateTime?
+  processedById String?
+  processedBy   User?      @relation("PayoutsProcessed", fields: [processedById], references: [id], onDelete: SetNull)
+
+  @@index([organizerId])
+  @@index([status])
+}

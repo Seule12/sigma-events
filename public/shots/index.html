@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sigma Security — Captures landing (responsive)</title>
+<style>
+  :root { color-scheme: dark; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+    background: #020617;
+    color: #e2e8f0;
+    padding: 2rem 1rem 4rem;
+  }
+  h1 { font-size: 1.4rem; font-weight: 800; letter-spacing: -0.02em; }
+  .sub { color: #64748b; font-size: .85rem; margin-top: .4rem; }
+  .bar { display: flex; align-items: baseline; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.6rem; }
+  .tag { font-size: .7rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em;
+         color: #34d399; border: 1px solid #065f46; background: #022c22; padding: .3rem .7rem; border-radius: 999px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 1.4rem; }
+  .card { background: #0f172a; border: 1px solid #1e293b; border-radius: 1rem; overflow: hidden; }
+  .card h2 { font-size: .85rem; font-weight: 700; padding: .8rem 1rem; border-bottom: 1px solid #1e293b;
+             display: flex; align-items: center; gap: .5rem; }
+  .card h2 .dot { width: .5rem; height: .5rem; border-radius: 999px; }
+  .device { background: #020617; padding: 1rem; display: flex; justify-content: center; }
+  .device.mobile { background: #000; }
+  img { max-width: 100%; height: auto; border-radius: .5rem; box-shadow: 0 10px 30px rgb(0 0 0 / .5); }
+  .device.mobile img { max-width: 320px; border: 6px solid #1e293b; }
+  .device.tablet img { max-width: 560px; }
+  .desc { padding: .7rem 1rem; font-size: .75rem; color: #94a3b8; border-top: 1px solid #1e293b; }
+  .footer { margin-top: 2rem; color: #475569; font-size: .75rem; text-align: center; }
+</style>
+</head>
+<body>
+  <div class="bar">
+    <h1>Captures automatiques — Landing Sigma Security</h1>
+    <span class="tag">Desktop · Tablet · Mobile</span>
+    <span class="sub">Générées le 10 août 2026 · Chrome headless</span>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <h2><span class="dot" style="background:#34d399"></span>Desktop 1440×900 — Connexion</h2>
+      <div class="device"><img src="desktop-login.png" alt="Desktop login"></div>
+      <p class="desc">Héro double colonne : maquette billet à gauche, panneau « Ravi de vous revoir » sticky à droite.</p>
+    </div>
+
+    <div class="card">
+      <h2><span class="dot" style="background:#34d399"></span>Desktop 1440×900 — Créer un compte</h2>
+      <div class="device"><img src="desktop-register.png" alt="Desktop register"></div>
+      <p class="desc">Onglet « Créer un compte » : indicateur d'étape, cartes de profil, champs enrichis.</p>
+    </div>
+
+    <div class="card">
+      <h2><span class="dot" style="background:#38bdf8"></span>Tablette 768×1024 — Connexion</h2>
+      <div class="device tablet"><img src="tablet-login.png" alt="Tablet login"></div>
+      <p class="desc">Point de bascule à 1024 px : colonnes empilées, panneau centré.</p>
+    </div>
+
+    <div class="card">
+      <h2><span class="dot" style="background:#38bdf8"></span>Tablette 768×1024 — Créer un compte</h2>
+      <div class="device tablet"><img src="tablet-register.png" alt="Tablet register"></div>
+      <p class="desc">Formulaire d'inscription sur tablette.</p>
+    </div>
+
+    <div class="card">
+      <h2><span class="dot" style="background:#f59e0b"></span>Mobile 390×844 — Connexion</h2>
+      <div class="device mobile"><img src="mobile-login.png" alt="Mobile login"></div>
+      <p class="desc">Vue mobile : héro empilé, panneau pleine largeur. La maquette produit est masquée (&lt; lg).</p>
+    </div>
+
+    <div class="card">
+      <h2><span class="dot" style="background:#f59e0b"></span>Mobile 390×844 — Créer un compte</h2>
+      <div class="device mobile"><img src="mobile-register.png" alt="Mobile register"></div>
+      <p class="desc">Inscription sur mobile : cartes de profil empilées.</p>
+    </div>
+  </div>
+
+  <p class="footer">Sigma Security — vérification responsive de la maquette (héro + authentification)</p>
+</body>
+</html>
