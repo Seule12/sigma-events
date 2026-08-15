@@ -39,6 +39,22 @@ function diagErrDetail(e: unknown): Record<string, unknown> {
 
 export async function diagAction(): Promise<void> {
   const out: Record<string, unknown> = {};
+  // 0. Test du pool pg BRUT (sans Prisma) dans le contexte server action.
+  try {
+    const { Pool } = await import("pg");
+    const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+    const res = await pool.query("SELECT 1 AS ok");
+    out.pg_raw = `ok (${res.rows[0].ok})`;
+    await pool.end();
+  } catch (e) {
+    const obj = e as Record<string, unknown>;
+    out.pg_raw = {
+      error: true,
+      message: obj?.message ?? String(e),
+      code: obj?.code ?? undefined,
+      stack: (obj?.stack ? String(obj.stack).split("\n").slice(0, 6) : undefined),
+    };
+  }
   try {
     out.read_count = await prisma.rateLimitHit.count();
   } catch (e) {
