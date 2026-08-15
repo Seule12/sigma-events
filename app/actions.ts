@@ -26,6 +26,45 @@ import { notifyOrderPaid } from "@/lib/order-events";
 
 // ============ HELPERS ============
 
+// ⚠️ DIAGNOSTIC TEMPORAIRE — à supprimer après l'audit du déploiement.
+function diagErrDetail(e: unknown): Record<string, unknown> {
+  const obj = e as Record<string, unknown>;
+  return {
+    message: obj?.message ?? String(e),
+    code: obj?.code ?? undefined,
+    kind: (obj as { kind?: unknown })?.kind ?? undefined,
+    cause: obj?.cause ? String(obj.cause) : undefined,
+  };
+}
+
+export async function diagAction(): Promise<Record<string, unknown>> {
+  const out: Record<string, unknown> = {};
+  try {
+    out.read_count = await prisma.rateLimitHit.count();
+  } catch (e) {
+    out.read_count = { error: true, ...diagErrDetail(e) };
+  }
+  try {
+    const row = await prisma.rateLimitHit.create({ data: { key: `diag-act-${Date.now()}` } });
+    await prisma.rateLimitHit.delete({ where: { id: row.id } });
+    out.write_plain = "ok";
+  } catch (e) {
+    out.write_plain = { error: true, ...diagErrDetail(e) };
+  }
+  try {
+    await prisma.$transaction(async (tx) => {
+      await tx.rateLimitHit.create({ data: { key: `diag-tx-${Date.now()}` } });
+      throw new Error("ROLLBACK_MARKER");
+    });
+    out.write_tx = "committed (inattendu)";
+  } catch (e) {
+    const msg = String(e);
+    out.write_tx = msg.includes("ROLLBACK_MARKER") ? "ok (rollback)" : { error: true, ...diagErrDetail(e) };
+  }
+  return out;
+}
+// ⚠️ Fin du diagnostic temporaire.
+
 async function uploadImageToStorage(file: File): Promise<string> {
   const uploadsDir = path.join(process.cwd(), "public/uploads/events");
   await fs.mkdir(uploadsDir, { recursive: true });
