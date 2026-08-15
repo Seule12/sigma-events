@@ -82,10 +82,11 @@ services:
       - key: PAYOUT_ADMIN_THRESHOLD
         value: "100000"
 
-  - type: worker
+  - type: web
     name: sigma-events-worker
     runtime: node
     plan: free
+    healthCheckPath: /
     buildCommand: |
       npm ci
       npx prisma generate --schema prisma/schema.prisma

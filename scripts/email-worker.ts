@@ -7,6 +7,7 @@
 //
 // Lancement : npx tsx scripts/email-worker.ts
 import "dotenv/config";
+import http from "node:http";
 import amqp from "amqplib";
 import { Resend } from "resend";
 import type { EmailJob } from "../lib/queue";
@@ -140,6 +141,20 @@ function countRedeliveries(msg: amqp.ConsumeMessage): number {
   }
   return 0;
 }
+
+
+// ===== Mini serveur HTTP (exigence Render) =====
+// Le plan free de Render n'autorise que les web services : le worker est donc
+// déclaré comme web service, et doit écouter sur le port $PORT pour que le
+// health check passe. Il ne sert pas de trafic web.
+const PORT = Number(process.env.PORT || 3001);
+const healthServer = http.createServer((_req, res) => {
+  res.writeHead(200, { "Content-Type": "text/plain" });
+  res.end("ok");
+});
+healthServer.listen(PORT, () => {
+  console.log(`[worker] health check HTTP sur le port ${PORT}`);
+});
 
 async function main() {
   const url = process.env.CLOUDAMQP_URL;
