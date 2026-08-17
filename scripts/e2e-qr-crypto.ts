@@ -22,8 +22,13 @@ function check(name: string, ok: boolean, detail?: string) {
 async function main() {
   // ---- 1. Round-trip serveur ----
   const blob = encryptTicketQr({ eventId: EVENT_ID, ticketId: TICKET_ID, plusOne: 0, expiresAt: null });
-  check("encryptTicketQr produit un blob S1", blob.startsWith(`S1${EVENT_ID}:`), blob.slice(0, 30) + "…");
+  // Format v2 : préfixe « 西格玛 » + blob encodé en caractères chinois.
+  check("encryptTicketQr produit un blob chinois (西格玛…)", blob.startsWith("西格玛"), blob.slice(0, 30) + "…");
   check("isEncryptedTicketQr détecte le blob", isEncryptedTicketQr(blob));
+
+  // Le blob ne contient QUE des caractères chinois : aucun caractère latin.
+  const bodyCn = blob.slice(3);
+  check("blob sans caractère latin (tout chinois)", /^[\u4e00-\u4eff]+$/.test(bodyCn), "taille=" + bodyCn.length);
 
   const payload = decryptTicketQr(blob);
   check(
@@ -38,13 +43,21 @@ async function main() {
   check("ticketQrContent → decrypt cohérent", p2.ticketId === TICKET_ID);
 
   // ---- 2. Altération ----
-  const tampered = blob.slice(0, 20) + (blob[20] === "A" ? "B" : "A") + blob.slice(21);
+  // On modifie un caractère au milieu du blob (le remplace par un caractère latin) :
+  // le décodage chinois échoue (QR_MALFORMED) ou le déchiffrement GCM échoue
+  // (QR_INVALID_OR_TAMPERED) — dans les deux cas, le QR est REJETÉ.
+  const tampered = blob.slice(0, 20) + "A" + blob.slice(21);
+  let tamperCode = "AUCUN";
   try {
     decryptTicketQr(tampered);
-    check("blob altéré rejeté", false);
   } catch (e: any) {
-    check("blob altéré rejeté", e.code === "QR_INVALID_OR_TAMPERED", e.code);
+    tamperCode = e.code;
   }
+  check(
+    "blob altéré rejeté",
+    tamperCode === "QR_MALFORMED" || tamperCode === "QR_INVALID_OR_TAMPERED",
+    tamperCode
+  );
   try {
     decryptTicketQr("not-a-qr");
     check("entrée non-QR rejetée", false);
@@ -173,14 +186,34 @@ async function main() {
   process.exit(failed.length ? 1 : 0);
 }
 
+// Déchiffrement Web Crypto (équivalent app scanner) — gère le format v2
+// « 西格玛… » (chinois → octets) et v1 « S1{eventId}:… » (rétrocompat).
+function chineseToClear(str: string): string | null {
+  const bytes = Buffer.alloc(str.length);
+  for (let i = 0; i < str.length; i++) {
+    const code = str.charCodeAt(i) - 0x4e00;
+    if (code < 0 || code > 255) return null;
+    bytes[i] = code;
+  }
+  return bytes.toString("utf8");
+}
+
 async function decryptWithWebCrypto(qrContent: string, keyHex: string, expectedEventId: string) {
   const raw = qrContent.trim();
-  if (!raw.startsWith("S1")) return null;
-  const sep = raw.indexOf(":", 2);
+  let clear: string | null;
+  if (raw.startsWith("西格玛")) {
+    clear = chineseToClear(raw.slice(3));
+    if (!clear) return null;
+  } else if (raw.startsWith("S1")) {
+    clear = raw;
+  } else {
+    return null;
+  }
+  const sep = clear!.indexOf(":");
   if (sep === -1) return null;
-  const eventId = raw.slice(2, sep);
+  const eventId = raw.startsWith("西格玛") ? clear!.slice(0, sep) : clear!.slice(2, sep);
   if (eventId !== expectedEventId) return null;
-  const b64 = raw.slice(sep + 1).replace(/-/g, "+").replace(/_/g, "/");
+  const b64 = clear.slice(sep + 1).replace(/-/g, "+").replace(/_/g, "/");
   const padded = b64 + "=".repeat((4 - (b64.length % 4)) % 4);
   const buf = Buffer.from(padded, "base64");
   const iv = buf.subarray(0, 12);

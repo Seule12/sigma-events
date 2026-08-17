@@ -19,10 +19,16 @@ import { createCipheriv, createDecipheriv, createHmac, randomBytes } from "node:
 const ALGORITHM = "aes-256-gcm";
 const IV_LENGTH = 12;
 const AUTH_TAG_LENGTH = 16;
-// Préfixe version 1 + eventId en clair (permet de dériver la bonne clé avant
-// déchiffrement — l'eventId n'est pas sensible, il est déjà dans les URLs
-// publiques /events/[id] et /acheter/[slug]).
+// Préfixe version 1 (anciens QR, base64url clair) — conservé pour la
+// rétrocompatibilité des billets déjà émis.
 const QR_PREFIX = "S1";
+// Préfixe version 2 : « 西格玛 » (SIGMA en chinois). Le blob entier est encodé en
+// caractères chinois (U+4E00-4EFF) : un scanner générique n'affiche qu'une
+// chaîne de hanzi incompréhensible, seul SIGMA Scanner décode puis déchiffre.
+const QR_PREFIX_CN = "西格玛";
+// Base des caractères chinois d'encodage : U+4E00 (一) à U+4EFF — 256 vrais
+// caractères CJK, chacun code un octet (0-255).
+const CJK_BASE = 0x4e00;
 
 export class TicketVerificationError extends Error {
   code: string;
@@ -79,8 +85,12 @@ export type TicketQrPayload = {
 };
 
 /**
- * Chiffre le payload d'un billet et retourne la chaîne compacte à encoder
- * dans le QR : `S1{eventId}:{base64url(IV + authTag + ciphertext)}`.
+ * Chiffre le payload d'un billet et retourne la chaîne à encoder dans le QR.
+ * Format v2 (courant) : `西格玛{chinois(base64url(eventId:blob))}` — un scanner
+ * générique affiche uniquement des caractères chinois incompréhensibles ; seul
+ * SIGMA Scanner décode (chinois → octets) puis déchiffre (AES-GCM).
+ * L'eventId reste récupérable sans clé (il est dans la partie base64url) pour
+ * dériver la bonne clé de session avant déchiffrement.
  */
 export function encryptTicketQr(payload: TicketQrPayload): string {
   const key = deriveEventSessionKey(payload.eventId);
@@ -97,24 +107,67 @@ export function encryptTicketQr(payload: TicketQrPayload): string {
   const cipher = createCipheriv(ALGORITHM, key, iv, { authTagLength: AUTH_TAG_LENGTH });
   const encrypted = Buffer.concat([cipher.update(data, "utf8"), cipher.final()]);
   const authTag = cipher.getAuthTag();
-  return `${QR_PREFIX}${payload.eventId}:${toBase64Url(Buffer.concat([iv, authTag, encrypted]))}`;
+  // Blob lisible par SIGMA : `{eventId}:{base64url(IV + authTag + ciphertext)}`.
+  const clear = `${payload.eventId}:${toBase64Url(Buffer.concat([iv, authTag, encrypted]))}`;
+  return QR_PREFIX_CN + bytesToChinese(Buffer.from(clear, "utf8"));
+}
+
+// ===== Encodage binaire → caractères chinois (protection « anti-scan externe ») =====
+// Chaque octet est mappé sur un caractère CJK U+4E00+octet. Le résultat est une
+// chaîne de vrais hanzi : illisible pour un scanner QR générique ou un humain.
+function bytesToChinese(buf: Buffer): string {
+  let out = "";
+  for (const b of buf) out += String.fromCharCode(CJK_BASE + b);
+  return out;
+}
+
+// Inverse : caractères chinois → octets. Lève si un caractère est hors plage
+// (QR forgé ou contenu non-SIGMA).
+function chineseToBytes(str: string): Buffer {
+  const bytes = Buffer.alloc(str.length);
+  for (let i = 0; i < str.length; i++) {
+    const code = str.charCodeAt(i) - CJK_BASE;
+    if (code < 0 || code > 255) {
+      throw new TicketVerificationError("QR_MALFORMED", "Contenu du QR invalide.");
+    }
+    bytes[i] = code;
+  }
+  return bytes;
 }
 
 /**
  * Déchiffre et vérifie l'intégrité d'un QR scanné. Lève TicketVerificationError
  * si le blob a été modifié, expiré, ou chiffré avec une autre clé.
+ * Accepte les deux formats : v2 « 西格玛… » (courant) et v1 « S1{eventId}:… »
+ * (rétrocompatibilité des billets déjà émis).
  */
 export function decryptTicketQr(qrContent: string): TicketQrPayload {
   const raw = qrContent.trim();
-  // Préfixe `S1{eventId}:` — l'eventId en clair permet de dériver la bonne clé.
-  if (!raw.startsWith(QR_PREFIX)) {
+
+  let clear: string;
+  if (raw.startsWith(QR_PREFIX_CN)) {
+    // Format v2 : chinois → octets → texte `{eventId}:{base64url(blob)}`.
+    try {
+      clear = chineseToBytes(raw.slice(QR_PREFIX_CN.length)).toString("utf8");
+    } catch (err) {
+      throw err instanceof TicketVerificationError
+        ? err
+        : new TicketVerificationError("QR_MALFORMED", "Contenu du QR illisible.");
+    }
+  } else if (raw.startsWith(QR_PREFIX)) {
+    // Format v1 (anciens billets) : `S1{eventId}:{base64url(blob)}`.
+    clear = `${raw.slice(QR_PREFIX.length, raw.indexOf(":", QR_PREFIX.length))}:${raw.slice(raw.indexOf(":", QR_PREFIX.length) + 1)}`;
+  } else {
     throw new TicketVerificationError("QR_MALFORMED", "Format de QR inconnu.");
   }
-  const sep = raw.indexOf(":", QR_PREFIX.length);
+
+  // `{eventId}:{base64url(IV + authTag + ciphertext)}` — l'eventId en clair
+  // permet de dériver la bonne clé avant déchiffrement.
+  const sep = clear.indexOf(":");
   if (sep === -1) {
     throw new TicketVerificationError("QR_MALFORMED", "Blob chiffré incomplet.");
   }
-  const eventId = raw.slice(QR_PREFIX.length, sep);
+  const eventId = clear.slice(0, sep);
   if (!eventId) {
     throw new TicketVerificationError("QR_MALFORMED", "Événement manquant dans le QR.");
   }
@@ -122,7 +175,7 @@ export function decryptTicketQr(qrContent: string): TicketQrPayload {
 
   let combined: Buffer;
   try {
-    combined = fromBase64Url(raw.slice(sep + 1));
+    combined = fromBase64Url(clear.slice(sep + 1));
   } catch {
     throw new TicketVerificationError("QR_MALFORMED", "Contenu du QR illisible.");
   }
@@ -165,7 +218,9 @@ export function decryptTicketQr(qrContent: string): TicketQrPayload {
   };
 }
 
-/** Vrai si l'entrée scannée est un QR chiffré (plutôt qu'un code saisi à la main). */
+/** Vrai si l'entrée scannée est un QR chiffré (plutôt qu'un code saisi à la main).
+ *  Accepte le format v2 « 西格玛… » (courant) et v1 « S1… » (anciens billets). */
 export function isEncryptedTicketQr(input: string): boolean {
-  return input.trim().startsWith(QR_PREFIX);
+  const trimmed = input.trim();
+  return trimmed.startsWith(QR_PREFIX_CN) || trimmed.startsWith(QR_PREFIX);
 }
