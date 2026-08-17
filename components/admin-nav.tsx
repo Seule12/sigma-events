@@ -39,7 +39,7 @@ export default function AdminNav({ active }: { active: string }) {
     <header className="sticky top-0 z-40 border-b border-slate-200 bg-white/90 backdrop-blur dark:border-slate-800 dark:bg-slate-950/90">
       <div className="mx-auto flex h-16 max-w-6xl items-center gap-3 px-4 sm:px-6">
         <Link href="/admin" className="flex items-center gap-2">
-          <Logo height={30} className="rounded bg-white p-0.5" />
+          <Logo height={30} className="rounded-lg bg-slate-950 p-1" />
           <span className="hidden text-sm font-extrabold text-slate-900 sm:block dark:text-white">
             Admin Sigma
           </span>

@@ -156,7 +156,7 @@ export default async function ConfirmationPage({
                       </p>
                       <p className="mt-0.5 text-base font-extrabold leading-tight">{order.event.name}</p>
                     </div>
-                    <div className="rounded-xl bg-white p-1.5">
+                    <div className="rounded-xl bg-slate-950 p-1.5">
                       <Logo height={22} />
                     </div>
                   </div>

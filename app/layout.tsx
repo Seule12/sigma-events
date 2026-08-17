@@ -41,8 +41,8 @@ export const metadata: Metadata = {
     "Plateforme de sécurité des biens et des personnes : billets QR, contrôle d'accès temps réel, jauge de capacité.",
   manifest: "/manifest.webmanifest",
   icons: {
-    icon: "/sigma-logo.png",
-    apple: "/sigma-logo.png",
+    icon: "/icon-512.png",
+    apple: "/icon-512.png",
   },
 };
 

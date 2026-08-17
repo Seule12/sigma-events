@@ -3,12 +3,12 @@
 // (l'app de scan se charge hors-ligne si déjà visitée ; les scans sont
 // mis en file d'attente par l'application puis synchronisés à la reconnexion).
 
-const VERSION = "sigma-v1";
+const VERSION = "sigma-v2";
 const SHELL_CACHE = `${VERSION}-shell`;
 const RUNTIME_CACHE = `${VERSION}-runtime`;
 
 // Fichiers du shell (chargés à l'installation, hors-ligne d'office).
-const PRECACHE = ["/", "/manifest.webmanifest", "/sigma-logo.png", "/icon.svg"];
+const PRECACHE = ["/", "/manifest.webmanifest", "/sigma-logo.png", "/icon-512.png", "/icon.svg"];
 
 self.addEventListener("install", (event) => {
   event.waitUntil(

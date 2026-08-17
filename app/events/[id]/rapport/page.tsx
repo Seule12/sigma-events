@@ -95,7 +95,7 @@ export default async function EventReportPage({
                 {event.date.toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "long", year: "numeric" })}
               </p>
             </div>
-            <Logo height={40} className="rounded bg-white" />
+            <Logo height={40} className="rounded bg-slate-950 p-1" />
           </div>
 
           <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">

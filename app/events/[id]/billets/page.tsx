@@ -66,7 +66,7 @@ export default async function EventTicketsPrintPage({
               )}
             </p>
           </div>
-          <Logo height={36} className="rounded bg-white" />
+          <Logo height={36} className="rounded bg-slate-950 p-1" />
         </div>
 
         {tickets.length > 300 && (

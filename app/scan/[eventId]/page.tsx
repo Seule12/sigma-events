@@ -137,7 +137,7 @@ export default async function ScanEventPage({
         </div>
 
         <div className="mb-2 flex items-center gap-2">
-          <Logo height={26} />
+          <Logo height={26} className="rounded-lg bg-slate-950 p-1" />
           <span className="text-sm font-bold text-slate-300">Scanner le billet</span>
         </div>
         <Scanner eventId={event.id} />

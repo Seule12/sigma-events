@@ -44,7 +44,7 @@ export default async function PayPage({
     <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-br from-slate-100 to-slate-200 p-4 dark:from-slate-950 dark:to-slate-900">
       <div className="animate-fade-up w-full max-w-md">
         <div className="mb-6 flex justify-center">
-          <Logo height={40} />
+          <Logo height={40} className="rounded-xl bg-slate-950 p-1.5" />
         </div>
 
         {cancelled ? (

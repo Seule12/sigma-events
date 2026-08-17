@@ -38,7 +38,7 @@ export default async function InvitationPage({ params }: { params: Promise<{ cod
     <main className="min-h-screen bg-gradient-to-br from-slate-100 to-slate-200 p-4 dark:from-slate-950 dark:to-slate-900">
       <div className="mx-auto flex max-w-md flex-col items-center py-6">
         <div className="mb-5 flex items-center gap-2">
-          <Logo height={30} />
+          <Logo height={30} className="rounded-lg bg-slate-950 p-1" />
           <span className="text-sm font-extrabold text-slate-800 dark:text-white">
             Sigma <span className="text-brand-600 dark:text-brand-400">Security</span>
           </span>

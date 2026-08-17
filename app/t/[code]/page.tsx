@@ -54,7 +54,7 @@ export default async function TicketPage({
           )}
           {/* En-tête événement */}
           <div className="relative bg-gradient-to-br from-brand-600 to-brand-800 px-6 pb-10 pt-6 text-white">
-            <div className="absolute right-4 top-4 rounded-xl bg-white p-1.5">
+            <div className="absolute right-4 top-4 rounded-xl bg-slate-950 p-1.5">
               <Logo height={28} />
             </div>
             <p className="text-xs font-bold uppercase tracking-widest text-brand-200">

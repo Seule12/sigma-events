@@ -12,8 +12,8 @@ export default function Logo({ height = 36, className = "" }: LogoProps) {
     <Image
       src="/sigma-logo.png"
       alt="Sigma Events"
-      width={677}
-      height={369}
+      width={542}
+      height={460}
       priority
       className={`h-auto w-auto object-contain ${className}`}
       style={{ height }}

@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ThemeToggle } from "@/components/theme-provider";
+import Logo from "@/components/logo";
 import { logoutAction } from "@/app/actions";
 
 export type SidebarEvent = { id: string; name: string };
@@ -189,9 +190,9 @@ export default function Sidebar({
             title="Sigma Events — Tableau de bord"
             className="relative z-10 flex items-center justify-center gap-2"
           >
-            {/* Marque compacte (bouclier) — visible en mode rail replié */}
-            <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-gradient-to-br from-brand-500 to-brand-700 text-white shadow-lg shadow-brand-900/40">
-              <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /></svg>
+            {/* Marque compacte (logo) — visible en mode rail replié */}
+            <span className="grid h-9 w-9 shrink-0 place-items-center overflow-hidden rounded-xl bg-slate-950">
+              <Logo height={30} />
             </span>
             {!rail && (
               <span className="hidden font-display text-base font-bold uppercase tracking-[0.06em] text-white lg:block">

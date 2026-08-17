@@ -49,7 +49,7 @@ export default async function FindTicketPage({
       <div className="border-b border-slate-200/60 bg-white/70 backdrop-blur dark:border-slate-800 dark:bg-slate-950/70">
         <div className="mx-auto flex h-16 max-w-3xl items-center gap-3 px-4 sm:px-6">
           <Link href="/" aria-label="Accueil" className="flex items-center gap-3">
-            <Logo height={32} />
+            <Logo height={32} className="rounded-lg bg-slate-950 p-1" />
           </Link>
           <span className="text-sm font-bold text-slate-600 dark:text-slate-300">Retrouver mon billet</span>
           <span className="ml-auto flex items-center gap-1.5 rounded-full bg-brand-100 px-3 py-1 text-[11px] font-bold text-brand-700 dark:bg-brand-950 dark:text-brand-300">

@@ -59,7 +59,7 @@ export default async function BuyPage({
       {/* Bandeau supérieur */}
       <div className="border-b border-slate-200/60 bg-white/70 backdrop-blur dark:border-slate-800 dark:bg-slate-950/70">
         <div className="mx-auto flex h-16 max-w-3xl items-center gap-3 px-4 sm:px-6">
-          <Logo height={32} />
+          <Logo height={32} className="rounded-lg bg-slate-950 p-1" />
           <span className="text-sm font-bold text-slate-600 dark:text-slate-300">Billetterie officielle</span>
           <span className="ml-auto flex items-center gap-1.5 rounded-full bg-brand-100 px-3 py-1 text-[11px] font-bold text-brand-700 dark:bg-brand-950 dark:text-brand-300">
             <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg>

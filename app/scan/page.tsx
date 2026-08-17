@@ -23,7 +23,7 @@ export default async function ScanHomePage() {
     <div className="min-h-screen bg-slate-950">
       <header className="sticky top-0 z-40 border-b border-slate-800 bg-slate-950/90 backdrop-blur">
         <div className="mx-auto flex h-16 max-w-md items-center gap-3 px-4">
-          <Logo height={36} className="rounded bg-white p-1" />
+          <Logo height={36} className="rounded bg-slate-950 p-1" />
           <div className="ml-auto flex items-center gap-2">
             <ThemeToggle />
             <form action={logoutAction}>
