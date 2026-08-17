@@ -2,6 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getCurrentUser, roleHome } from "@/lib/auth";
 import { requestPinResetAction } from "@/app/actions";
+import { displayPhone } from "@/lib/format";
 
 export const metadata = {
   title: "Récupération du code — Sigma Events",
@@ -113,7 +114,7 @@ export default async function RecoverPage({ searchParams }: { searchParams: Prom
                       className="w-full rounded-xl border border-slate-200 bg-slate-50 py-3 pl-11 pr-4 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-brand-500 focus:bg-white focus:ring-4 focus:ring-brand-500/15 dark:border-slate-700 dark:bg-slate-800 dark:text-white dark:focus:border-brand-500 dark:focus:bg-slate-900"
                     />
                   </div>
-                  <p className="mt-1 text-xs text-slate-400">Sans le +229 — nous enverrons un code de vérification</p>
+                  <p className="mt-1 text-xs text-slate-400">Ajoutez l&#39;indicatif de votre pays — nous enverrons un code de vérification</p>
                 </div>
 
                 <button

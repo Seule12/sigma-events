@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { sendInvitationsAction } from "@/app/actions";
+import { displayPhone } from "@/lib/format";
 
 export type BulkInviteItem = {
   id: string;
@@ -148,7 +149,7 @@ export default function InviteBulkSend({
               <span className="min-w-0 flex-1">
                 <span className="block truncate text-sm font-semibold text-slate-800 dark:text-slate-200">{i.guestName}</span>
                 <span className="block truncate text-[11px] text-slate-400">
-                  {channel === "EMAIL" ? i.guestEmail || "sans email" : i.guestPhone ? `+229 ${i.guestPhone}` : "sans téléphone"}
+                  {channel === "EMAIL" ? i.guestEmail || "sans email" : i.guestPhone ? displayPhone(i.guestPhone) : "sans téléphone"}
                   {i.guestCount > 1 ? ` · ${i.guestCount} pers.` : ""}
                 </span>
               </span>

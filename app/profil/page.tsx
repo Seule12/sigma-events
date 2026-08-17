@@ -2,6 +2,7 @@ import Link from "next/link";
 import { requireUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { Role } from "@/app/generated/prisma/enums";
+import { displayPhone } from "@/lib/format";
 import Sidebar from "@/components/sidebar";
 import SettingsForms from "@/components/settings-forms";
 
@@ -91,7 +92,7 @@ export default async function ProfilePage({
                   </span>
                 </div>
                 <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-                  {user.phone ? `+229 ${user.phone}` : user.email ?? "Compte social"} · Membre depuis{" "}
+                  {user.phone ? displayPhone(user.phone) : user.email ?? "Compte social"} · Membre depuis{" "}
                   {user.createdAt.toLocaleDateString("fr-FR", { month: "long", year: "numeric" })}
                 </p>
               </div>
@@ -126,7 +127,7 @@ export default async function ProfilePage({
                 </span>
                 <div>
                   <dt className="text-[11px] font-bold uppercase tracking-wide text-slate-400">Téléphone</dt>
-                  <dd className="text-sm font-semibold text-slate-900 dark:text-white">+229 {user.phone}</dd>
+                  <dd className="text-sm font-semibold text-slate-900 dark:text-white">{displayPhone(user.phone)}</dd>
                 </div>
               </div>
               <div className="flex items-center gap-3">

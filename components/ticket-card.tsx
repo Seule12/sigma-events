@@ -1,4 +1,5 @@
 import { ticketRef } from "@/lib/ticket-ref";
+import { displayPhone } from "@/lib/format";
 import { ticketQrContent } from "@/lib/qr";
 import LazyQr from "@/components/lazy-qr";
 import CoverImage from "@/components/cover-image";
@@ -39,13 +40,10 @@ function formatTime(d: Date): string {
   return `${pad(d.getHours())}:${pad(d.getMinutes())}`;
 }
 
-// +229 XX XX XX XX (numéro béninois, sans doublon de préfixe).
+// +229 XX XX XX XX (ou l'indicatif du pays — ouverture Afrique).
 function formatPhone(phone?: string | null): string {
   if (!phone) return "Non renseigné";
-  const digits = phone.replace(/\D/g, "");
-  const clean = digits.startsWith("00229") ? digits.slice(5) : digits.startsWith("229") ? digits.slice(3) : digits;
-  if (clean.length < 8) return `+229 ${clean}`;
-  return `+229 ${clean.slice(0, 2)} ${clean.slice(2, 4)} ${clean.slice(4, 6)} ${clean.slice(6, 8)}`;
+  return displayPhone(phone);
 }
 
 export default function TicketCard({

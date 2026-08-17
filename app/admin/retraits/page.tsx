@@ -2,7 +2,7 @@ import { requireUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { Role, PayoutStatus } from "@/app/generated/prisma/enums";
 import AdminNav from "@/components/admin-nav";
-import { formatFcfa } from "@/lib/format";
+import { formatFcfa, displayPhone } from "@/lib/format";
 import { PAYOUT_STATUS_META, payoutNetworkLabel } from "@/lib/payouts";
 import { isFedaPayPayoutEnabled } from "@/lib/fedapay";
 import { processPayoutAction, refreshPayoutStatusAction } from "@/app/actions";
@@ -85,7 +85,7 @@ export default async function AdminPayoutsPage({
                     <p className="font-bold text-slate-900 dark:text-white">{formatFcfa(p.amount)}</p>
                     <p className="mt-0.5 text-sm text-slate-600 dark:text-slate-300">
                       {p.organizer.name}
-                      {p.organizer.phone ? ` · +229 ${p.organizer.phone}` : ""}
+                      {p.organizer.phone ? ` · ${displayPhone(p.organizer.phone)}` : ""}
                     </p>
                     <p className="text-xs text-slate-400">
                       {payoutNetworkLabel(p.network)} → {p.phone} ·{" "}
@@ -103,7 +103,7 @@ export default async function AdminPayoutsPage({
                     <p className="font-bold text-slate-900 dark:text-white">{formatFcfa(p.amount)}</p>
                     <p className="mt-0.5 text-sm text-slate-600 dark:text-slate-300">
                       {p.organizer.name}
-                      {p.organizer.phone ? ` · +229 ${p.organizer.phone}` : ""}
+                      {p.organizer.phone ? ` · ${displayPhone(p.organizer.phone)}` : ""}
                     </p>
                     <p className="text-xs text-slate-400">
                       {payoutNetworkLabel(p.network)} → {p.phone} ·{" "}

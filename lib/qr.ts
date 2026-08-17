@@ -1,5 +1,6 @@
 import QRCode from "qrcode";
 import { encryptTicketQr, hasTicketCryptoSecret } from "@/lib/ticket-crypto";
+import { toE164, waDigits } from "@/lib/phone";
 
 const APP_URL = process.env.APP_URL || "http://localhost:3000";
 
@@ -74,10 +75,8 @@ export async function ticketQrDataUrl(
 
 export function whatsappTicketLink(phone: string | null, eventName: string, guestName: string, code: string) {
   if (!phone) return null;
-  // Garde-fou : ne jamais doubler le préfixe +229 (même si le numéro est déjà préfixé).
-  const digits = phone.replace(/\D/g, "");
-  const clean = digits.startsWith("00229") ? digits.slice(5) : digits.startsWith("229") ? digits.slice(3) : digits;
-  return `https://wa.me/229${clean}?text=${encodeURIComponent(
+  // wa.me/<indicatif+numéro> — l'indicatif pays est détecté (ouverture Afrique).
+  return `https://wa.me/${waDigits(phone)}?text=${encodeURIComponent(
     `SIGMA — ${eventName}\n\nBonjour ${guestName},\nVoici votre billet d'entrée :\n${ticketUrl(code)}`
   )}`;
 }
@@ -91,13 +90,11 @@ export function whatsappInviteLink(
   guestCount = 1
 ) {
   if (!phone) return null;
-  const digits = phone.replace(/\D/g, "");
-  const clean = digits.startsWith("00229") ? digits.slice(5) : digits.startsWith("229") ? digits.slice(3) : digits;
   const people =
     guestCount > 1
       ? `\n👥 ${guestCount} personnes autorisées`
       : "";
-  return `https://wa.me/229${clean}?text=${encodeURIComponent(
+  return `https://wa.me/${waDigits(phone)}?text=${encodeURIComponent(
     `SIGMA — ${eventName}\n\nBonjour ${guestName},${people}\nVoici votre invitation :\n${invitationUrl(code)}`
   )}`;
 }
@@ -112,10 +109,8 @@ export function smsInviteLink(
   guestCount = 1
 ) {
   if (!phone) return null;
-  const digits = phone.replace(/\D/g, "");
-  const clean = digits.startsWith("00229") ? digits.slice(5) : digits.startsWith("229") ? digits.slice(3) : digits;
   const people = guestCount > 1 ? `\n${guestCount} personnes autorisées` : "";
-  return `sms:+229${clean}?body=${encodeURIComponent(
+  return `sms:${toE164(phone)}?body=${encodeURIComponent(
     `${eventName}\n\nBonjour ${guestName},${people}\nVoici votre invitation :\n${invitationUrl(code)}`
   )}`;
 }

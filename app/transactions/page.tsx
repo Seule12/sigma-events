@@ -3,7 +3,7 @@ import { requireUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { Role, OrderStatus, PayoutStatus } from "@/app/generated/prisma/enums";
 import Sidebar from "@/components/sidebar";
-import { formatFcfa } from "@/lib/format";
+import { formatFcfa, displayPhone } from "@/lib/format";
 import { expireStalePendingOrders } from "@/lib/shop";
 import { organizerAvailableBalance, expireStalePendingPayouts, payoutAdminThreshold, PAYOUT_STATUS_META, payoutNetworkLabel } from "@/lib/payouts";
 import { MOMO_NETWORKS } from "@/lib/momo";
@@ -321,7 +321,7 @@ export default async function TransactionsPage({
                       name="phone"
                       type="tel"
                       required
-                      defaultValue={user.phone ? `+229 ${user.phone}` : ""}
+                      defaultValue={user.phone ? displayPhone(user.phone) : ""}
                       placeholder="+229 97 00 00 00"
                       className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 font-semibold text-slate-900 outline-none transition focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30 dark:border-slate-700 dark:bg-slate-800 dark:text-white"
                     />
@@ -424,7 +424,7 @@ export default async function TransactionsPage({
                           </td>
                           <td className="max-w-[160px] truncate py-3 pr-4 text-slate-600 dark:text-slate-300">
                             {o.customerName}
-                            <span className="block text-[11px] text-slate-400">+229 {o.customerPhone}</span>
+                            <span className="block text-[11px] text-slate-400">{displayPhone(o.customerPhone)}</span>
                           </td>
                           <td className="py-3 pr-4 text-slate-500 dark:text-slate-400">
                             {o.category?.name ?? "Standard"} × {o.quantity}

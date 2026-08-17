@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import Logo from "@/components/logo";
 import { TicketStatus } from "@/app/generated/prisma/enums";
 import { normalizePhone } from "@/lib/csv";
+import { displayPhone } from "@/lib/format";
 import { isRateLimited } from "@/lib/rate-limit";
 
 export const metadata = {
@@ -112,7 +113,7 @@ export default async function FindTicketPage({
                   <div className="space-y-4">
                     <p className="text-sm font-semibold text-slate-600 dark:text-slate-300">
                       {tickets.length} billet{tickets.length > 1 ? "s" : ""} trouvé{tickets.length > 1 ? "s" : ""} pour{" "}
-                      <span className="font-mono font-bold text-brand-600 dark:text-brand-400">+229 {query}</span>
+                      <span className="font-mono font-bold text-brand-600 dark:text-brand-400">{displayPhone(query)}</span>
                     </p>
                     {tickets.map((t) => {
                       const entered = t.status === TicketStatus.ENTERED;

@@ -3,7 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { OrderStatus, DeliveryMethod } from "@/app/generated/prisma/enums";
 import Logo from "@/components/logo";
 import ConfirmationPoll from "@/components/confirmation-poll";
-import { formatFcfa } from "@/lib/format";
+import { formatFcfa, displayPhone } from "@/lib/format";
 import { purchaseUrl, clientTotal } from "@/lib/shop";
 import { ticketQrDataUrl, whatsappTicketLink } from "@/lib/qr";
 import { paymentMethodLabel } from "@/lib/momo";
@@ -117,7 +117,7 @@ export default async function ConfirmationPage({
               </div>
               <div className="flex justify-between">
                 <dt className="text-slate-400">Téléphone</dt>
-                <dd className="font-semibold text-slate-800 dark:text-slate-200">+229 {order.customerPhone}</dd>
+                <dd className="font-semibold text-slate-800 dark:text-slate-200">{displayPhone(order.customerPhone)}</dd>
               </div>
               {order.customerEmail && (
                 <div className="flex justify-between">
@@ -206,7 +206,7 @@ export default async function ConfirmationPage({
             {order.deliveryMethod === DeliveryMethod.WHATSAPP ? (
               <div>
                 <p className="text-sm text-slate-600 dark:text-slate-300">
-                  Votre billet part sur <b>WhatsApp</b> au <b>+229 {order.customerPhone}</b>. Envoyez-le dès maintenant :
+                  Votre billet part sur <b>WhatsApp</b> au <b>{displayPhone(order.customerPhone)}</b>. Envoyez-le dès maintenant :
                 </p>
                 <a
                   href={ticketsWithQr[0]?.whatsapp ?? "#"}

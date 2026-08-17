@@ -7,7 +7,7 @@
 
 import { randomInt } from "node:crypto";
 import { prisma } from "@/lib/prisma";
-import { normalizePhone } from "@/lib/csv";
+import { normalizePhone, toE164 } from "@/lib/phone";
 
 export function isSmsEnabled(): boolean {
   return Boolean(process.env.INFOBIP_API_KEY && process.env.INFOBIP_BASE_URL);
@@ -20,10 +20,10 @@ const SMS_SENDER = process.env.INFOBIP_SENDER || "SIGMA";
  * Ne jette jamais : un échec d'envoi ne doit pas bloquer l'inscription.
  */
 export async function sendSms(input: { to: string; text: string; otpCode?: string }): Promise<{ sent: boolean; via: string }> {
-  // Normalisation du numéro : retire +229 / 00229 / espaces (réutilise la même
-  // règle que les imports CSV et les liens WhatsApp) puis passe au format E.164.
-  const digits = normalizePhone(input.to).replace(/\D/g, "");
-  const e164 = digits.startsWith("229") ? `+${digits}` : `+229${digits}`;
+  // Normalisation du numéro (indicatif international conservé — ouverture
+  // Afrique) puis format E.164 : +229XXXXXXXX pour le Bénin, +225XXXXXXXXXX
+  // pour la Côte d'Ivoire, etc. L'indicatif est détecté automatiquement.
+  const e164 = toE164(normalizePhone(input.to));
 
   if (!isSmsEnabled()) {
     // Mode dégradé : trace SANS exposer le code (l'OTP est masqué).

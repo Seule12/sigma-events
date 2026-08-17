@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { resetPinAction } from "@/app/actions";
+import { displayPhone } from "@/lib/format";
 
 const ERRORS: Record<string, string> = {
   otp_format: "Le code de vérification doit contenir exactement 6 chiffres.",
@@ -58,7 +59,7 @@ export default function ResetPinForm({ phone, err }: { phone: string; err?: stri
         </span>
         <div className="min-w-0">
           <p className="text-[11px] font-bold uppercase tracking-wide text-slate-400">Réinitialisation pour</p>
-          <p className="truncate text-sm font-extrabold text-slate-900 dark:text-white">+229 {phone}</p>
+          <p className="truncate text-sm font-extrabold text-slate-900 dark:text-white">{displayPhone(phone)}</p>
         </div>
       </div>
 

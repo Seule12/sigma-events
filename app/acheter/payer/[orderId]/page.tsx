@@ -4,7 +4,7 @@ import { OrderStatus } from "@/app/generated/prisma/enums";
 import Logo from "@/components/logo";
 import PayForm from "@/components/pay-form";
 import KkiapayWidget from "@/components/kkiapay-widget";
-import { formatFcfa } from "@/lib/format";
+import { formatFcfa, displayPhone } from "@/lib/format";
 import { isKkiapayEnabled, isKkiapaySandbox, kkiapayConfig, kkiapayAmount } from "@/lib/kkiapay";
 import { finalizeOrderTestAction } from "@/app/actions";
 import { clientTotal } from "@/lib/shop";
@@ -91,7 +91,7 @@ export default async function PayPage({
                 </div>
               )}
               <p className="mb-2 text-xs font-semibold text-slate-400">
-                Paiement sur le +229 {order.customerPhone} · MTN MoMo · Moov Money · Celtiis Cash
+                Paiement sur le {displayPhone(order.customerPhone)} · MTN MoMo · Moov Money · Celtiis Cash
               </p>
               {kkiapayMode ? (
                 <div className="rounded-2xl border border-brand-200 bg-brand-50 p-4 dark:border-brand-800 dark:bg-brand-950/40">

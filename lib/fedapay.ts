@@ -38,7 +38,7 @@ export function fedapayModeForNetwork(network?: string | null): string {
 export type CreateFedaPayPayoutInput = {
   amount: number; // FCFA (XOF), entier
   customerName: string;
-  phone: string; // +229XXXXXXXX
+  phone: string; // format E.164 (+229XXXXXXXX, +225XXXXXXXXXX…)
   network: string; // MTN_MOMO | MOOV_MONEY | CELTIIS
 };
 

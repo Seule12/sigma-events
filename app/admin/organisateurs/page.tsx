@@ -2,7 +2,7 @@ import { requireUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { Role, OrderStatus } from "@/app/generated/prisma/enums";
 import AdminNav from "@/components/admin-nav";
-import { formatFcfa } from "@/lib/format";
+import { formatFcfa, displayPhone } from "@/lib/format";
 import { toggleUserActiveAction, updateCommissionAction } from "@/app/actions";
 
 export const metadata = {
@@ -76,7 +76,7 @@ export default async function AdminOrganizersPage() {
                       )}
                     </div>
                     <p className="text-xs text-slate-400">
-                      {user.phone ? `+229 ${user.phone}` : user.email ?? "Compte social"} ·{" "}
+                      {user.phone ? displayPhone(user.phone) : user.email ?? "Compte social"} ·{" "}
                       {user.organizedEvents.length} événement
                       {user.organizedEvents.length > 1 ? "s" : ""} · {tickets} billet{tickets > 1 ? "s" : ""} · membre
                       depuis {user.createdAt.toLocaleDateString("fr-FR", { month: "long", year: "numeric" })}

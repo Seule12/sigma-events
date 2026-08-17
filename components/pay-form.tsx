@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { simulatePaymentAction } from "@/app/actions";
 import { MOMO_NETWORKS } from "@/lib/momo";
+import { displayPhone } from "@/lib/format";
 
 export type DeliveryChoice = "DOWNLOAD" | "EMAIL" | "WHATSAPP";
 
@@ -55,7 +56,7 @@ export default function PayForm({ orderId, phone }: { orderId: string; phone: st
         <div className="mx-auto mb-3 h-10 w-10 animate-spin rounded-full border-4 border-brand-200 border-t-brand-600" />
         <p className="text-sm font-bold text-brand-700 dark:text-brand-300">Paiement en cours…</p>
         <p className="mt-1 text-xs text-brand-600/80 dark:text-brand-400/80">
-          Composez <b className="font-mono">{network.ussd}</b> sur le +229 {phone} et confirmez la demande.
+          Composez <b className="font-mono">{network.ussd}</b> sur le {displayPhone(phone)} et confirmez la demande.
         </p>
       </div>
     );

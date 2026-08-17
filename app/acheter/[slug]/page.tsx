@@ -5,7 +5,7 @@ import { EventMode } from "@/app/generated/prisma/enums";
 import Logo from "@/components/logo";
 import CoverImage from "@/components/cover-image";
 import BuyTicketForm from "@/components/buy-ticket-form";
-import { formatFcfa } from "@/lib/format";
+import { formatFcfa, displayPhone } from "@/lib/format";
 import { isSalesOpen } from "@/lib/shop";
 
 export const metadata = {
@@ -164,7 +164,7 @@ export default async function BuyPage({
                         rel="noopener noreferrer"
                         className="font-bold text-brand-600 hover:underline dark:text-brand-400"
                       >
-                        WhatsApp +229 {event.contactPhone.replace(/\D/g, "")}
+                        WhatsApp {displayPhone(event.contactPhone)}
                       </a>
                     </>
                   )}

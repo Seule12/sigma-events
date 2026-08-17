@@ -10,7 +10,7 @@ import InviteBulkSend, { type BulkInviteItem } from "@/components/invite-bulk-se
 import { addAgentAction, addGuestAction, blacklistTicketAction, cancelPendingOrderAction, createTerminalAction, generateSalesSlugAction, importGuestsAction, regenerateTerminalCodeAction, removeAgentAction, resetAgentPinAction, setInviteStatusAction, setTerminalStatusAction, setTerminalZoneAction, toggleEntranceBlockedAction, toggleEventStatusAction, toggleSalesAction, updateGuestAction } from "@/app/actions";
 import { ticketQrContent, whatsappInviteLink, emailInviteLink, smsInviteLink } from "@/lib/qr";
 import LazyQr from "@/components/lazy-qr";
-import { formatFcfa } from "@/lib/format";
+import { formatFcfa, displayPhone } from "@/lib/format";
 import { purchaseUrl, ORDER_EXPIRY_MS, expireStalePendingOrders } from "@/lib/shop";
 
 function initials(name: string) {
@@ -775,7 +775,7 @@ export default async function EventDetailPage({
                         <td className="max-w-[160px] truncate py-3 pr-4 font-semibold text-slate-800 dark:text-slate-200">{o.customerName}</td>
                         <td className="py-3 pr-4 text-slate-500 dark:text-slate-400">{o.category?.name ?? "Standard"}</td>
                         <td className="py-3 pr-4 text-slate-500 dark:text-slate-400">× {o.quantity}</td>
-                        <td className="py-3 pr-4 font-mono text-xs text-slate-500 dark:text-slate-400">+229 {o.customerPhone}</td>
+                        <td className="py-3 pr-4 font-mono text-xs text-slate-500 dark:text-slate-400">{displayPhone(o.customerPhone)}</td>
                         <td className="py-3 pr-4">
                           <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[11px] font-bold text-amber-700 dark:bg-amber-950 dark:text-amber-300">
                             jusqu&apos;à {expiresAt.toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" })}
@@ -961,7 +961,7 @@ export default async function EventDetailPage({
                       <div className="min-w-0">
                         <p className="truncate font-bold text-slate-900 dark:text-white">{ticket.guestName}</p>
                         <p className="text-xs text-slate-400">
-                          {ticket.category?.name ?? "—"} · {ticket.guestPhone ? `+229 ${ticket.guestPhone}` : "sans téléphone"}
+                          {ticket.category?.name ?? "—"} · {ticket.guestPhone ? displayPhone(ticket.guestPhone) : "sans téléphone"}
                           {guestCount > 1 ? ` · ${guestCount} pers.` : ""}
                         </p>
                         {ticket.category?.zones && (
@@ -1351,7 +1351,7 @@ export default async function EventDetailPage({
                   </div>
                   <div className="min-w-0 flex-1">
                     <p className="truncate font-bold text-slate-900 dark:text-white">{a.name}</p>
-                    <p className="text-xs text-slate-400">+229 {a.phone}</p>
+                    <p className="text-xs text-slate-400">{displayPhone(a.phone)}</p>
                     <p className="mt-0.5 text-xs font-semibold text-brand-600 dark:text-brand-400">
                       {a.scans} entrée{a.scans > 1 ? "s" : ""} validée{a.scans > 1 ? "s" : ""}
                     </p>

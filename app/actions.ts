@@ -11,6 +11,7 @@ import { prisma } from "@/lib/prisma";
 import { loginWithPhone, logout as destroySession, requireUser, hashPin, createSession, roleHome } from "@/lib/auth";
 import { CheckInStatus, OrderStatus, Role, TicketStatus, InvitationStatus, EventMode, TerminalStatus, DeliveryMethod, PayoutStatus } from "@/app/generated/prisma/enums";
 import { parseGuestCsv, normalizePhone } from "@/lib/csv";
+import { toE164 } from "@/lib/phone";
 import { isRateLimited } from "@/lib/rate-limit";
 import { issueOtp } from "@/lib/sms";
 import { whatsappInviteLink, emailInviteLink, smsInviteLink, extractTicketCode } from "@/lib/qr";
@@ -1221,8 +1222,9 @@ export async function requestPayoutAction(formData: FormData) {
   const network = String(formData.get("network") || "");
   const phone = String(formData.get("phone") || "").trim();
 
-  // Téléphone béninois (8 chiffres, préfixe +229 ignoré).
-  const digits = phone.replace(/\D/g, "").replace(/^(00229|229)/, "");
+  // Numéro de destination : indicatif international conservé (ouverture Afrique).
+  const payoutPhone = toE164(phone);
+  const digits = phone.replace(/\D/g, "");
   if (
     !Number.isFinite(amount) ||
     amount <= 0 ||
@@ -1258,7 +1260,7 @@ export async function requestPayoutAction(formData: FormData) {
     data: {
       organizerId: user.id,
       amount,
-      phone: `+229${digits}`,
+      phone: payoutPhone,
       network,
     },
   });

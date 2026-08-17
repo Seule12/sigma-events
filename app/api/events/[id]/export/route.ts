@@ -1,6 +1,7 @@
 import { getCurrentUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { Role, CheckInStatus } from "@/app/generated/prisma/enums";
+import { toE164 } from "@/lib/phone";
 
 const STATUS_LABEL: Record<CheckInStatus, string> = {
   [CheckInStatus.VALID]: "Entrée validée",
@@ -57,7 +58,7 @@ export async function GET(
       [
         STATUS_LABEL[c.status],
         csvEscape(c.ticket?.guestName ?? ""),
-        csvEscape(c.ticket?.guestPhone ? `+229 ${c.ticket.guestPhone}` : ""),
+        csvEscape(c.ticket?.guestPhone ? toE164(c.ticket.guestPhone) : ""),
         csvEscape(c.ticket?.category?.name ?? ""),
         csvEscape(c.ticket?.code ?? ""),
         csvEscape(c.agent?.name ?? ""),

@@ -1,5 +1,7 @@
 // Parsing CSV partagé entre l'action d'import et les tests.
 
+import { normalizePhone } from "@/lib/phone";
+
 export type CsvGuestRow = {
   name: string;
   phone: string; // téléphone normalisé (vide si absent)
@@ -51,13 +53,9 @@ export function parseCsv(text: string): string[][] {
   return rows;
 }
 
-// Normalise un numéro béninois : retire +229 / 00229 / espaces / tirets.
-export function normalizePhone(p: string): string {
-  const digits = p.replace(/\D/g, "");
-  if (digits.startsWith("00229")) return digits.slice(5);
-  if (digits.startsWith("229") && digits.length > 9) return digits.slice(3);
-  return digits;
-}
+// Normalise un numéro (indicatif international conservé — ouverture Afrique).
+// Délégué à lib/phone.ts (règle unique partagée avec l'inscription et le SMS).
+export { normalizePhone };
 
 export const CSV_MAX_ROWS = 5000;
 

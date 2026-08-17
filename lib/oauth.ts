@@ -6,7 +6,8 @@ import { prisma } from "@/lib/prisma";
 
 // ============================================================
 // Connexion sociale (OAuth 2.0 — Authorization Code + PKCE)
-// Fournisseurs : Google, Facebook, Apple.
+// Fournisseurs : Google (et Apple, désactivé par défaut). Facebook a été
+// retiré — seul Google est proposé à la création de compte.
 // Les comptes créés via un fournisseur n'ont ni téléphone ni PIN :
 //  - phone / pin sont NULL (login téléphone impossible sur ce compte)
 //  - email (unique) + authProvider + providerId identifient le compte
@@ -15,7 +16,7 @@ import { prisma } from "@/lib/prisma";
 //    sessions) fonctionne sans changement.
 // ============================================================
 
-export type OAuthProvider = "google" | "facebook" | "apple";
+export type OAuthProvider = "google" | "apple";
 
 export const OAUTH_PROVIDERS: Record<
   OAuthProvider,
@@ -39,16 +40,6 @@ export const OAUTH_PROVIDERS: Record<
     scope: "openid email profile",
     clientIdEnv: "GOOGLE_CLIENT_ID",
     clientSecretEnv: "GOOGLE_CLIENT_SECRET",
-  },
-  facebook: {
-    label: "Facebook",
-    enabled: !!process.env.FACEBOOK_CLIENT_ID && !!process.env.FACEBOOK_CLIENT_SECRET,
-    authUrl: "https://www.facebook.com/v19.0/dialog/oauth",
-    tokenUrl: "https://graph.facebook.com/v19.0/oauth/access_token",
-    userInfoUrl: "https://graph.facebook.com/me?fields=id,name,email",
-    scope: "email,public_profile",
-    clientIdEnv: "FACEBOOK_CLIENT_ID",
-    clientSecretEnv: "FACEBOOK_CLIENT_SECRET",
   },
   apple: {
     label: "Apple",

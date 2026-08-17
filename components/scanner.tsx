@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { checkInAction, syncOfflineAction, searchTicketsAction, type CheckInResult, type OfflineEntry, type SearchTicketResult } from "@/app/actions";
 import { CheckInStatus, TicketStatus } from "@/app/generated/prisma/enums";
 import { localDB } from "@/lib/db-local";
+import { displayPhone } from "@/lib/format";
 
 
 type Result = CheckInResult & { at: string };
@@ -463,7 +464,7 @@ export default function Scanner({ eventId }: { eventId: string }) {
                           <p className="truncate text-sm font-bold text-white">{t.guestName}</p>
                           <p className="truncate text-xs text-slate-400">
                             {t.category ?? "Billet"}
-                            {t.guestPhone ? ` · +229 ${t.guestPhone}` : ""}
+                            {t.guestPhone ? ` · ${displayPhone(t.guestPhone)}` : ""}
                           </p>
                           <span
                             className={`mt-1 inline-block rounded-full px-2 py-0.5 text-[10px] font-bold ${

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { registerAction } from "@/app/actions";
+import { displayPhone } from "@/lib/format";
 
 const ERRORS: Record<string, string> = {
   otp_format: "Le code de vérification doit contenir exactement 6 chiffres.",
@@ -92,7 +93,7 @@ export default function VerifyForm({ phone, name, err }: VerifyFormProps) {
         </div>
         <p className="mt-1.5 flex items-center gap-1.5 text-xs text-slate-400">
           <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10" /><path d="M12 6v6l4 2" /></svg>
-          Envoyé au <b className="text-slate-600 dark:text-slate-300">+229 {phone}</b> — le code expire dans 10 minutes.
+          Envoyé au <b className="text-slate-600 dark:text-slate-300">{displayPhone(phone)}</b> — le code expire dans 10 minutes.
         </p>
       </div>
 
