@@ -51,7 +51,7 @@ const FEATURES = [
       <svg className="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" /><path d="M12 18h.01" /></svg>
     ),
     title: "Contrôle des entrées",
-    desc: "Vos agents scannent les QR codes avec l'application de contrôle. Le système répond immédiatement : ✓ Billet valide, ✕ Billet déjà utilisé ou ✕ Billet invalide — en un seul scan.",
+    desc: "Vos agents scannent les QR codes avec l'application de contrôle. Le système répond immédiatement : billet valide, déjà utilisé ou invalide — en un seul scan.",
   },
   {
     icon: (
