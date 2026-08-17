@@ -13,11 +13,12 @@ export const DEFAULT_EVENT_DURATION_MS = 8 * 3600_000;
 // (client qui abandonne le paiement). La page de paiement doit être terminée avant.
 export const ORDER_EXPIRY_MS = 20 * 60_000; // 20 minutes
 
-// Modèle économique FedaPay (brief sigma-events-commissions-brief-1.md) :
-//  - Livraison UNIFIÉE à 50 FCFA par commande, quel que soit le canal choisi.
-//  - La commission FedaPay (~2 %) est intégrée au prix affiché par GROSS-UP
+// Modèle économique (brief sigma-events-commissions-brief-1.md) :
+//  - Frais de service UNIFIÉS à 50 FCFA par commande, quel que soit le canal
+//    (non détaillés au client ni à l'organisateur).
+//  - La commission (~3 %) est intégrée au prix affiché par GROSS-UP
 //    (prix_affiché_client = prix_net / (1 − marge)) — cf. lib/pricing.ts.
-//  - La commission Sigma (3 % par défaut) + la livraison restent chez SIGMA ;
+//  - La commission Sigma (3 % par défaut) reste chez SIGMA ;
 //    l'organisateur reçoit prix billet − commission.
 
 // Ré-export du module client-safe de tarification (constantes + calculs purs).
@@ -26,7 +27,7 @@ export const ORDER_EXPIRY_MS = 20 * 60_000; // 20 minutes
 import { DELIVERY_FEE } from "@/lib/pricing";
 export { DELIVERY_FEE, FEDAPAY_MARGIN, grossUpFedaPay, clientTotal } from "@/lib/pricing";
 
-// Frais de livraison du billet : unifiés à 50 FCFA par commande.
+// Frais de service du billet : unifiés à 50 FCFA par commande.
 export const DELIVERY_FEES: Record<DeliveryMethod, number> = {
   [DeliveryMethod.DOWNLOAD]: DELIVERY_FEE,
   [DeliveryMethod.EMAIL]: DELIVERY_FEE,

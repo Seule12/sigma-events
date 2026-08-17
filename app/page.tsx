@@ -50,7 +50,7 @@ const FEATURES = [
       <svg className="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 3v18h18" /><path d="M18 17V9M13 17V5M8 17v-3" /></svg>
     ),
     title: "Jauge, alertes & chiffre d'affaires",
-    desc: "Suivez la capacité en temps réel avec alertes automatiques à 80 %, 90 % et 100 %. Ventes, frais de livraison et commission Sigma détaillés par événement, avec l'évolution du CA sur 14 jours.",
+    desc: "Suivez la capacité en temps réel avec alertes automatiques à 80 %, 90 % et 100 %. Ventes et commission Sigma détaillées par événement, avec l'évolution du CA sur 14 jours.",
   },
 ];
 
@@ -77,7 +77,7 @@ const STEPS = [
 const FAQ = [
   {
     q: "Comment mes clients paient-ils leurs billets ?",
-    a: "Par mobile money directement depuis leur téléphone — MTN MoMo (*880#), Moov Money (*855#) ou Celtiis Cash (*899#) — sans carte bancaire. Le paiement est confirmé en quelques secondes et le billet QR est émis automatiquement.",
+    a: "Par mobile money directement depuis leur téléphone — MTN MoMo (*880#), Moov Money (*855#) ou Celtiis Cash (*899#). Le paiement est confirmé en quelques secondes et le billet QR est émis automatiquement.",
   },
   {
     q: "Le contrôle d'accès fonctionne-t-il sans internet ?",
@@ -85,7 +85,7 @@ const FAQ = [
   },
   {
     q: "Combien ça coûte ?",
-    a: "Rien à l'avance : le compte, les événements, les billets QR et le contrôle d'accès sont gratuits. Sigma ne gagne que lorsque vous vendez — une commission de 2,5 % sur chaque billet payant (ex. 125 F sur un billet à 5 000 F).",
+    a: "Rien à l'avance : le compte, les événements, les billets QR et le contrôle d'accès sont gratuits. Sigma ne gagne que lorsque vous vendez — une commission de 3 % sur chaque billet payant (ex. 150 F sur un billet à 5 000 F).",
   },
   {
     q: "Un billet peut-il être dupliqué ou falsifié ?",
@@ -411,7 +411,7 @@ export default async function Home() {
             </ul>
           </div>
           <div className="rounded-3xl border border-slate-200 bg-white p-7 shadow-sm dark:border-slate-800 dark:bg-slate-900">
-            <p className="text-xs font-bold uppercase tracking-widest text-sky-600 dark:text-sky-400">Livraison du billet</p>
+            <p className="text-xs font-bold uppercase tracking-widest text-sky-600 dark:text-sky-400">Réception du billet</p>
             <p className="mt-3 text-2xl font-extrabold text-slate-900 dark:text-white">Au choix du client</p>
             <ul className="mt-4 space-y-2 text-sm text-slate-500 dark:text-slate-400">
               <li className="flex items-start gap-2"><span className="text-sky-500">✓</span> Téléchargement direct</li>

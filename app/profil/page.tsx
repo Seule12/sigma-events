@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { requireUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import { Role, UserProfileType } from "@/app/generated/prisma/enums";
+import { Role } from "@/app/generated/prisma/enums";
 import Sidebar from "@/components/sidebar";
 import SettingsForms from "@/components/settings-forms";
 
@@ -28,11 +28,10 @@ export default async function ProfilePage({
   const pinChanged = sp.pinChanged === "1";
   const pinErr = sp.pinErr ?? null;
   const profileErr = sp.profileErr === "1";
-  const isPro = user.profileType === UserProfileType.PRO;
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950">
-      <Sidebar events={sidebarEvents} userName={user.name} isPro={isPro} />
+      <Sidebar events={sidebarEvents} userName={user.name} />
 
       <div className="lg:pl-[var(--sidebar-w)]">
         <main className="mx-auto max-w-4xl px-4 py-10 pt-24 sm:px-6 lg:pt-12">
@@ -88,7 +87,7 @@ export default async function ProfilePage({
                 <div className="flex items-center gap-3">
                   <h2 className="text-2xl font-extrabold tracking-tight text-slate-900 dark:text-white">{user.name}</h2>
                   <span className="rounded-full bg-brand-100 px-3 py-0.5 text-xs font-bold text-brand-700 dark:bg-brand-950 dark:text-brand-300">
-                    {isPro ? "Professionnel" : "Organisateur"}
+                    Organisateur
                   </span>
                 </div>
                 <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
@@ -100,16 +99,7 @@ export default async function ProfilePage({
           </div>
 
           {/* Formulaires de gestion */}
-          <SettingsForms
-            name={user.name}
-            profileType={user.profileType}
-            orgName={user.orgName ?? ""}
-            orgEmail={user.orgEmail ?? ""}
-            responsibleName={user.responsibleName ?? ""}
-            proPhone={user.proPhone ?? ""}
-            pinErr={pinErr}
-            profileErr={profileErr}
-          />
+          <SettingsForms name={user.name} pinErr={pinErr} profileErr={profileErr} />
 
           {/* Détails du compte en lecture seule */}
           <section className="mt-10 rounded-3xl border border-slate-200 bg-slate-50/50 p-8 shadow-sm dark:border-slate-800 dark:bg-slate-900/50">

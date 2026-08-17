@@ -4,6 +4,7 @@ import { requireUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { OrderStatus, Role } from "@/app/generated/prisma/enums";
 import Sidebar from "@/components/sidebar";
+import EventCoverEditor from "@/components/event-cover-editor";
 import { updateEventAction } from "@/app/actions";
 import { formatFcfa } from "@/lib/format";
 
@@ -63,7 +64,7 @@ export default async function EditEventPage({
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950">
-      <Sidebar events={sidebarEvents} activeEventId={event.id} userName={user.name} isPro={user.profileType === "PRO"} />
+      <Sidebar events={sidebarEvents} activeEventId={event.id} userName={user.name} />
       <div className="lg:pl-[var(--sidebar-w)]">
         <main className="mx-auto max-w-4xl px-4 py-8 pt-20 sm:px-6 lg:pt-8">
           <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
@@ -97,10 +98,9 @@ export default async function EditEventPage({
                   <label className={labelClass}>Lieu *</label>
                   <input name="location" required defaultValue={event.location} className={inputClass} />
                 </div>
-                <div>
-                  <label className={labelClass}>Type (concert, mariage…)</label>
-                  <input name="type" defaultValue={event.type ?? ""} placeholder="Concert" className={inputClass} />
-                </div>
+                {/* Type + image de couverture (avec suggestions par type) —
+                    regroupés dans un composant client pour le calcul à la volée. */}
+                <EventCoverEditor initialType={event.type ?? ""} initialImageUrl={event.imageUrl ?? ""} />
                 <div>
                   <label className={labelClass}>Début *</label>
                   <input name="date" type="datetime-local" required defaultValue={toDatetimeLocal(event.date)} className={inputClass} />
@@ -126,23 +126,7 @@ export default async function EditEventPage({
                     className={inputClass}
                   />
                 </div>
-                <div className="sm:col-span-2 space-y-3">
-                  <label className={labelClass}>Image de couverture</label>
-                  <div className="flex gap-2">
-                    <input name="imageUrl" defaultValue={event.imageUrl ?? ""} placeholder="https://…" className={inputClass} />
-                    <label className="flex cursor-pointer items-center gap-2 rounded-xl bg-slate-100 px-4 py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700">
-                      <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="17 8 12 3 7 8" /><line x1="12" y1="3" x2="12" y2="15" /></svg>
-                      Importer
-                      <input type="file" name="imageFile" accept="image/*" className="hidden" />
-                    </label>
-                  </div>
-                  {event.imageUrl && (
-                    <div className="relative h-20 w-32 overflow-hidden rounded-lg border border-slate-200 dark:border-slate-700">
-                      <img src={event.imageUrl} alt="Preview" className="h-full w-full object-cover" />
-                    </div>
-                  )}
-                  <p className="text-xs text-slate-400">Affichée en haut de la boutique et sur le billet.</p>
-                </div>
+
               </div>
             </div>
 

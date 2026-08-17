@@ -44,10 +44,9 @@ export default async function TransactionsPage({
 
   const paid = orders.filter((o) => o.status === OrderStatus.PAID);
   const gross = paid.reduce((s, o) => s + o.amount, 0);
-  const deliveryFees = paid.reduce((s, o) => s + (o.deliveryFee || 0), 0);
   const commission = Math.round((gross * user.commissionRate) / 100);
-  // Modèle FedaPay (brief) : l'organisateur reçoit prix billet − commission ; la
-  // livraison (50 F) et la marge FedaPay restent chez SIGMA.
+  // L'organisateur reçoit prix billet − commission ; les frais de service restent
+  // chez SIGMA (non détaillés ici).
   const net = gross - commission;
   const pending = orders.filter((o) => o.status === OrderStatus.PENDING);
   const cancelled = orders.filter((o) => o.status === OrderStatus.CANCELLED);
@@ -73,7 +72,7 @@ export default async function TransactionsPage({
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950">
-      <Sidebar events={sidebarEvents} userName={user.name} isPro={user.profileType === "PRO"} />
+      <Sidebar events={sidebarEvents} userName={user.name} />
 
       <div className="lg:pl-[var(--sidebar-w)]">
         <main className="mx-auto max-w-6xl px-4 py-8 pt-20 sm:px-6 lg:pt-8">
@@ -120,7 +119,7 @@ export default async function TransactionsPage({
                 <div className="min-w-0">
                   <p className="font-mono text-[10px] font-bold uppercase tracking-[0.14em] text-slate-400">Commission Sigma ({user.commissionRate} %)</p>
                   <p className="mt-2 font-display text-3xl font-extrabold text-slate-900 dark:text-white">{formatFcfa(commission)}</p>
-                  <p className="mt-1 text-xs text-slate-400">Frais de livraison : {formatFcfa(deliveryFees)}</p>
+                  <p className="mt-1 text-xs text-slate-400">Prélevée sur vos ventes payées</p>
                 </div>
                 <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-amber-500/10 text-amber-600 transition-transform duration-200 group-hover:scale-110 dark:text-amber-400">
                   <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" /></svg>
@@ -136,7 +135,7 @@ export default async function TransactionsPage({
                 <div className="min-w-0">
                   <p className="font-mono text-[10px] font-bold uppercase tracking-[0.14em] text-brand-700 dark:text-brand-400">Montant reversé</p>
                   <p className="mt-2 font-display text-3xl font-extrabold text-brand-700 dark:text-brand-300">{formatFcfa(net)}</p>
-                  <p className="mt-1 text-xs text-brand-600/70 dark:text-brand-500">Brut − commission (livraison incluse chez Sigma)</p>
+                  <p className="mt-1 text-xs text-brand-600/70 dark:text-brand-500">Brut − commission Sigma</p>
                 </div>
                 <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-brand-500/15 text-brand-700 transition-transform duration-200 group-hover:scale-110 dark:text-brand-300">
                   <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z" /><path d="M19 10v2a7 7 0 0 1-14 0v-2" /><path d="M12 19v3" /></svg>
@@ -438,12 +437,7 @@ export default async function TransactionsPage({
                             <span className={`rounded-full px-2.5 py-1 text-[10px] font-bold ${st.cls}`}>{st.label}</span>
                           </td>
                           <td className="py-3 pr-6 text-right font-bold text-slate-900 dark:text-white">
-                            {formatFcfa(o.amount + (o.deliveryFee || 0))}
-                            {o.deliveryFee ? (
-                              <span className="block text-[10px] font-semibold text-slate-400">
-                                dont livraison {formatFcfa(o.deliveryFee)}
-                              </span>
-                            ) : null}
+                            {formatFcfa(o.amount)}
                           </td>
                         </tr>
                       );

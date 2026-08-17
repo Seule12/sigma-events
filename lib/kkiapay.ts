@@ -55,6 +55,13 @@ export function isKkiapayEnabled(): boolean {
   return Boolean(publicKey && privateKey && secretKey);
 }
 
+// Mode TEST (sandbox) : vrai tant que KKIA_SANDBOX n'est pas explicitement
+// "false" (clés de test tpk_/tsk_ présentes). Sert de garde-fou pour les
+// fonctions de secours temporaires, à retirer au passage en production.
+export function isKkiapaySandbox(): boolean {
+  return kkiapayConfig().sandbox;
+}
+
 export function kkiapayApiBase(): string {
   return kkiapayConfig().sandbox ? KKIA_API_BASE_SANDBOX : KKIA_API_BASE_LIVE;
 }

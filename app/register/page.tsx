@@ -21,7 +21,7 @@ const REGISTER_ERRORS: Record<string, string> = {
 const HIGHLIGHTS = [
   {
     title: "Gratuit pour commencer",
-    desc: "Commission de 2,5 % uniquement à la vente.",
+    desc: "Commission de 3 % uniquement à la vente.",
     icon: (
       <svg className="h-4.5 w-4.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 12v10H4V12" /><path d="M2 7h20v5H2z" /><path d="M12 22V7" /><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z" /><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z" /></svg>
     ),
@@ -115,7 +115,7 @@ export default async function RegisterPage({
         {/* Vitrine marque (grands écrans uniquement) */}
         <section className="hidden lg:block">
           <p className="mb-6 font-mono text-[11px] font-bold uppercase tracking-[0.22em] text-brand-400">
-            Gratuit · Sans carte bancaire
+            Gratuit · Inscription en 30 secondes
           </p>
           <h1 className="font-display text-5xl font-extrabold leading-[1.04] tracking-tight text-white">
             Votre événement,
@@ -123,7 +123,7 @@ export default async function RegisterPage({
             <span className="text-brand-400">prêt en 30 secondes.</span>
           </h1>
           <p className="mt-5 max-w-md text-sm leading-relaxed text-slate-400">
-            Créez votre compte, choisissez votre profil et lancez votre première billetterie en quelques minutes.
+            Créez votre compte et lancez votre première billetterie en quelques minutes.
           </p>
 
           <ul className="mt-9 space-y-4">
@@ -186,7 +186,7 @@ export default async function RegisterPage({
             </div>
             <h1 className="font-display text-4xl font-extrabold tracking-tight text-white">Créer mon compte</h1>
             <p className="mt-2 mb-8 text-sm leading-relaxed text-slate-400">
-              Gratuit, sans carte bancaire — 30 secondes suffisent. Choisissez votre profil et recevez votre code par SMS.
+              Gratuit — 30 secondes suffisent. Recevez votre code de vérification par SMS.
             </p>
 
             <AuthPanel

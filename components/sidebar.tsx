@@ -50,12 +50,10 @@ export default function Sidebar({
   events,
   activeEventId,
   userName,
-  isPro = false,
 }: {
   events: SidebarEvent[];
   activeEventId?: string | null;
   userName: string;
-  isPro?: boolean;
 }) {
   const [open, setOpen] = useState(false); // drawer mobile
   const [collapsed, setCollapsed] = useState(false); // rail d'icônes desktop
@@ -302,25 +300,6 @@ export default function Sidebar({
               className="absolute right-2 top-1/2 hidden -translate-y-1/2 rounded-full bg-red-500 px-1.5 py-0.5 text-[10px] font-extrabold text-white shadow"
             />
           </Link>
-
-          {/* Espace agence (comptes Professionnels de l'événementiel) */}
-          {isPro && (
-            <Link
-              href="/pro"
-              onClick={closeDrawer}
-              title="Espace agence"
-              aria-label="Espace agence"
-              className={`group ${navItemCls(pathname === "/pro", rail)}`}
-            >
-              <span className={iconChipCls(pathname === "/pro", rail)}>
-                <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <rect x="2" y="7" width="20" height="14" rx="2" />
-                  <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
-                </svg>
-              </span>
-              <span className={rail ? "lg:hidden" : ""}>Espace agence</span>
-            </Link>
-          )}
 
           {/* Nouvel événement — action rapide */}
           <Link

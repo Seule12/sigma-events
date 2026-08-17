@@ -14,15 +14,6 @@ export default async function VerifyPage({ searchParams }: { searchParams: Promi
   const sp = await searchParams;
   const phone = sp.phone ?? "";
   const name = sp.name ? decodeURIComponent(sp.name) : "";
-  const profile = sp.profile ?? "particulier";
-  // Champs de profil enrichis (orgName / orgEmail / responsable / téléphone pro /
-  // volume) transportés depuis le formulaire d'inscription vers la création du compte.
-  const orgName = sp.orgName ? decodeURIComponent(sp.orgName) : "";
-  const orgEmail = sp.orgEmail ? decodeURIComponent(sp.orgEmail) : "";
-  const responsibleName = sp.responsibleName ? decodeURIComponent(sp.responsibleName) : "";
-  const proPhone = sp.proPhone ? decodeURIComponent(sp.proPhone) : "";
-  const avgEventsPerMonth = sp.avgEventsPerMonth ? decodeURIComponent(sp.avgEventsPerMonth) : "";
-  const avgParticipants = sp.avgParticipants ? decodeURIComponent(sp.avgParticipants) : "";
   const err = sp.err ?? null;
 
   const user = await getCurrentUser();
@@ -78,18 +69,7 @@ export default async function VerifyPage({ searchParams }: { searchParams: Promi
             <p className="mt-2 mb-8 text-sm leading-relaxed text-slate-400">
               Dernière étape : validez votre compte avec le code reçu par SMS, puis choisissez votre code personnel.
             </p>
-            <VerifyForm
-              phone={phone}
-              name={name}
-              profile={profile}
-              orgName={orgName}
-              orgEmail={orgEmail}
-              responsibleName={responsibleName}
-              proPhone={proPhone}
-              avgEventsPerMonth={avgEventsPerMonth}
-              avgParticipants={avgParticipants}
-              err={err}
-            />
+            <VerifyForm phone={phone} name={name} err={err} />
           </div>
       </div>
     </main>

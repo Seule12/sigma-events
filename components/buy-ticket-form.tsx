@@ -28,8 +28,8 @@ export default function BuyTicketForm({
   const maxQty = Math.max(1, Math.min(remaining || 1, maxPerCustomer || 10, 10));
   const qty = Math.max(1, Math.min(quantity, maxQty));
   const total = (selected?.price ?? 0) * qty;
-  // Prix tout compris : billets + livraison unifiée (50 F), commission FedaPay
-  // intégrée par gross-up (le client paie prix_net / 0,98 — modèle du brief).
+  // Prix tout compris : billets + frais de service (50 F), commission intégrée
+  // par gross-up — le client paie un montant unique, sans breakdown.
   const totalAllIncluded = total > 0 ? grossUpFedaPay(total + DELIVERY_FEE) : 0;
 
   const selectCategory = (id: string) => {
@@ -185,11 +185,6 @@ export default function BuyTicketForm({
               {selected ? (total > 0 ? formatFcfa(totalAllIncluded) : "0 FCFA") : "—"}
             </span>
           </div>
-          {total > 0 && (
-            <p className="mt-1 text-right text-[11px] text-slate-400">
-              dont livraison {formatFcfa(DELIVERY_FEE)} + frais de service inclus
-            </p>
-          )}
           <p className="mt-2 flex items-center gap-1.5 text-xs text-slate-400">
             <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg>
             Paiement mobile money : MTN MoMo · Moov Money · Celtiis Cash

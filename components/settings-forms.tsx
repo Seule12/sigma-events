@@ -12,12 +12,6 @@ const PIN_ERRORS: Record<string, string> = {
   rate_limited: "Trop de tentatives. Réessayez dans quelques minutes.",
 };
 
-const PROFILE_LABEL: Record<string, string> = {
-  PARTICULIER: "Particulier",
-  ORGANISATION: "Organisation",
-  PRO: "Professionnel de l'événementiel",
-};
-
 const inputCls =
   "w-full rounded-xl border border-slate-200 bg-slate-50 py-3 pl-4 pr-4 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-brand-500 focus:bg-white focus:ring-4 focus:ring-brand-500/15 dark:border-slate-700 dark:bg-slate-800 dark:text-white dark:focus:border-brand-500 dark:focus:bg-slate-900";
 
@@ -45,20 +39,10 @@ function SectionTitle({ icon, title, desc }: { icon: React.ReactNode; title: str
 
 export default function SettingsForms({
   name,
-  profileType,
-  orgName,
-  orgEmail,
-  responsibleName,
-  proPhone,
   pinErr,
   profileErr,
 }: {
   name: string;
-  profileType: string;
-  orgName: string;
-  orgEmail: string;
-  responsibleName: string;
-  proPhone: string;
   pinErr: string | null;
   profileErr: boolean;
 }) {
@@ -73,7 +57,7 @@ export default function SettingsForms({
         <SectionTitle
           icon={<svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg>}
           title="Profil"
-          desc={`Profil ${PROFILE_LABEL[profileType] ?? "Particulier"} — vos informations d'identité.`}
+          desc="Vos informations d'identité."
         />
 
         <form action={updateProfileAction} className="space-y-4">
@@ -88,40 +72,6 @@ export default function SettingsForms({
             </label>
             <input id="st-name" name="name" required defaultValue={name} className={inputCls} />
           </div>
-
-          {profileType !== "PARTICULIER" && (
-            <>
-              <div>
-                <label htmlFor="st-org" className="mb-1.5 block text-sm font-semibold text-slate-700 dark:text-slate-300">
-                  {profileType === "ORGANISATION" ? "Nom de la structure" : "Nom de l'agence"}
-                </label>
-                <input id="st-org" name="orgName" defaultValue={orgName} className={inputCls} />
-              </div>
-              <div>
-                <label htmlFor="st-org-email" className="mb-1.5 block text-sm font-semibold text-slate-700 dark:text-slate-300">
-                  Email professionnel
-                </label>
-                <input id="st-org-email" name="orgEmail" type="email" defaultValue={orgEmail} className={inputCls} />
-              </div>
-            </>
-          )}
-
-          {profileType === "PRO" && (
-            <>
-              <div>
-                <label htmlFor="st-responsible" className="mb-1.5 block text-sm font-semibold text-slate-700 dark:text-slate-300">
-                  Nom du responsable
-                </label>
-                <input id="st-responsible" name="responsibleName" defaultValue={responsibleName} className={inputCls} />
-              </div>
-              <div>
-                <label htmlFor="st-pro-phone" className="mb-1.5 block text-sm font-semibold text-slate-700 dark:text-slate-300">
-                  Téléphone professionnel
-                </label>
-                <input id="st-pro-phone" name="proPhone" type="tel" inputMode="tel" defaultValue={proPhone} className={inputCls} />
-              </div>
-            </>
-          )}
 
           <button
             type="submit"

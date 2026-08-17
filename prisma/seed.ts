@@ -37,41 +37,39 @@ async function main() {
   // Super admin (plateforme)
   await prisma.user.upsert({
     where: { phone: "96000000" },
-    update: { pin: hashPin("1234") },
+    update: { pin: hashPin("1234"), commissionRate: 3 },
     create: {
       name: "Administrateur Sigma",
       phone: "96000000",
       pin: hashPin("1234"),
       role: "SUPER_ADMIN",
-      commissionRate: 10,
+      commissionRate: 3,
     },
   });
 
   // Organisateur
   const organizer = await prisma.user.upsert({
     where: { phone: "97000000" },
-    update: { pin: hashPin("1234") },
+    update: { pin: hashPin("1234"), commissionRate: 3 },
     create: {
       name: "Aïcha Zinsou",
       phone: "97000000",
       pin: hashPin("1234"),
       role: "ORGANIZER",
-      profileType: "PRO",
-      commissionRate: 10,
+      commissionRate: 3,
     },
   });
 
   // Second organisateur (pour l'espace admin : blocage, commissions…)
   await prisma.user.upsert({
     where: { phone: "97554433" },
-    update: { pin: hashPin("1234") },
+    update: { pin: hashPin("1234"), commissionRate: 3 },
     create: {
       name: "Habib Alladé",
       phone: "97554433",
       pin: hashPin("1234"),
       role: "ORGANIZER",
-      profileType: "ORGANISATION",
-      commissionRate: 15,
+      commissionRate: 3,
     },
   });
 

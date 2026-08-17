@@ -60,15 +60,15 @@ export default async function NotificationsPage() {
       key: `pay-${o.id}`,
       at: o.paidAt ?? o.createdAt,
       kind: "payment" as const,
-      title: `Paiement reçu : ${formatFcfa(o.amount + (o.deliveryFee || 0))}`,
-      desc: `${o.event.name} — ${o.customerName} · ${o.reference}${o.deliveryFee ? ` (dont livraison ${formatFcfa(o.deliveryFee)})` : ""}`,
+      title: `Paiement reçu : ${formatFcfa(o.amount)}`,
+      desc: `${o.event.name} — ${o.customerName} · ${o.reference}`,
       href: `/transactions`,
     })),
   ].sort((a, b) => b.at.getTime() - a.at.getTime()).slice(0, 40) as Item[];
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950">
-      <Sidebar events={sidebarEvents} userName={user.name} isPro={user.profileType === "PRO"} />
+      <Sidebar events={sidebarEvents} userName={user.name} />
 
       <div className="lg:pl-[var(--sidebar-w)]">
         <main className="mx-auto max-w-3xl px-4 py-8 pt-20 sm:px-6 lg:pt-8">

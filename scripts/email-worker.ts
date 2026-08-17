@@ -7,7 +7,6 @@
 //
 // Lancement : npx tsx scripts/email-worker.ts
 import "dotenv/config";
-import http from "node:http";
 import amqp from "amqplib";
 import { Resend } from "resend";
 import type { EmailJob } from "../lib/queue";
@@ -69,7 +68,7 @@ function ticketHtml(job: Extract<EmailJob, { type: "ticket" | "invoice" }>): str
     </p>
     <div style="background:#f8fafc;border-radius:12px;padding:16px;margin:16px 0">
       <p style="margin:0;color:#475569;font-size:14px">Référence : <b style="color:#047857">${job.reference}</b></p>
-      <p style="margin:8px 0 0;color:#475569;font-size:14px">Montant ${isTicket ? "total" : ""} : <b style="color:#047857">${job.amount.toLocaleString("fr-FR")} FCFA</b>${!isTicket && job.deliveryFee ? `<br><span style="color:#94a3b8;font-size:12px">dont livraison ${job.deliveryFee} FCFA</span>` : ""}</p>
+      <p style="margin:8px 0 0;color:#475569;font-size:14px">Montant ${isTicket ? "total" : ""} : <b style="color:#047857">${job.amount.toLocaleString("fr-FR")} FCFA</b></p>
     </div>
     ${job.ticketUrl ? `<p style="text-align:center;margin:16px 0"><a href="${job.ticketUrl}" style="background:#047857;color:#fff;text-decoration:none;padding:12px 24px;border-radius:12px;font-weight:700">VOIR MON BILLET</a></p>` : ""}
     <p style="color:#94a3b8;font-size:12px">Présentez votre QR code à l'entrée. Un seul scan autorisé.</p>
@@ -141,20 +140,6 @@ function countRedeliveries(msg: amqp.ConsumeMessage): number {
   }
   return 0;
 }
-
-
-// ===== Mini serveur HTTP (exigence Render) =====
-// Le plan free de Render n'autorise que les web services : le worker est donc
-// déclaré comme web service, et doit écouter sur le port $PORT pour que le
-// health check passe. Il ne sert pas de trafic web.
-const PORT = Number(process.env.PORT || 3001);
-const healthServer = http.createServer((_req, res) => {
-  res.writeHead(200, { "Content-Type": "text/plain" });
-  res.end("ok");
-});
-healthServer.listen(PORT, () => {
-  console.log(`[worker] health check HTTP sur le port ${PORT}`);
-});
 
 async function main() {
   const url = process.env.CLOUDAMQP_URL;

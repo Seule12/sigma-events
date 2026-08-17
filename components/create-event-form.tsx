@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { createEventAction } from "@/app/actions";
+import CoverSuggestionPicker from "@/components/cover-suggestion-picker";
 
 type CategoryRow = { name: string; price: string; capacity: string; zones: string };
 
@@ -14,6 +15,9 @@ export default function CreateEventForm() {
     { name: "Standard", price: "5000", capacity: "", zones: "" },
     { name: "VIP", price: "15000", capacity: "", zones: "" },
   ]);
+  // Type saisi + URL de couverture (suggestions via CoverSuggestionPicker).
+  const [eventType, setEventType] = useState("");
+  const [imageUrl, setImageUrl] = useState("");
 
   // Ouvre le formulaire quand on arrive via le bouton « Nouvel événement » (#create-event)
   useEffect(() => {
@@ -76,7 +80,14 @@ export default function CreateEventForm() {
             </div>
             <div>
               <label htmlFor="type" className="mb-1.5 block text-sm font-semibold text-slate-700 dark:text-slate-300">Type</label>
-              <input id="type" name="type" placeholder="Concert, mariage…" className={inputCls} />
+              <input
+                id="type"
+                name="type"
+                placeholder="Concert, mariage…"
+                value={eventType}
+                onChange={(e) => setEventType(e.target.value)}
+                className={inputCls}
+              />
             </div>
             <div>
               <label htmlFor="location" className="mb-1.5 block text-sm font-semibold text-slate-700 dark:text-slate-300">Lieu *</label>
@@ -182,17 +193,23 @@ export default function CreateEventForm() {
               <label className="mb-1.5 block text-sm font-semibold text-slate-700 dark:text-slate-300">Image de couverture</label>
               <div className="flex flex-col gap-3">
                 <div className="flex gap-2">
-                  <input 
-                    id="imageUrl" 
-                    name="imageUrl" 
-                    placeholder="https://..." 
-                    className={inputCls} 
+                  <input
+                    id="imageUrl"
+                    name="imageUrl"
+                    placeholder="https://... ou choisissez une suggestion"
+                    value={imageUrl}
+                    onChange={(e) => setImageUrl(e.target.value)}
+                    className={inputCls}
                   />
                   <label className="cursor-pointer whitespace-nowrap rounded-xl bg-slate-100 px-4 py-2 text-sm font-bold text-slate-600 transition hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300">
                     Importer
                     <input type="file" name="imageFile" accept="image/*" className="hidden" />
                   </label>
                 </div>
+
+                {/* Suggestions générées selon le type d'événement */}
+                <CoverSuggestionPicker type={eventType} value={imageUrl} onChange={setImageUrl} />
+
                 <p className="text-xs text-slate-400">Affichée en haut de la boutique et sur le billet.</p>
               </div>
             </div>

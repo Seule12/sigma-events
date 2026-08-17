@@ -95,12 +95,18 @@ export async function issueOtp(input: {
     }),
   ]);
 
-  // Retrait : le SMS est obligatoire (le téléphone est le canal fiable), l'email
-  // est envoyé en plus quand il est connu.
-  if (input.purpose === "retrait") {
-    const message = `SIGMA Events — votre code de retrait : ${code}. Valable 10 minutes. Ne le partagez avec personne.`;
-    await sendSms({ to: input.phone, text: message, otpCode: code });
-  }
+  // Le SMS est TOUJOURS envoyé : le numéro de téléphone est le canal fiable de
+  // vérification (inscription, récupération, retrait). L'email part en plus quand
+  // il est connu. C'est la correction du flux « je ne reçois jamais le code » :
+  // seul le retrait envoyait un SMS, l'inscription et la récupération n'envoyaient
+  // qu'un email (ou rien si pas d'email connu).
+  const purposeLabel: Record<string, string> = {
+    inscription: "de vérification",
+    recuperation: "de récupération",
+    retrait: "de retrait",
+  };
+  const message = `SIGMA Events — votre code ${purposeLabel[input.purpose] ?? "de vérification"} : ${code}. Valable 10 minutes. Ne le partagez avec personne.`;
+  await sendSms({ to: input.phone, text: message, otpCode: code });
 
   if (input.email) {
     const { enqueueEmail } = await import("./queue");

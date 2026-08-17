@@ -49,14 +49,10 @@ npm run db:seed:pg          # données de démo sur Postgres
 - **Page d'accueil** (`/`) : vitrine produit (hero, fonctionnalités, réseaux mobile
   money, « comment ça marche », CTA). Les utilisateurs connectés sont redirigés vers
   leur espace (dashboard / scan).
-- **Inscription en 3 étapes** (`/register`) : ① choix du **profil** (Particulier /
-  Organisation / Professionnel de l'événementiel — segmentation du modèle économique)
-  avec **champs de profil enrichis** selon le type de compte (Organisation : nom de la
-  structure + email professionnel ; PRO : nom de l'agence + email pro + volume
-  d'activité : événements/mois et participants — modèle éco §7), ② **vérification par
-  code OTP à 6 chiffres** (10 min de validité), ③ création du code PIN → compte
-  organisateur créé et connecté. Les agents, eux, sont créés par leur organisateur
-  depuis l'événement.
+- **Inscription en 3 étapes** (`/register`) : ① nom + email + téléphone, ② **vérification
+  du numéro par code OTP à 6 chiffres envoyé par SMS** (10 min de validité), ③ création
+  du code PIN → compte organisateur créé et connecté. Les agents, eux, sont créés par
+  leur organisateur depuis l'événement.
 
 ## 👤 Comptes de démo
 
@@ -76,9 +72,9 @@ Envoyée, Ouverte, Confirmée, Générée, Annulée) — visibles sur la page é
 L'invitation publique est sur `/i/<code>` (ex. `http://localhost:3000/i/DEMO-STD-0001`).
 
 **Boutique en ligne (démo)** : `http://localhost:3000/acheter/gbediga-vodoun-night`
-— le client choisit son billet (VIP 15 000 F / Standard 5 000 F), **choisit le mode de
-livraison** (téléchargement gratuit / email +25 F / WhatsApp +75 F), paie en mode démo
-mobile money, puis reçoit facture + billet QR. L'événement démo est en **mode combiné**
+— le client choisit son billet (VIP 15 000 F / Standard 5 000 F), **choisit comment
+recevoir son billet** (téléchargement / email / WhatsApp), paie en mode démo mobile
+money, puis reçoit facture + billet QR. L'événement démo est en **mode combiné**
 (billetterie + invitations).
 
 Le seed ajoute 4 ventes de démonstration (CA ≈ 40 000 FCFA) pour alimenter la page
@@ -110,9 +106,9 @@ Le seed ajoute 4 ventes de démonstration (CA ≈ 40 000 FCFA) pour alimenter la
   **transactions**, **notifications**, liste des événements, thème clair/sombre,
   déconnexion — drawer sur mobile et **repliable en rail d'icônes sur desktop**
   (préférence mémorisée), bouton « Nouvel événement »
-- **Transactions** (`/transactions`) : solde généré, commission Sigma, frais de
-  livraison, montant reversé + liste complète des commandes (payées / en attente /
-  annulées) avec référence, client, billet, date et statut (maquette écran 23)
+- **Transactions** (`/transactions`) : solde généré, commission Sigma (3 %), montant
+  reversé + liste complète des commandes (payées / en attente / annulées) avec
+  référence, client, billet, date et statut (maquette écran 23)
 - **Notifications** (`/notifications`) : alertes de jauge (80/90/100 %), paiements
   reçus (7 jours), billets générés (24 h) et accès aux rapports (maquette écran 24)
 - **Profil & ventes** (`/profil`) : chiffre d'affaires total, billets vendus en ligne,
@@ -214,12 +210,10 @@ npx cap open android   # build de l'APK dans Android Studio
   son **réseau** (MTN MoMo `*126#` · Moov Money `*555#` · Orange Money `*144#` ·
   Celtiis `*566#`) avec son code USSD ; la méthode apparaît sur la facture
 - **Facture détaillée** (référence SIG-XXXXXX) affichée + **billet(s) QR émis**
-- **Livraison du billet au choix** : téléchargement direct (**gratuit**), envoi par
-  **email (+25 F)** ou sur **WhatsApp (+75 F)** — choisi avant le paiement, frais
-  affichés sans surprise, détail dans la facture et la confirmation
-- **Profil & ventes** : carte « Reversé (après commission) », total des **frais de
-  livraison** perçus, colonne Livraison dans les ventes récentes ; l'espace admin
-  compte le **volume global** (billets + livraison) et les frais séparément
+- **Réception du billet au choix** : téléchargement direct, envoi par **email** ou sur
+  **WhatsApp** — choisi avant le paiement, sans frais détaillés au client
+- **Profil & ventes** : carte « Reversé (après commission) », ventes récentes par
+  événement ; l'espace admin compte le **volume global** (billets) et les commissions
 - **Retrouver mon billet** (`/mon-billet`) : page publique, par numéro de téléphone —
   affiche tous ses billets (achat en ligne comme import) avec lien vers le QR
 - **Ajouter à mon agenda** sur le billet web (`/t/[code]`) : bouton qui crée un

@@ -13,22 +13,9 @@ const ERRORS: Record<string, string> = {
   phone_taken: "Ce numéro est déjà utilisé. Connectez-vous avec celui-ci.",
 };
 
-const PROFILE_LABEL: Record<string, string> = {
-  particulier: "Particulier",
-  organisation: "Organisation",
-  pro: "Professionnel de l'événementiel",
-};
-
 type VerifyFormProps = {
   phone: string;
   name: string;
-  profile: string;
-  orgName?: string;
-  orgEmail?: string;
-  responsibleName?: string;
-  proPhone?: string;
-  avgEventsPerMonth?: string;
-  avgParticipants?: string;
   err?: string | null;
 };
 
@@ -44,7 +31,7 @@ function EyeIcon({ off = false }: { off?: boolean }) {
 const codeInputCls =
   "w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3.5 text-center text-xl font-bold tracking-[0.5em] text-slate-900 outline-none transition placeholder:text-slate-300 focus:border-brand-500 focus:bg-white focus:ring-4 focus:ring-brand-500/15 dark:border-slate-700 dark:bg-slate-900/50 dark:text-white dark:placeholder:text-slate-600 dark:focus:border-brand-500 dark:focus:bg-slate-900";
 
-export default function VerifyForm({ phone, name, profile, orgName, orgEmail, responsibleName, proPhone, avgEventsPerMonth, avgParticipants, err }: VerifyFormProps) {
+export default function VerifyForm({ phone, name, err }: VerifyFormProps) {
   const [showPin, setShowPin] = useState(false);
   const [showConfirmPin, setShowConfirmPin] = useState(false);
 
@@ -52,21 +39,6 @@ export default function VerifyForm({ phone, name, profile, orgName, orgEmail, re
     <form action={registerAction} className="space-y-5">
       <input type="hidden" name="name" value={name} />
       <input type="hidden" name="phone" value={phone} />
-      <input type="hidden" name="profile" value={profile} />
-      {profile !== "particulier" && (
-        <>
-          {orgName && <input type="hidden" name="orgName" value={orgName} />}
-          {orgEmail && <input type="hidden" name="orgEmail" value={orgEmail} />}
-          {profile === "pro" && (
-            <>
-              {responsibleName && <input type="hidden" name="responsibleName" value={responsibleName} />}
-              {proPhone && <input type="hidden" name="proPhone" value={proPhone} />}
-              {avgEventsPerMonth && <input type="hidden" name="avgEventsPerMonth" value={avgEventsPerMonth} />}
-              {avgParticipants && <input type="hidden" name="avgParticipants" value={avgParticipants} />}
-            </>
-          )}
-        </>
-      )}
 
       {/* Progression façon SIGMA EVENTS : segments + ÉTAPE 2 / 3 */}
       <div>
@@ -95,17 +67,7 @@ export default function VerifyForm({ phone, name, profile, orgName, orgEmail, re
         <div className="min-w-0">
           <p className="truncate text-sm font-extrabold text-slate-900 dark:text-white">{name}</p>
           <p className="truncate text-[11px] font-semibold text-brand-700 dark:text-brand-400">
-            {PROFILE_LABEL[profile] ?? "Particulier"}
-            {(orgName || orgEmail || responsibleName) && (
-              <span className="text-slate-500 dark:text-slate-400">
-                {" "}
-                · {orgName}
-                {orgName && orgEmail && " · "}
-                {orgEmail}
-                {responsibleName && (orgName || orgEmail) && " · "}
-                {responsibleName}
-              </span>
-            )}
+            Création de compte organisateur
           </p>
         </div>
       </div>

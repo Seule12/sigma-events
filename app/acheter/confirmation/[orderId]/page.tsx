@@ -41,7 +41,7 @@ export default async function ConfirmationPage({
             Votre paiement est en cours de validation… La page se met à jour automatiquement.
           </p>
           <p className="mt-6 text-xs text-slate-400">Référence : {order.reference}</p>
-          <ConfirmationPoll />
+          <ConfirmationPoll orderId={order.id} />
         </div>
       </main>
     );
@@ -51,8 +51,7 @@ export default async function ConfirmationPage({
 
   const quantity = Math.max(1, order.quantity || 1);
   const unitPrice = order.amount / quantity;
-  const deliveryFee = order.deliveryFee || 0;
-  // Prix tout compris payé par le client (billets + livraison + frais de service).
+  // Prix tout compris payé par le client (frais de service non détaillés).
   const totalPaid = clientTotal(order);
   const deliveryLabel =
     order.deliveryMethod === DeliveryMethod.EMAIL
@@ -134,17 +133,8 @@ export default async function ConfirmationPage({
               </div>
               {order.deliveryMethod && (
                 <div className="flex justify-between">
-                  <dt className="text-slate-400">Livraison</dt>
-                  <dd className="text-right font-semibold text-slate-800 dark:text-slate-200">
-                    {deliveryLabel}
-                    {deliveryFee > 0 && <span className="ml-1 text-slate-400">(+{formatFcfa(deliveryFee)})</span>}
-                  </dd>
-                </div>
-              )}
-              {totalPaid > order.amount + deliveryFee && (
-                <div className="flex justify-between">
-                  <dt className="text-slate-400">Frais de service (FedaPay)</dt>
-                  <dd className="font-semibold text-slate-800 dark:text-slate-200">{formatFcfa(totalPaid - order.amount - deliveryFee)}</dd>
+                  <dt className="text-slate-400">Réception du billet</dt>
+                  <dd className="text-right font-semibold text-slate-800 dark:text-slate-200">{deliveryLabel}</dd>
                 </div>
               )}
               <div className="flex justify-between border-t border-dashed border-slate-200 pt-3 dark:border-slate-700">
@@ -209,7 +199,7 @@ export default async function ConfirmationPage({
           <div className="border-b border-slate-100 px-6 py-4 dark:border-slate-800">
             <h2 className="flex items-center gap-2 font-bold text-slate-900 dark:text-white">
               <svg className="h-5 w-5 text-brand-600 dark:text-brand-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" /><path d="M3.27 6.96L12 12.01l8.73-5.05M12 22.08V12" /></svg>
-              Livraison de votre billet
+              Réception de votre billet
             </h2>
           </div>
           <div className="p-6">

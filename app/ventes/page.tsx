@@ -30,9 +30,10 @@ export default async function SalesPage() {
   });
 
   const totalRevenue = paidOrders.reduce((s, o) => s + o.amount, 0);
-  const totalDeliveryFees = paidOrders.reduce((s, o) => s + (o.deliveryFee || 0), 0);
   const commissionAmount = Math.round((totalRevenue * user.commissionRate) / 100);
-  const netRevenue = totalRevenue + totalDeliveryFees - commissionAmount;
+  // L'organisateur reçoit prix billet − commission ; les frais de service restent
+  // chez SIGMA (non détaillés ici).
+  const netRevenue = totalRevenue - commissionAmount;
   const totalTicketsSold = paidOrders.length;
 
   await expireStalePendingOrders();
@@ -77,7 +78,7 @@ export default async function SalesPage() {
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950">
-      <Sidebar events={sidebarEvents} userName={user.name} isPro={user.profileType === "PRO"} />
+      <Sidebar events={sidebarEvents} userName={user.name} />
 
       <div className="lg:pl-[var(--sidebar-w)]">
         <main className="mx-auto max-w-6xl px-4 py-8 pt-20 sm:px-6 lg:pt-8">
@@ -114,10 +115,6 @@ export default async function SalesPage() {
               <div className="absolute -right-4 -top-4 h-24 w-24 rounded-full bg-slate-500/10 blur-2xl" />
               <p className="text-2xl font-extrabold text-slate-900 dark:text-white">{totalTicketsSold}</p>
               <p className="mt-1 text-xs font-bold uppercase tracking-wide text-slate-400">Billets Vendus</p>
-            </div>
-            <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
-              <p className="text-2xl font-extrabold text-slate-900 dark:text-white">{formatFcfa(totalDeliveryFees)}</p>
-              <p className="mt-1 text-xs font-bold uppercase tracking-wide text-slate-400">Frais Livraison</p>
             </div>
             <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
               <p className="text-2xl font-extrabold text-slate-900 dark:text-white">{totalIssued}</p>
@@ -239,7 +236,6 @@ export default async function SalesPage() {
                       <th className="py-3 pr-4">Événement</th>
                       <th className="py-3 pr-4">Client</th>
                       <th className="py-3 pr-4">Billet</th>
-                      <th className="py-3 pr-4">Livraison</th>
                       <th className="py-3 pr-4">Date</th>
                       <th className="py-3 pr-6 text-right">Montant</th>
                     </tr>
@@ -251,16 +247,10 @@ export default async function SalesPage() {
                         <td className="max-w-[180px] truncate py-3 pr-4 font-semibold text-slate-800 dark:text-slate-200">{o.event.name}</td>
                         <td className="max-w-[160px] truncate py-3 pr-4 text-slate-600 dark:text-slate-300">{o.customerName}</td>
                         <td className="py-3 pr-4 text-slate-500 dark:text-slate-400">{o.category?.name ?? "Standard"}</td>
-                        <td className="py-3 pr-4">
-                          <span className="rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-bold text-slate-500 dark:bg-slate-800 dark:text-slate-300">
-                            {o.deliveryMethod === "WHATSAPP" ? "WhatsApp" : o.deliveryMethod === "EMAIL" ? "Email" : "Téléchargement"}
-                            {o.deliveryFee ? ` +${formatFcfa(o.deliveryFee)}` : ""}
-                          </span>
-                        </td>
                         <td className="py-3 pr-4 text-slate-500 dark:text-slate-400">
                           {o.paidAt?.toLocaleDateString("fr-FR", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" })}
                         </td>
-                        <td className="py-3 pr-6 text-right font-bold text-slate-900 dark:text-white">{formatFcfa(o.amount + (o.deliveryFee || 0))}</td>
+                        <td className="py-3 pr-6 text-right font-bold text-slate-900 dark:text-white">{formatFcfa(o.amount)}</td>
                       </tr>
                     ))}
                   </tbody>

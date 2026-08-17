@@ -42,6 +42,7 @@ export default function KkiapayWidget({
   const [ready, setReady] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [opening, setOpening] = useState(false);
+  const [autoFailed, setAutoFailed] = useState(false);
   const openedRef = useRef(false);
 
   // Charge le SDK KKIAPAY une seule fois par page.
@@ -86,10 +87,20 @@ export default function KkiapayWidget({
   };
 
   // Ouvre le widget automatiquement dès que le SDK est chargé (le widget est un
-  // overlay de la page, pas une popup → pas bloqué par le navigateur).
+  // overlay de la page, pas une popup → pas bloqué par le navigateur). Si après
+  // 4 s le widget ne s'est pas ouvert (SDK muet, overlay bloqué…), on propose un
+  // bouton « Réessayer » plutôt que de laisser la page sans issue.
   useEffect(() => {
     if (ready && !openedRef.current) open();
     // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ready]);
+
+  useEffect(() => {
+    if (!ready || openedRef.current) return;
+    const t = setTimeout(() => {
+      if (!openedRef.current) setAutoFailed(true);
+    }, 4000);
+    return () => clearTimeout(t);
   }, [ready]);
 
   return (
@@ -110,6 +121,11 @@ export default function KkiapayWidget({
               Mode test : utilisez un numéro KKIAPAY (ex. <b>61000000</b> = succès, <b>68000003</b> = refus).
             </p>
           )}
+          {autoFailed && (
+            <div className="rounded-xl border border-amber-200 bg-amber-50 px-3 py-2 text-xs font-semibold text-amber-700 dark:border-amber-900 dark:bg-amber-950/40 dark:text-amber-300">
+              La fenêtre de paiement ne s&apos;est pas ouverte. Cliquez ci-dessous pour la rouvrir.
+            </div>
+          )}
           <button
             type="button"
             onClick={open}
@@ -124,7 +140,7 @@ export default function KkiapayWidget({
             ) : (
               <>
                 <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="5" width="20" height="14" rx="2" /><path d="M2 10h20" /></svg>
-                Payer avec Mobile Money
+                {autoFailed ? "Réessayer — ouvrir le paiement" : "Payer avec Mobile Money"}
               </>
             )}
           </button>

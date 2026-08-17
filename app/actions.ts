@@ -9,7 +9,7 @@ import { cookies } from "next/headers";
 import bcrypt from "bcrypt";
 import { prisma } from "@/lib/prisma";
 import { loginWithPhone, logout as destroySession, requireUser, hashPin, createSession, roleHome } from "@/lib/auth";
-import { CheckInStatus, OrderStatus, Role, TicketStatus, InvitationStatus, UserProfileType, EventMode, TerminalStatus, DeliveryMethod, PayoutStatus } from "@/app/generated/prisma/enums";
+import { CheckInStatus, OrderStatus, Role, TicketStatus, InvitationStatus, EventMode, TerminalStatus, DeliveryMethod, PayoutStatus } from "@/app/generated/prisma/enums";
 import { parseGuestCsv, normalizePhone } from "@/lib/csv";
 import { isRateLimited } from "@/lib/rate-limit";
 import { issueOtp } from "@/lib/sms";
@@ -21,7 +21,7 @@ import { publishLiveNotification, publishEventUpdate } from "@/lib/ably";
 import { isRealPaymentEnabled, initiatePayment } from "@/lib/payments";
 import { organizerAvailableBalance, expireStalePendingPayouts, payoutAdminThreshold } from "@/lib/payouts";
 import { isFedaPayPayoutEnabled, createFedaPayPayout, startFedaPayPayouts, getFedaPayPayoutStatus } from "@/lib/fedapay";
-import { isKkiapayEnabled } from "@/lib/kkiapay";
+import { isKkiapayEnabled, isKkiapaySandbox } from "@/lib/kkiapay";
 import { notifyOrderPaid } from "@/lib/order-events";
 
 // ============ HELPERS ============
@@ -68,42 +68,14 @@ export async function loginAction(formData: FormData) {
   redirect(roleHome(user.role));
 }
 
-// ============ INSCRIPTION (choix du profil + vérification OTP) ============
-
-const PROFILE_TYPES: Record<string, UserProfileType> = {
-  particulier: UserProfileType.PARTICULIER,
-  organisation: UserProfileType.ORGANISATION,
-  pro: UserProfileType.PRO,
-};
-
-// Informations de profil enrichies demandées selon le type de compte (modèle éco) :
-//  - ORGANISATION : nom de la structure + email professionnel
-//  - PRO          : nom de l'agence / structure, email pro, responsable + téléphone
-//                   professionnel, volume d'activité
-function profileFields(formData: FormData, profile: string) {
-  if (profile === "particulier") return {};
-  const orgName = String(formData.get("orgName") || "").trim().slice(0, 120) || null;
-  const orgEmail = String(formData.get("orgEmail") || "").trim().slice(0, 200) || null;
-  if (profile === "organisation") return { orgName, orgEmail };
-  const responsibleName = String(formData.get("responsibleName") || "").trim().slice(0, 120) || null;
-  const proPhone = String(formData.get("proPhone") || "").trim().slice(0, 20) || null;
-  const avgEventsPerMonth = String(formData.get("avgEventsPerMonth") || "").trim() || null;
-  const avgParticipants = String(formData.get("avgParticipants") || "").trim() || null;
-  return { orgName, orgEmail, responsibleName, proPhone, avgEventsPerMonth, avgParticipants };
-}
+// ============ INSCRIPTION (vérification OTP) ============
 
 export async function requestOtpAction(formData: FormData) {
   const name = String(formData.get("name") || "").trim();
   const phone = normalizePhone(String(formData.get("phone") || ""));
   const email = String(formData.get("email") || "").trim();
-  const profile = String(formData.get("profile") || "particulier");
 
   if (!name || phone.length < 8 || !email) redirect("/register?err=invalid");
-  if (!PROFILE_TYPES[profile]) redirect("/register?err=invalid");
-
-  // Validation légère des champs de profil selon le type de compte (non bloquante
-  // pour ORGANISATION/PRO : on stocke ce qui est renseigné).
-  const extra = profileFields(formData, profile);
 
   // Anti-bot : 3 demandes d'OTP max par numéro sur 10 min.
   if (await isRateLimited(`otp:${phone}`, 3, 10 * 60_000)) redirect("/register?err=rate_limited");
@@ -111,32 +83,22 @@ export async function requestOtpAction(formData: FormData) {
   const exists = await prisma.user.findUnique({ where: { phone } });
   if (exists) redirect("/register?err=phone_taken");
 
-  // Génère, enregistre et envoie le code OTP par EMAIL (via queue)
+  // Génère, enregistre et envoie le code OTP par SMS (vérification du numéro)
   await issueOtp({ phone, name, email, purpose: "inscription" });
-  const extraParams = new URLSearchParams(
-    Object.entries(extra).filter(([, v]) => v != null) as Array<[string, string]>
-  );
   redirect(
-    `/register/verify?phone=${encodeURIComponent(phone)}&name=${encodeURIComponent(name.slice(0, 120))}&email=${encodeURIComponent(email)}&profile=${profile}&${extraParams.toString()}`
+    `/register/verify?phone=${encodeURIComponent(phone)}&name=${encodeURIComponent(name.slice(0, 120))}&email=${encodeURIComponent(email)}`
   );
 }
 
-// Termine l'inscription : vérifie l'OTP reçu par email puis crée le compte
-// ORGANIZER avec son profil.
+// Termine l'inscription : vérifie l'OTP reçu par SMS puis crée le compte ORGANIZER.
 export async function registerAction(formData: FormData) {
   const name = String(formData.get("name") || "").trim();
   const phone = normalizePhone(String(formData.get("phone") || ""));
-  const profile = String(formData.get("profile") || "particulier");
   const otp = String(formData.get("otp") || "").trim();
   const pin = String(formData.get("pin") || "");
   const confirmPin = String(formData.get("confirmPin") || "");
 
-  // Champs de profil enrichis
-  const extra = profileFields(formData, profile);
-  const extraQS = new URLSearchParams(
-    Object.entries(extra).filter(([, v]) => v != null) as Array<[string, string]>
-  ).toString();
-  const verifyParams = `phone=${encodeURIComponent(phone)}&name=${encodeURIComponent(name)}&profile=${encodeURIComponent(profile)}${extraQS ? `&${extraQS}` : ""}`;
+  const verifyParams = `phone=${encodeURIComponent(phone)}&name=${encodeURIComponent(name)}`;
   // Les erreurs de formulaire reviennent sur /register/verify (la page du
   // formulaire), pas sur /register (le formulaire d'émission du code).
   const back = (err: string): never => redirect(`/register/verify?${verifyParams}&err=${err}`);
@@ -167,8 +129,6 @@ export async function registerAction(formData: FormData) {
       phone,
       pin: hashPin(pin),
       role: Role.ORGANIZER,
-      profileType: PROFILE_TYPES[profile] ?? UserProfileType.PARTICULIER,
-      ...extra,
     },
   });
   await createSession(user.id);
@@ -248,18 +208,8 @@ export async function updateProfileAction(formData: FormData) {
   const name = String(formData.get("name") || "").trim().slice(0, 120);
   if (!name) redirect("/profil?profileErr=1");
 
-  // Chaîne vide → null : permet d'effacer un champ déjà renseigné.
-  const data: Record<string, string | null> = { name };
-  if (user.profileType !== UserProfileType.PARTICULIER) {
-    data.orgName = String(formData.get("orgName") || "").trim().slice(0, 120) || null;
-    data.orgEmail = String(formData.get("orgEmail") || "").trim().slice(0, 200) || null;
-    if (user.profileType === UserProfileType.PRO) {
-      data.responsibleName = String(formData.get("responsibleName") || "").trim().slice(0, 120) || null;
-      data.proPhone = String(formData.get("proPhone") || "").trim().slice(0, 20) || null;
-    }
-  }
-
-  await prisma.user.update({ where: { id: user.id }, data });
+  // Uniformisé : seul le nom complet est modifiable depuis le profil.
+  await prisma.user.update({ where: { id: user.id }, data: { name } });
   revalidatePath("/profil");
   revalidatePath("/pro");
   redirect("/profil?updated=1");
@@ -1146,6 +1096,37 @@ export async function simulatePaymentAction(formData: FormData) {
 
   // Temps réel + file d'emails : paiement validé → notification à l'organisateur,
   // facture + billet mis en file d'attente (CloudAMQP, worker scripts/email-worker.ts).
+  await notifyOrderPaid(orderId);
+  revalidatePath(`/acheter/confirmation/${orderId}`);
+  redirect(`/acheter/confirmation/${orderId}`);
+}
+
+// ============ FINALISATION DE SECOURS (PHASE DE TEST UNIQUEMENT) ============
+
+// Pendant la phase de test (sandbox KKIA), si la passerelle externe ne répond
+// pas (webhook non reçu, widget bloqué…), l'organisateur ou le client peut
+// finaliser la commande en mode simulé pour ne pas rester bloqué : le billet
+// est émis normalement, sans débit réel. ⚠️ À RETIRER au passage en production
+// (garde-fou : l'action n'existe que quand KKIA tourne en sandbox).
+export async function finalizeOrderTestAction(formData: FormData) {
+  const orderId = String(formData.get("orderId") || "");
+  const delivery = String(formData.get("delivery") || "") || undefined;
+
+  // Garde-fou : jamais disponible hors mode test (clés sandbox).
+  if (!isKkiapaySandbox()) redirect("/");
+
+  const order = await prisma.order.findUnique({ where: { id: orderId } });
+  if (!order || order.status !== OrderStatus.PENDING) {
+    redirect(order ? `/acheter/confirmation/${order.id}` : "/");
+  }
+
+  const result = await shopSimulatePayment(orderId, "MTN_MOMO", delivery);
+  if (!result.ok) {
+    const slug = (await prisma.event.findUnique({ where: { id: order.eventId } }))?.salesSlug;
+    if (slug) redirect(`/acheter/${slug}?err=${result.error}`);
+    redirect("/");
+  }
+
   await notifyOrderPaid(orderId);
   revalidatePath(`/acheter/confirmation/${orderId}`);
   redirect(`/acheter/confirmation/${orderId}`);

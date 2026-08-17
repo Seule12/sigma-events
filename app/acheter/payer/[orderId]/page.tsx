@@ -5,8 +5,9 @@ import Logo from "@/components/logo";
 import PayForm from "@/components/pay-form";
 import KkiapayWidget from "@/components/kkiapay-widget";
 import { formatFcfa } from "@/lib/format";
-import { isKkiapayEnabled, kkiapayConfig, kkiapayAmount } from "@/lib/kkiapay";
-import { clientTotal, DELIVERY_FEE } from "@/lib/shop";
+import { isKkiapayEnabled, isKkiapaySandbox, kkiapayConfig, kkiapayAmount } from "@/lib/kkiapay";
+import { finalizeOrderTestAction } from "@/app/actions";
+import { clientTotal } from "@/lib/shop";
 
 export const metadata = {
   title: "Paiement",
@@ -79,7 +80,7 @@ export default async function PayPage({
                 {order.event.name} · {order.category?.name}
               </p>
               <p className="mt-1 text-[11px] text-brand-200">
-                Tout compris : billets + livraison {formatFcfa(DELIVERY_FEE)} + frais de service
+                Billets {order.category?.name} × {order.quantity}
               </p>
             </div>
 
@@ -100,9 +101,6 @@ export default async function PayPage({
                       {formatFcfa(kkiapayAmount(order))}
                     </span>
                   </div>
-                  {order.deliveryFee ? (
-                    <p className="mb-3 text-right text-[11px] text-slate-400">dont livraison {formatFcfa(order.deliveryFee)}</p>
-                  ) : null}
                   <KkiapayWidget
                     amount={kkiapayAmount(order)}
                     publicKey={kkiapayConfig().publicKey}
@@ -118,8 +116,25 @@ export default async function PayPage({
                     href={`/acheter/payer/${order.id}`}
                     className="mt-3 block text-center text-xs font-semibold text-brand-600 hover:underline dark:text-brand-400"
                   >
-                    ← Modifier la livraison
+                    ← Modifier la réception
                   </a>
+                  {/* Finalisation de secours — phase de test uniquement (sandbox KKIA).
+                      À retirer au passage en production. */}
+                  {isKkiapaySandbox() && (
+                    <form action={finalizeOrderTestAction} className="mt-4 rounded-xl border border-dashed border-slate-200 bg-slate-50 p-3 text-center dark:border-slate-700 dark:bg-slate-900/60">
+                      <input type="hidden" name="orderId" value={order.id} />
+                      <input type="hidden" name="delivery" value={order.deliveryMethod ?? "WHATSAPP"} />
+                      <p className="text-[11px] text-slate-400">
+                        La fenêtre de paiement ne s&apos;ouvre pas ou le test est bloqué ?
+                      </p>
+                      <button
+                        type="submit"
+                        className="mt-1.5 rounded-lg bg-slate-800 px-3 py-1.5 text-[11px] font-bold text-white transition hover:bg-slate-700 dark:bg-slate-200 dark:text-slate-900 dark:hover:bg-white"
+                      >
+                        Finaliser en mode test
+                      </button>
+                    </form>
+                  )}
                 </div>
               ) : (
                 <PayForm orderId={order.id} phone={order.customerPhone} />
