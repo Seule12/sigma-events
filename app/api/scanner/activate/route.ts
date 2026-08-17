@@ -7,8 +7,9 @@ import { getCurrentUser } from "@/lib/auth";
 import bcrypt from "bcrypt";
 
 // Activation d'un terminal depuis SIGMA Scanner (app mobile, pas de session cookie) :
-// l'agent saisit son téléphone + PIN, puis le code d'activation fourni par l'organisateur.
-// POST /api/scanner/activate  { code: "847291", phone: "97000000", pin: "1234" }
+// l'agent saisit son téléphone + PIN, puis l'identifiant du terminal (ex : T-9281)
+// fourni par l'organisateur (affiché en permanence sur le dashboard).
+// POST /api/scanner/activate  { code: "T-9281", phone: "97000000", pin: "1234" }
 //
 // Anti-bruteforce : le PIN agent (4 chiffres) est vérifié ici par bcrypt — sans
 // garde, un attaquant pourrait énumérer les combinaisons. On limite à 5 échecs
@@ -24,7 +25,7 @@ export async function POST(req: Request) {
   const pin = String(body?.pin ?? "");
 
   if (!code || phone.length < 8 || !pin) {
-    return NextResponse.json({ error: "Code, téléphone et PIN requis." }, { status: 400 });
+    return NextResponse.json({ error: "Identifiant du terminal, téléphone et PIN requis." }, { status: 400 });
   }
 
   // Clé de rate limiting : numéro (échecs de PIN) + IP (défense en profondeur).
@@ -64,7 +65,7 @@ export async function POST(req: Request) {
   const terminal = await activateTerminalWithCode(code, agent.id);
   if (!terminal) {
     return NextResponse.json(
-      { error: "Code d'activation invalide ou expiré (valable 15 minutes)." },
+      { error: "Identifiant du terminal invalide ou déjà activé." },
       { status: 401 }
     );
   }

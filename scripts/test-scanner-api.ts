@@ -105,8 +105,7 @@ async function main() {
     await prisma.eventAgent.create({ data: { eventId: event.id, agentId: agent.id } });
   }
 
-  // 4. Terminal + code d'activation
-  const { generateActivationCode } = await import("../lib/terminal");
+  // 4. Terminal + identifiant d'activation (code T-XXXX, permanent)
   let terminal = await prisma.terminal.findFirst({ where: { eventId: event.id, name: "Porte A — Entrée principale" } });
   if (!terminal) {
     terminal = await prisma.terminal.create({
@@ -116,29 +115,20 @@ async function main() {
         zone: "main",
         code: `T-${Math.floor(1000 + Math.random() * 9000)}`,
         status: "INACTIVE",
-        activationCode: generateActivationCode(),
-        activationCodeExpiresAt: new Date(Date.now() + 15 * 60_000),
       },
     });
   } else {
-    // Le terminal existe déjà (run précédent) : on remet un code d'activation neuf
-    // et on repasse INACTIVE pour pouvoir re-tester l'activation de bout en bout.
+    // Le terminal existe déjà (run précédent) : on repasse INACTIVE pour pouvoir
+    // re-tester l'activation de bout en bout (l'identifiant T-XXXX ne change pas).
     terminal = await prisma.terminal.update({
       where: { id: terminal.id },
-      data: {
-        status: "INACTIVE",
-        token: null,
-        tokenExpiresAt: null,
-        agentId: null,
-        activationCode: generateActivationCode(),
-        activationCodeExpiresAt: new Date(Date.now() + 15 * 60_000),
-      },
+      data: { status: "INACTIVE", token: null, tokenExpiresAt: null, agentId: null },
     });
   }
 
-  const activationCode = terminal.activationCode!;
+  const terminalCode = terminal.code;
   console.log(`  Événement: ${event.name} (${event.id})`);
-  console.log(`  Terminal: ${terminal.code} — code d'activation ${activationCode}`);
+  console.log(`  Terminal: ${terminal.code} — identifiant d'activation ${terminalCode}`);
   console.log(`  Billet: ${TICKET_CODE} — ${ticket.guestName}`);
   console.log(`  Agent: ${agent.name} (${AGENT_PHONE} / ${AGENT_PIN})`);
 
@@ -149,17 +139,17 @@ async function main() {
   check("activation sans code → 400", noCode.status === 400);
 
   // 4.2 Mauvais PIN → 401
-  const badPin = await api("/api/scanner/activate", { method: "POST", body: JSON.stringify({ code: activationCode, phone: AGENT_PHONE, pin: "0000" }) });
+  const badPin = await api("/api/scanner/activate", { method: "POST", body: JSON.stringify({ code: terminalCode, phone: AGENT_PHONE, pin: "0000" }) });
   check("mauvais PIN agent → 401", badPin.status === 401);
 
-  // 4.3 Mauvais code d'activation → 401
-  const badCode = await api("/api/scanner/activate", { method: "POST", body: JSON.stringify({ code: "000000", phone: AGENT_PHONE, pin: AGENT_PIN }) });
-  check("code d'activation invalide → 401", badCode.status === 401);
+  // 4.3 Mauvais identifiant → 401
+  const badCode = await api("/api/scanner/activate", { method: "POST", body: JSON.stringify({ code: "T-0000", phone: AGENT_PHONE, pin: AGENT_PIN }) });
+  check("identifiant invalide → 401", badCode.status === 401);
 
   // 4.4 Activation valide → token + terminal + événement
   const activated = await api("/api/scanner/activate", {
     method: "POST",
-    body: JSON.stringify({ code: activationCode, phone: AGENT_PHONE, pin: AGENT_PIN }),
+    body: JSON.stringify({ code: terminalCode, phone: AGENT_PHONE, pin: AGENT_PIN }),
   });
   check("activation valide → 200", activated.status === 200, `(got ${activated.status})`);
   check("token émis", Boolean(activated.data?.terminal?.token));

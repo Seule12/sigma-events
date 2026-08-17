@@ -1111,16 +1111,16 @@ export default async function EventDetailPage({
           )}
         </div>
 
-        {/* Bandeau code d'activation du terminal (affiché une seule fois) */}
+        {/* Bandeau identifiant du terminal (rappelé après création) */}
         {reveal?.kind === "terminalPin" && (
           <div className="animate-fade-up mb-6 flex items-start gap-3 rounded-2xl border border-brand-200 bg-brand-50 px-5 py-4 text-sm font-semibold text-brand-700 dark:border-brand-900 dark:bg-brand-950 dark:text-brand-300">
             <svg className="mt-0.5 h-5 w-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg>
             <div>
               {terminalRegenerated
-                ? `Code d'activation régénéré pour le terminal « ${reveal.name} ».`
+                ? `Identifiant du terminal « ${reveal.name} ».`
                 : `Terminal « ${reveal.name} » créé.`}
               <span className="mt-1 block text-xs font-normal text-brand-600 dark:text-brand-400">
-                Code d&apos;activation (valable 15 min) : <b className="font-mono text-lg tracking-widest">{reveal.secret}</b> — l&apos;agent le saisit dans SIGMA Scanner. Il ne sera plus jamais affiché.
+                Identifiant du terminal : <b className="font-mono text-lg tracking-widest">{reveal.secret}</b> — l&apos;agent le saisit dans SIGMA Scanner pour activer le terminal.
               </span>
             </div>
           </div>
@@ -1209,7 +1209,7 @@ export default async function EventDetailPage({
 
           {event.terminals.length === 0 ? (
             <div className="border-t border-dashed border-slate-200 p-10 text-center text-sm text-slate-500 dark:border-slate-700 dark:text-slate-400">
-              Aucun terminal. Créez une porte (Porte A, B…) pour générer un code d&apos;activation que l&apos;agent saisit dans l&apos;application SIGMA Scanner.
+              Aucun terminal. Créez une porte (Porte A, B…) — son identifiant (ex : T-9281) sera saisi par l&apos;agent dans l&apos;application SIGMA Scanner pour l&apos;activer.
             </div>
           ) : (
             <div className="grid grid-cols-1 gap-3 p-6 md:grid-cols-2">
@@ -1248,7 +1248,7 @@ export default async function EventDetailPage({
                       {(t.status === TerminalStatus.INACTIVE || t.status === TerminalStatus.DISABLED) && (
                         <form action={regenerateTerminalCodeAction.bind(null, event.id, t.id)}>
                           <button type="submit" className="rounded-lg bg-brand-600 px-2.5 py-1.5 text-[11px] font-bold text-white transition hover:bg-brand-700">
-                            Nouveau code
+                            Rappeler l&apos;identifiant
                           </button>
                         </form>
                       )}

@@ -7,10 +7,11 @@ import { getCurrentUser } from "@/lib/auth";
 import bcrypt from "bcrypt";
 
 // Authentification d'un agent pour l'app SIGMA Scanner (projet de référence) :
-// l'agent fournit téléphone + PIN + code d'activation du terminal (fourni par
-// l'organisateur, valable 15 min). Retourne une session au format AgentSession :
-// identité de l'agent, événement assigné et token API du terminal.
-// POST /api/agents/authenticate  { code: "847291", phone: "97000000", pin: "1234" }
+// l'agent fournit téléphone + PIN + identifiant du terminal (ex : T-9281, fourni
+// par l'organisateur, affiché en permanence sur le dashboard). Retourne une
+// session au format AgentSession : identité de l'agent, événement assigné et
+// token API du terminal.
+// POST /api/agents/authenticate  { code: "T-9281", phone: "97000000", pin: "1234" }
 
 const WINDOW_MS = 10 * 60_000;
 const MAX_FAILURES = 5;
@@ -22,7 +23,7 @@ export async function POST(req: Request) {
   const pin = String(body?.pin ?? "");
 
   if (!code || phone.length < 8 || !pin) {
-    return NextResponse.json({ error: "Code, téléphone et PIN requis." }, { status: 400 });
+    return NextResponse.json({ error: "Identifiant du terminal, téléphone et PIN requis." }, { status: 400 });
   }
 
   // Anti-bruteforce : 5 échecs max par numéro + IP sur 10 min (ne compte que les échecs).
@@ -58,7 +59,7 @@ export async function POST(req: Request) {
   const terminal = await activateTerminalWithCode(code, agent.id);
   if (!terminal) {
     return NextResponse.json(
-      { error: "Code d'activation invalide ou expiré (valable 15 minutes)." },
+      { error: "Identifiant du terminal invalide ou déjà activé." },
       { status: 401 }
     );
   }

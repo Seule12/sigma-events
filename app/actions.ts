@@ -17,7 +17,7 @@ import { issueOtp } from "@/lib/sms";
 import { whatsappInviteLink, emailInviteLink, smsInviteLink, extractTicketCode } from "@/lib/qr";
 import { decryptTicketQr, isEncryptedTicketQr } from "@/lib/ticket-crypto";
 import { createOrder as shopCreateOrder, simulatePayment as shopSimulatePayment, generateSalesSlug, expireStalePendingOrders, MAX_QUANTITY, DEFAULT_EVENT_DURATION_MS, DELIVERY_FEES, clientTotal } from "@/lib/shop";
-import { createTerminal, regenerateActivationCode, generateActivationCode, ACTIVATION_CODE_TTL_MS } from "@/lib/terminal";
+import { createTerminal } from "@/lib/terminal";
 import { publishLiveNotification, publishEventUpdate } from "@/lib/ably";
 import { isRealPaymentEnabled, initiatePayment } from "@/lib/payments";
 import { organizerAvailableBalance, expireStalePendingPayouts, payoutAdminThreshold } from "@/lib/payouts";
@@ -1696,7 +1696,8 @@ export async function resetAgentPinAction(eventId: string, agentId: string) {
 
 // ============ SIGMA SCANNER : TERMINAUX + URGENCE ============
 
-// Crée un terminal (porte) pour l'événement et génère un code d'activation temporaire.
+// Crée un terminal (porte) pour l'événement. L'identifiant T-XXXX affiché sur le
+// dashboard est saisi par l'agent dans SIGMA Scanner pour activer le terminal.
 export async function createTerminalAction(formData: FormData) {
   const user = await requireUser(Role.ORGANIZER);
   const eventId = String(formData.get("eventId") || "");
@@ -1706,21 +1707,19 @@ export async function createTerminalAction(formData: FormData) {
   await requireOwnedEvent(eventId, user.id);
   const terminal = await createTerminal({ eventId, name, zone });
   revalidatePath(`/events/${eventId}`);
-  if (terminal.activationCode) {
-    await stashRevealSecret(eventId, "terminalPin", terminal.activationCode, terminal.name);
-    redirect(`/events/${eventId}?terminalCreated=1`);
-  }
-  redirect(`/events/${eventId}`);
+  await stashRevealSecret(eventId, "terminalPin", terminal.code, terminal.name);
+  redirect(`/events/${eventId}?terminalCreated=1`);
 }
 
-// Régénère le code d'activation d'un terminal (l'ancien expire immédiatement).
+// Rappelle l'identifiant du terminal (le code est permanent — pas de régénération).
 export async function regenerateTerminalCodeAction(eventId: string, terminalId: string) {
   const user = await requireUser(Role.ORGANIZER);
   await requireOwnedEvent(eventId, user.id);
-  const terminal = await regenerateActivationCode(terminalId);
+  const terminal = await prisma.terminal.findUnique({ where: { id: terminalId } });
+  if (!terminal) redirect(`/events/${eventId}`);
   revalidatePath(`/events/${eventId}`);
-  if (terminal.activationCode) {
-    await stashRevealSecret(eventId, "terminalPin", terminal.activationCode, terminal.name);
+  if (terminal.code) {
+    await stashRevealSecret(eventId, "terminalPin", terminal.code, terminal.name);
     redirect(`/events/${eventId}?terminalRegenerated=1`);
   }
   redirect(`/events/${eventId}`);
@@ -1734,21 +1733,16 @@ export async function setTerminalStatusAction(eventId: string, terminalId: strin
     // Révocation : invalide le token pour couper immédiatement le terminal.
     await prisma.terminal.update({
       where: { id: terminalId },
-      data: { status: TerminalStatus.REVOKED, token: null, tokenExpiresAt: null, activationCode: null, activationCodeExpiresAt: null },
+      data: { status: TerminalStatus.REVOKED, token: null, tokenExpiresAt: null },
     });
   } else if (status === TerminalStatus.DISABLED) {
     await prisma.terminal.update({ where: { id: terminalId }, data: { status: TerminalStatus.DISABLED, token: null, tokenExpiresAt: null } });
   } else {
-    // Réactivation : nouveau code d'activation à saisir.
+    // Réactivation : le terminal repasse INACTIVE, l'agent le réactive avec son
+    // identifiant (code T-XXXX, permanent) dans SIGMA Scanner.
     await prisma.terminal.update({
       where: { id: terminalId },
-      data: {
-        status: TerminalStatus.INACTIVE,
-        token: null,
-        tokenExpiresAt: null,
-        activationCode: generateActivationCode(),
-        activationCodeExpiresAt: new Date(Date.now() + ACTIVATION_CODE_TTL_MS),
-      },
+      data: { status: TerminalStatus.INACTIVE, token: null, tokenExpiresAt: null },
     });
   }
   revalidatePath(`/events/${eventId}`);
