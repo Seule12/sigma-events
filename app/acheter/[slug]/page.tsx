@@ -193,7 +193,7 @@ export default async function BuyPage({
         {categories[0] && (
           <p className="mt-6 text-center text-xs text-slate-400">
             Billets à partir de <b>{formatFcfa(categories[0].price)}</b> · Propulsé par{" "}
-            <span className="font-bold text-slate-500 dark:text-slate-400">Sigma Security</span> — Bénin
+            <span className="font-bold text-slate-500 dark:text-slate-400">Sigma Events</span> — Bénin
           </p>
         )}
         <p className="mt-3 text-center">

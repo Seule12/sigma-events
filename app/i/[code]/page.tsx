@@ -5,7 +5,7 @@ import Logo from "@/components/logo";
 import { ticketQrDataUrl } from "@/lib/qr";
 
 export const metadata = {
-  title: "Votre invitation — Sigma Security",
+  title: "Votre invitation — Sigma Events",
 };
 
 // Page publique : l'invité ouvre le lien qu'il a reçu (WhatsApp / email) et voit
@@ -125,7 +125,7 @@ export default async function InvitationPage({ params }: { params: Promise<{ cod
         </div>
 
         <p className="mt-6 text-center text-xs text-slate-400 dark:text-slate-500">
-          Propulsé par <b>Sigma Security</b> — contrôle d&apos;accès événementiel · Bénin
+          Propulsé par <b>Sigma Events</b> — contrôle d&apos;accès événementiel · Bénin
         </p>
       </div>
     </main>

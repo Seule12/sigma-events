@@ -36,7 +36,7 @@ const jetbrainsMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Sigma Security — Contrôle d'accès événementiel",
+  title: "Sigma Events — Billetterie, invitations et contrôle d'accès",
   description:
     "Plateforme de sécurité des biens et des personnes : billets QR, contrôle d'accès temps réel, jauge de capacité.",
   manifest: "/manifest.webmanifest",

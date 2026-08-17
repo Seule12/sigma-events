@@ -7,7 +7,7 @@ import { displayPhone } from "@/lib/format";
 import { isRateLimited } from "@/lib/rate-limit";
 
 export const metadata = {
-  title: "Retrouver mon billet — Sigma Security",
+  title: "Retrouver mon billet — Sigma Events",
 };
 
 export default async function FindTicketPage({
@@ -196,7 +196,7 @@ export default async function FindTicketPage({
         </div>
 
         <p className="mt-6 text-center text-xs text-slate-400">
-          Propulsé par <span className="font-bold text-slate-500 dark:text-slate-400">Sigma Security</span> — Bénin
+          Propulsé par <span className="font-bold text-slate-500 dark:text-slate-400">Sigma Events</span> — Bénin
         </p>
       </div>
     </main>

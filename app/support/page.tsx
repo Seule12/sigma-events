@@ -4,7 +4,7 @@ import { Role } from "@/app/generated/prisma/enums";
 import Sidebar from "@/components/sidebar";
 
 export const metadata = {
-  title: "Aide & Support — Sigma Security",
+  title: "Aide & Support — Sigma Events",
 };
 
 const FAQS = [
@@ -18,7 +18,7 @@ const FAQS = [
   },
   {
     question: "Qu'est-ce que la commission Sigma ?",
-    answer: "Sigma Security prélève une commission fixe sur chaque billet vendu via notre plateforme pour couvrir les frais de transaction et la maintenance du service.",
+    answer: "Sigma Events prélève une commission fixe sur chaque billet vendu via notre plateforme pour couvrir les frais de transaction et la maintenance du service.",
   },
   {
     question: "Comment importer mes invités ?",

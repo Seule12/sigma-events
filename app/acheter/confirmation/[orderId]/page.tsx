@@ -247,7 +247,7 @@ export default async function ConfirmationPage({
         {/* Pied de page */}
         <div className="mt-10 text-center">
           <p className="text-xs text-slate-400">
-            Propulsé par <span className="font-bold text-slate-500 dark:text-slate-400">Sigma Security</span> — Bénin
+            Propulsé par <span className="font-bold text-slate-500 dark:text-slate-400">Sigma Events</span> — Bénin
           </p>
           <p className="mt-1 text-[11px] text-slate-300 dark:text-slate-600">
             Lien de vente : {purchaseUrl(order.event.salesSlug ?? "")}

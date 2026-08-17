@@ -18,7 +18,7 @@ function calendarLink(event: { name: string; location: string; date: Date; endDa
     action: "TEMPLATE",
     text: event.name,
     dates: `${fmt(start)}/${fmt(end)}`,
-    details: "Billet officiel Sigma Security — présentez le QR code à l'entrée.",
+    details: "Billet officiel Sigma Events — présentez le QR code à l'entrée.",
     location: event.location,
   });
   return `https://calendar.google.com/calendar/render?${params.toString()}`;
@@ -130,7 +130,7 @@ export default async function TicketPage({
         </div>
 
         <p className="mt-5 text-center text-xs text-slate-400 dark:text-slate-500">
-          Propulsé par <span className="font-bold text-slate-500 dark:text-slate-400">Sigma Security</span> — Bénin
+          Propulsé par <span className="font-bold text-slate-500 dark:text-slate-400">Sigma Events</span> — Bénin
         </p>
       </div>
     </main>
