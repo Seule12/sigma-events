@@ -7,7 +7,7 @@ import Sidebar from "@/components/sidebar";
 import SettingsForms from "@/components/settings-forms";
 
 export const metadata = {
-  title: "Mon Profil — Sigma Security",
+  title: "Mon Profil — Sigma Events",
 };
 
 export default async function ProfilePage({

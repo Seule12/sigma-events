@@ -1,4 +1,4 @@
-// Sigma Security — Service Worker (PWA)
+// Sigma Events — Service Worker (PWA)
 // Objectif : rendre l'application installable et utilisable sans réseau
 // (l'app de scan se charge hors-ligne si déjà visitée ; les scans sont
 // mis en file d'attente par l'application puis synchronisés à la reconnexion).

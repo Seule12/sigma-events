@@ -1,4 +1,4 @@
-// Sigma Security — Modèle de données
+// Sigma Events — Modèle de données
 // Plateforme de contrôle d'accès et de sécurité événementielle
 
 generator client {

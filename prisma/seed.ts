@@ -32,7 +32,7 @@ function hashPin(pin: string): string {
 }
 
 async function main() {
-  console.log("🌱 Seed Sigma Security...");
+  console.log("🌱 Seed Sigma Events...");
 
   // Super admin (plateforme)
   await prisma.user.upsert({

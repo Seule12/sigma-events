@@ -1,4 +1,4 @@
-# 🛡️ Sigma Security — Contrôle d'accès événementiel
+# 🎟️ Sigma Events — Billetterie, invitations & contrôle d'accès
 
 Plateforme SaaS **mobile-first** de sécurité des biens et des personnes au Bénin.
 Ce MVP couvre le **module événementiel** : billets à QR code, contrôle d'accès en
@@ -257,7 +257,7 @@ Le MVP embarque deux services de messagerie, déjà branchés :
 # ABLY_API_KEY=<clé racine Ably>
 # CLOUDAMQP_URL=amqps://user:pass@host/vhost
 # RESEND_API_KEY=re_…            (resend.com → API Keys)
-# EMAIL_FROM="Sigma Security <sigma@votre-domaine.com>"  (domaine vérifié sur Resend)
+# EMAIL_FROM="Sigma Events <sigma@votre-domaine.com>"  (domaine vérifié sur Resend)
 
 # Lancer le worker d'emails (en production, un process dédié / PM2 / Docker) :
 npm run worker

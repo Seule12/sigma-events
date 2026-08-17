@@ -64,11 +64,11 @@ export async function sendWhatsApp(input: { to: string; text: string }): Promise
 
 /** Message de livraison du billet (template texte — à migrer vers un template approuvé). */
 export function ticketMessage(eventName: string, guestName: string, ticketUrl: string): string {
-  return `SIGMA — ${eventName}\n\nBonjour ${guestName},\nVoici votre billet d'entrée :\n${ticketUrl}\n\nPrésentez le QR code à l'entrée. Un seul scan autorisé.\n— Sigma Security`;
+  return `SIGMA — ${eventName}\n\nBonjour ${guestName},\nVoici votre billet d'entrée :\n${ticketUrl}\n\nPrésentez le QR code à l'entrée. Un seul scan autorisé.\n— Sigma Events`;
 }
 
 /** Message de livraison d'une invitation nominative. */
 export function inviteMessage(eventName: string, guestName: string, inviteUrl: string, guestCount = 1): string {
   const people = guestCount > 1 ? `\n${guestCount} personnes autorisées` : "";
-  return `SIGMA — ${eventName}\n\nBonjour ${guestName},${people}\nVoici votre invitation :\n${inviteUrl}\n— Sigma Security`;
+  return `SIGMA — ${eventName}\n\nBonjour ${guestName},${people}\nVoici votre invitation :\n${inviteUrl}\n— Sigma Events`;
 }

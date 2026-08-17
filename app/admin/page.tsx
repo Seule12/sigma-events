@@ -7,7 +7,7 @@ import { formatFcfa } from "@/lib/format";
 import { expireStalePendingOrders } from "@/lib/shop";
 
 export const metadata = {
-  title: "Admin — Sigma Security",
+  title: "Admin — Sigma Events",
 };
 
 export default async function AdminDashboardPage() {
@@ -72,7 +72,7 @@ export default async function AdminDashboardPage() {
             Vue d&apos;ensemble de la plateforme
           </h1>
           <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-            Bienvenue, {admin.name.split(" ")[0]} — tous les chiffres de Sigma Security.
+            Bienvenue, {admin.name.split(" ")[0]} — tous les chiffres de Sigma Events.
           </p>
         </div>
 

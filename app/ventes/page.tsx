@@ -7,7 +7,7 @@ import { formatFcfa } from "@/lib/format";
 import { expireStalePendingOrders } from "@/lib/shop";
 
 export const metadata = {
-  title: "Mes Ventes — Sigma Security",
+  title: "Mes Ventes — Sigma Events",
 };
 
 export default async function SalesPage() {

@@ -10,7 +10,7 @@ import { MOMO_NETWORKS } from "@/lib/momo";
 import { requestPayoutAction, confirmPayoutOtpAction } from "@/app/actions";
 
 export const metadata = {
-  title: "Transactions — Sigma Security",
+  title: "Transactions — Sigma Events",
 };
 
 const STATUS_LABEL: Record<string, { label: string; cls: string }> = {

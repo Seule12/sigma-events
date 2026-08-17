@@ -3,7 +3,7 @@ import { requireUser } from "@/lib/auth";
 import { Role } from "@/app/generated/prisma/enums";
 
 export const metadata = {
-  title: "Espace agence — Sigma Security",
+  title: "Espace agence — Sigma Events",
 };
 
 // Les profils de compte ont été uniformisés (plus de type Pro / Organisation) :

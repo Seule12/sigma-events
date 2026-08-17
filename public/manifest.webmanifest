@@ -1,6 +1,6 @@
 {
   "id": "/",
-  "name": "Sigma Security — Contrôle d'accès",
+  "name": "Sigma Events — Billetterie & contrôle d'accès",
   "short_name": "Sigma",
   "description": "Contrôle d'accès événementiel : billets QR, scan en temps réel, jauge de capacité.",
   "lang": "fr",

@@ -7,7 +7,7 @@ import { formatFcfa } from "@/lib/format";
 import { expireStalePendingOrders } from "@/lib/shop";
 
 export const metadata = {
-  title: "Notifications — Sigma Security",
+  title: "Notifications — Sigma Events",
 };
 
 export default async function NotificationsPage() {

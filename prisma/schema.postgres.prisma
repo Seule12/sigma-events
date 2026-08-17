@@ -3,7 +3,7 @@
 // Généré automatiquement depuis prisma/schema.prisma par
 // scripts/sync-postgres-schema.mjs — NE PAS modifier à la main.
 // ============================================================
-// Sigma Security — Modèle de données
+// Sigma Events — Modèle de données
 // Plateforme de contrôle d'accès et de sécurité événementielle
 
 generator client {

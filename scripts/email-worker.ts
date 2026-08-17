@@ -26,7 +26,7 @@ class EmailSendError extends Error {
 // ===== Transport Resend =====
 const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
 const EMAIL_FROM =
-  process.env.EMAIL_FROM || "Sigma Security <sigma@sigma-security.bj>";
+  process.env.EMAIL_FROM || "Sigma Events <sigma@sigma-events.bj>";
 
 /** Vrai si la chaîne ressemble à une adresse email (sinon : SMS / téléphone). */
 function isEmailAddress(to: string): boolean {
@@ -47,7 +47,7 @@ function otpHtml(name: string, code: string): string {
     <p style="text-align:center;font-size:32px;letter-spacing:8px;font-weight:800;color:#047857;margin:16px 0">${code}</p>
     <p style="color:#94a3b8;font-size:12px">Ce code expire dans 10 minutes. Ne le partagez avec personne.</p>
   </div>
-  <div style="padding:16px;text-align:center;color:#64748b;font-size:11px">© 2026 Sigma Security Bénin — Tous droits réservés</div>
+  <div style="padding:16px;text-align:center;color:#64748b;font-size:11px">© 2026 Sigma Events Bénin — Tous droits réservés</div>
 </div>`;
 }
 
@@ -73,7 +73,7 @@ function ticketHtml(job: Extract<EmailJob, { type: "ticket" | "invoice" }>): str
     ${job.ticketUrl ? `<p style="text-align:center;margin:16px 0"><a href="${job.ticketUrl}" style="background:#047857;color:#fff;text-decoration:none;padding:12px 24px;border-radius:12px;font-weight:700">VOIR MON BILLET</a></p>` : ""}
     <p style="color:#94a3b8;font-size:12px">Présentez votre QR code à l'entrée. Un seul scan autorisé.</p>
   </div>
-  <div style="padding:16px;text-align:center;color:#64748b;font-size:11px">© 2026 Sigma Security Bénin — Tous droits réservés</div>
+  <div style="padding:16px;text-align:center;color:#64748b;font-size:11px">© 2026 Sigma Events Bénin — Tous droits réservés</div>
 </div>`;
 }
 

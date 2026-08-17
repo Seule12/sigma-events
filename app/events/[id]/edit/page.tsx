@@ -9,7 +9,7 @@ import { updateEventAction } from "@/app/actions";
 import { formatFcfa } from "@/lib/format";
 
 export const metadata = {
-  title: "Modifier l'événement — Sigma Security",
+  title: "Modifier l'événement — Sigma Events",
 };
 
 // Convertit une date en valeur pour <input type="datetime-local"> (heure locale).

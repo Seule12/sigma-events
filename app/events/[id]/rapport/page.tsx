@@ -172,7 +172,7 @@ export default async function EventReportPage({
         </div>
 
         <p className="mt-6 text-center text-xs text-slate-400 print:mt-10">
-          Rapport généré par Sigma Security — {new Date().toLocaleDateString("fr-FR", { dateStyle: "long" })}
+          Rapport généré par Sigma Events — {new Date().toLocaleDateString("fr-FR", { dateStyle: "long" })}
         </p>
       </main>
     </div>

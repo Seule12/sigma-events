@@ -9,7 +9,7 @@ import TicketCard from "@/components/ticket-card";
 import { TicketPngButton, TicketPngExport } from "@/components/ticket-png-export";
 
 export const metadata = {
-  title: "Exporter les billets — Sigma Security",
+  title: "Exporter les billets — Sigma Events",
 };
 
 export default async function EventTicketsPrintPage({

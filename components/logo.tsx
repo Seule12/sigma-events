@@ -11,7 +11,7 @@ export default function Logo({ height = 36, className = "" }: LogoProps) {
   return (
     <Image
       src="/sigma-logo.png"
-      alt="Sigma Security"
+      alt="Sigma Events"
       width={677}
       height={369}
       priority
