@@ -234,7 +234,7 @@ export default async function EventDetailPage({
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950">
       <RevealConsumer />
-      <Sidebar events={sidebarEvents} activeEventId={event.id} userName={user.name} isPro={user.profileType === "PRO"} />
+      <Sidebar events={sidebarEvents} activeEventId={event.id} userName={user.name} />
       <div className="lg:pl-[var(--sidebar-w)]">
       <main className="mx-auto max-w-6xl px-4 py-8 pt-20 sm:px-6 lg:pt-8">
         {/* Bandeaux d'information */}

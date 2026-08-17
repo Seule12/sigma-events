@@ -65,7 +65,7 @@ export default async function DashboardPage({
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950">
-      <Sidebar events={sidebarEvents} userName={user.name} isPro={user.profileType === "PRO"} />
+      <Sidebar events={sidebarEvents} userName={user.name} />
 
       <div className="lg:pl-[var(--sidebar-w)]">
         <main className="mx-auto max-w-6xl px-4 py-10 pt-24 sm:px-6 lg:pt-12">
