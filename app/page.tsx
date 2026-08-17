@@ -15,56 +15,56 @@ const FEATURES = [
     icon: (
       <svg className="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" /><path d="M3 6h18" /><path d="M16 10a4 4 0 0 1-8 0" /></svg>
     ),
-    title: "🛍️ Boutique en ligne",
+    title: "Boutique en ligne",
     desc: "Créez une page dédiée à votre événement et partagez-la facilement sur WhatsApp, Facebook ou ailleurs. Vos clients choisissent leur billet et effectuent leur paiement directement depuis leur téléphone.",
   },
   {
     icon: (
       <svg className="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="6" width="20" height="12" rx="2" /><circle cx="12" cy="12" r="2" /><path d="M6 12h.01M18 12h.01" /></svg>
     ),
-    title: "💳 Paiement Mobile Money",
+    title: "Paiement Mobile Money",
     desc: "Acceptez les paiements avec MTN MoMo, Moov Money et Celtiis Cash. Le paiement est associé automatiquement à la commande du participant.",
   },
   {
     icon: (
       <svg className="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z" /><path d="M13 5v2M13 17v2M13 11v2" /></svg>
     ),
-    title: "🎟️ Billets QR sécurisés",
+    title: "Billets QR sécurisés",
     desc: "Chaque billet possède un QR code unique. Après paiement, le participant reçoit automatiquement son billet. Le QR code est vérifié lors de l'entrée afin d'empêcher les doublons et les utilisations frauduleuses.",
   },
   {
     icon: (
       <svg className="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" /></svg>
     ),
-    title: "👥 Invitations privées",
+    title: "Invitations privées",
     desc: "Particulièrement important pour les mariages, cérémonies, anniversaires, événements familiaux et professionnels privés. Créez votre liste d'invités, envoyez des invitations nominatives et contrôlez précisément qui est autorisé à entrer.",
   },
   {
     icon: (
       <svg className="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" /></svg>
     ),
-    title: "➕ Gestion des accompagnateurs",
+    title: "Gestion des accompagnateurs",
     desc: "Associez un nombre défini d'accompagnateurs à chaque invitation. Exemple : invitation Aymeric AKPO, accompagnateurs autorisés +2, soit 3 entrées au total. Le système empêche toute utilisation au-delà du nombre autorisé.",
   },
   {
     icon: (
       <svg className="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" /><path d="M12 18h.01" /></svg>
     ),
-    title: "🔐 Contrôle des entrées",
+    title: "Contrôle des entrées",
     desc: "Vos agents scannent les QR codes avec l'application de contrôle. Le système répond immédiatement : ✓ Billet valide, ✕ Billet déjà utilisé ou ✕ Billet invalide — en un seul scan.",
   },
   {
     icon: (
       <svg className="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 1l5 5M21 21l-5-5M17 7l-4-4a2 2 0 0 0-3 0L5 8a2 2 0 0 0 0 3l4 4a2 2 0 0 0 3 0l5-5a2 2 0 0 0 0-3z" /><path d="M8 5l11 11M5 8l11 11" /></svg>
     ),
-    title: "📡 Contrôle hors connexion",
+    title: "Contrôle hors connexion",
     desc: "Même sans connexion Internet, vos agents continuent à contrôler les billets. Les contrôles sont enregistrés localement puis synchronisés dès que la connexion revient.",
   },
   {
     icon: (
       <svg className="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 3v18h18" /><path d="M18 17V9M13 17V5M8 17v-3" /></svg>
     ),
-    title: "📊 Tableau de bord",
+    title: "Tableau de bord",
     desc: "Suivez en temps réel : billets vendus, revenus, invitations envoyées et acceptées, billets contrôlés, participants présents, performance des ventes et statistiques par type de billet.",
   },
 ];
@@ -247,7 +247,7 @@ export default async function Home() {
               href="/login"
               className="rounded-xl border border-slate-200 px-4 py-2 text-sm font-bold text-slate-700 transition hover:border-brand-500 hover:text-brand-600 dark:border-slate-700 dark:text-slate-300"
             >
-              J&apos;ai déjà un compte
+              Accéder à mon espace
             </Link>
             <Link
               href="/register"
@@ -275,18 +275,18 @@ export default async function Home() {
 
         <div className="relative mx-auto grid max-w-6xl grid-cols-1 items-center gap-14 px-4 py-16 sm:px-6 lg:grid-cols-2 lg:gap-16 lg:py-24">
           {/* Colonne gauche : présentation */}
-          <div>
-            <h1 className="mt-6 text-4xl font-extrabold leading-[1.08] tracking-tight sm:text-5xl lg:text-[3.2rem]">
+          <div className="text-center">
+            <h1 className="mx-auto mt-6 max-w-2xl text-4xl font-extrabold leading-[1.08] tracking-tight sm:text-5xl lg:text-[3.2rem]">
               Vendez vos billets. Gérez vos invités.{" "}
               <span className="bg-gradient-to-r from-brand-400 via-emerald-300 to-emerald-400 bg-clip-text text-transparent">
                 Contrôlez les entrées.
               </span>
             </h1>
-            <p className="mt-6 max-w-xl text-base leading-relaxed text-slate-400">
+            <p className="mx-auto mt-6 max-w-xl text-base leading-relaxed text-slate-400">
               Une seule plateforme pour gérer votre événement de la vente du billet jusqu&apos;au contrôle à l&apos;entrée.
             </p>
 
-            <div className="mt-10 flex flex-wrap items-center gap-3">
+            <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
               <Link
                 href="/register"
                 className="group inline-flex items-center gap-2 rounded-2xl bg-gradient-to-r from-brand-600 to-brand-700 px-7 py-3.5 text-base font-bold text-white shadow-xl shadow-brand-600/40 transition hover:-translate-y-0.5 hover:shadow-2xl hover:shadow-brand-600/50"
@@ -298,26 +298,31 @@ export default async function Home() {
                 href="/login"
                 className="rounded-2xl border border-white/15 px-7 py-3.5 text-base font-bold text-slate-200 transition hover:border-brand-500/60 hover:bg-white/5 hover:text-brand-300"
               >
-                J&apos;ai déjà un compte
+                Accéder à mon espace
               </Link>
             </div>
 
             {/* Arguments rapides (brief §2) */}
-            <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-2 text-xs font-semibold text-slate-500">
+            <div className="mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-3 text-xs font-semibold text-slate-500">
               <span className="flex items-center gap-1.5">
-                <span className="text-base leading-none">🎟️</span> Billets et invitations QR
+                <svg className="h-4 w-4 text-brand-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z" /><path d="M13 5v2M13 17v2M13 11v2" /></svg>
+                Billets et invitations QR
               </span>
               <span className="flex items-center gap-1.5">
-                <span className="text-base leading-none">📱</span> Paiement Mobile Money
+                <svg className="h-4 w-4 text-brand-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" /><path d="M12 18h.01" /></svg>
+                Paiement Mobile Money
               </span>
               <span className="flex items-center gap-1.5">
-                <span className="text-base leading-none">👥</span> Gestion des invités
+                <svg className="h-4 w-4 text-brand-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" /></svg>
+                Gestion des invités
               </span>
               <span className="flex items-center gap-1.5">
-                <span className="text-base leading-none">🔐</span> Contrôle sécurisé des entrées
+                <svg className="h-4 w-4 text-brand-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg>
+                Contrôle sécurisé des entrées
               </span>
               <span className="flex items-center gap-1.5">
-                <span className="text-base leading-none">📊</span> Suivi des ventes en temps réel
+                <svg className="h-4 w-4 text-brand-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 3v18h18" /><path d="M18 17V9M13 17V5M8 17v-3" /></svg>
+                Suivi des ventes en temps réel
               </span>
             </div>
           </div>
@@ -406,7 +411,10 @@ export default async function Home() {
                 key={f.title}
                 className="group rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:border-brand-300 hover:shadow-xl dark:border-slate-800 dark:bg-slate-900 dark:hover:border-brand-800"
               >
-                <h3 className="text-base font-extrabold text-slate-900 dark:text-white">{f.title}</h3>
+                <div className="grid h-12 w-12 place-items-center rounded-xl bg-gradient-to-br from-brand-50 to-emerald-50 text-brand-600 transition group-hover:scale-110 group-hover:from-brand-600 group-hover:to-brand-700 group-hover:text-white dark:from-brand-950 dark:to-slate-800 dark:text-brand-400">
+                  {f.icon}
+                </div>
+                <h3 className="mt-4 text-base font-extrabold text-slate-900 dark:text-white">{f.title}</h3>
                 <p className="mt-1.5 text-sm leading-relaxed text-slate-500 dark:text-slate-400">{f.desc}</p>
               </div>
             ))}
@@ -452,11 +460,11 @@ export default async function Home() {
             <p className="text-xs font-bold uppercase tracking-widest text-emerald-600 dark:text-emerald-400">Offre gratuite</p>
             <p className="mt-3 text-2xl font-extrabold text-slate-900 dark:text-white">0 FCFA</p>
             <ul className="mt-4 space-y-2 text-sm text-slate-500 dark:text-slate-400">
-              <li className="flex items-start gap-2"><span className="text-emerald-500">✓</span> Création de compte et d&apos;événements</li>
-              <li className="flex items-start gap-2"><span className="text-emerald-500">✓</span> Billets &amp; invitations QR</li>
-              <li className="flex items-start gap-2"><span className="text-emerald-500">✓</span> Contrôle des entrées</li>
-              <li className="flex items-start gap-2"><span className="text-emerald-500">✓</span> Gestion des agents</li>
-              <li className="flex items-start gap-2"><span className="text-emerald-500">✓</span> Statistiques et rapports</li>
+              <li className="flex items-start gap-2"><svg className="mt-0.5 h-4 w-4 shrink-0 text-emerald-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6L9 17l-5-5" /></svg> Création de compte et d&apos;événements</li>
+              <li className="flex items-start gap-2"><svg className="mt-0.5 h-4 w-4 shrink-0 text-emerald-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6L9 17l-5-5" /></svg> Billets &amp; invitations QR</li>
+              <li className="flex items-start gap-2"><svg className="mt-0.5 h-4 w-4 shrink-0 text-emerald-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6L9 17l-5-5" /></svg> Contrôle des entrées</li>
+              <li className="flex items-start gap-2"><svg className="mt-0.5 h-4 w-4 shrink-0 text-emerald-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6L9 17l-5-5" /></svg> Gestion des agents</li>
+              <li className="flex items-start gap-2"><svg className="mt-0.5 h-4 w-4 shrink-0 text-emerald-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6L9 17l-5-5" /></svg> Statistiques et rapports</li>
             </ul>
           </div>
           <div className="relative rounded-3xl border-2 border-brand-600 bg-gradient-to-br from-brand-700 to-brand-900 p-7 text-white shadow-2xl shadow-brand-600/30">
@@ -467,18 +475,18 @@ export default async function Home() {
             <p className="mt-3 text-2xl font-extrabold">3 %</p>
             <p className="mt-1 text-sm text-brand-100">sur chaque billet vendu</p>
             <ul className="mt-4 space-y-2 text-sm text-brand-100">
-              <li className="flex items-start gap-2"><span>✓</span> Rien à payer d&apos;avance</li>
-              <li className="flex items-start gap-2"><span>✓</span> Reversement détaillé sur votre espace organisateur</li>
-              <li className="flex items-start gap-2"><span>✓</span> Taux adaptable selon votre volume</li>
+              <li className="flex items-start gap-2"><svg className="mt-0.5 h-4 w-4 shrink-0 text-emerald-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6L9 17l-5-5" /></svg> Rien à payer d&apos;avance</li>
+              <li className="flex items-start gap-2"><svg className="mt-0.5 h-4 w-4 shrink-0 text-emerald-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6L9 17l-5-5" /></svg> Reversement détaillé sur votre espace organisateur</li>
+              <li className="flex items-start gap-2"><svg className="mt-0.5 h-4 w-4 shrink-0 text-emerald-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6L9 17l-5-5" /></svg> Taux adaptable selon votre volume</li>
             </ul>
           </div>
           <div className="rounded-3xl border border-slate-200 bg-white p-7 shadow-sm dark:border-slate-800 dark:bg-slate-900">
             <p className="text-xs font-bold uppercase tracking-widest text-sky-600 dark:text-sky-400">Réception du billet</p>
             <p className="mt-3 text-2xl font-extrabold text-slate-900 dark:text-white">Au choix du client</p>
             <ul className="mt-4 space-y-2 text-sm text-slate-500 dark:text-slate-400">
-              <li className="flex items-start gap-2"><span className="text-sky-500">✓</span> Téléchargement direct</li>
-              <li className="flex items-start gap-2"><span className="text-sky-500">✓</span> Par email</li>
-              <li className="flex items-start gap-2"><span className="text-sky-500">✓</span> Sur WhatsApp</li>
+              <li className="flex items-start gap-2"><svg className="mt-0.5 h-4 w-4 shrink-0 text-sky-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6L9 17l-5-5" /></svg> Téléchargement direct</li>
+              <li className="flex items-start gap-2"><svg className="mt-0.5 h-4 w-4 shrink-0 text-sky-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6L9 17l-5-5" /></svg> Par email</li>
+              <li className="flex items-start gap-2"><svg className="mt-0.5 h-4 w-4 shrink-0 text-sky-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6L9 17l-5-5" /></svg> Sur WhatsApp</li>
             </ul>
           </div>
         </div>
@@ -542,7 +550,7 @@ export default async function Home() {
               href="/login"
               className="rounded-2xl border border-white/30 px-7 py-3.5 text-base font-bold text-white transition hover:bg-white/10"
             >
-              J&apos;ai déjà un compte
+              Accéder à mon espace
             </Link>
           </div>
         </div>
