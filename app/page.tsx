@@ -168,7 +168,7 @@ function DecorQr({ className = "" }: { className?: string }) {
 // Maquette produit du héro : billet QR + toasts de notifications flottants.
 function HeroMockup({ className = "" }: { className?: string }) {
   return (
-    <div className={`relative mx-auto mt-12 w-full max-w-sm ${className}`} aria-hidden="true">
+    <div className={`relative mx-auto mt-8 w-full max-w-xs sm:mt-12 sm:max-w-sm ${className}`} aria-hidden="true">
       {/* Toast : paiement reçu */}
       <div className="animate-float absolute -left-3 -top-6 z-20 flex items-center gap-3 rounded-2xl border border-white/10 bg-slate-900/90 px-4 py-3 shadow-2xl shadow-black/40 backdrop-blur sm:-left-10">
         <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-emerald-500/20 text-emerald-400">
@@ -263,7 +263,7 @@ export default async function Home() {
               href="/register"
               className="rounded-xl bg-gradient-to-r from-brand-600 to-brand-700 px-4 py-2 text-sm font-bold text-white shadow-lg shadow-brand-600/30 transition hover:-translate-y-0.5"
             >
-              Créer mon événement gratuitement
+              Créer mon événement
             </Link>
           </div>
         </div>
@@ -283,7 +283,7 @@ export default async function Home() {
         <div className="pointer-events-none absolute -top-32 left-1/2 h-96 w-[60rem] -translate-x-1/2 rounded-full bg-brand-600/20 blur-3xl" />
         <div className="pointer-events-none absolute -bottom-40 -left-32 h-96 w-96 rounded-full bg-emerald-500/10 blur-3xl" />
 
-        <div className="relative mx-auto grid max-w-6xl grid-cols-1 items-center gap-14 px-4 py-16 sm:px-6 lg:grid-cols-2 lg:gap-16 lg:py-24">
+        <div className="relative mx-auto grid max-w-6xl grid-cols-1 items-center gap-8 px-4 py-10 sm:px-6 sm:py-14 lg:grid-cols-2 lg:gap-16 lg:py-24">
           {/* Colonne gauche : présentation */}
           <div className="text-center">
             <h1 className="mx-auto mt-6 max-w-2xl text-4xl font-extrabold leading-[1.08] tracking-tight sm:text-5xl lg:text-[3.2rem]">
@@ -296,12 +296,12 @@ export default async function Home() {
               Une seule plateforme pour gérer votre événement de la vente du billet jusqu&apos;au contrôle à l&apos;entrée.
             </p>
 
-            <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
+            <div className="mt-8 flex flex-wrap items-center justify-center gap-3 sm:mt-10">
               <Link
                 href="/register"
                 className="group inline-flex items-center gap-2 rounded-2xl bg-gradient-to-r from-brand-600 to-brand-700 px-7 py-3.5 text-base font-bold text-white shadow-xl shadow-brand-600/40 transition hover:-translate-y-0.5 hover:shadow-2xl hover:shadow-brand-600/50"
               >
-                Créer mon événement gratuitement
+                Créer mon événement
                 <svg className="h-4 w-4 transition-transform group-hover:translate-x-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
               </Link>
               <Link
@@ -345,7 +345,7 @@ export default async function Home() {
       </section>
 
       {/* ===== Le paiement en avant (brief §3) ===== */}
-      <section id="paiement" className="border-y border-slate-100 bg-slate-50 py-20 dark:border-slate-800 dark:bg-slate-900/40">
+      <section id="paiement" className="border-y border-slate-100 bg-slate-50 py-14 dark:border-slate-800 dark:bg-slate-900/40 sm:py-20">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
           <div className="mx-auto max-w-2xl text-center">
             <p className="text-xs font-bold uppercase tracking-widest text-slate-400">Paiement Mobile Money</p>
@@ -378,7 +378,7 @@ export default async function Home() {
       </section>
 
       {/* ===== Réseaux mobile money (brief §4) ===== */}
-      <section className="py-20">
+      <section className="py-14 sm:py-20">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
           <div className="mx-auto max-w-xl text-center">
             <p className="text-xs font-bold uppercase tracking-widest text-slate-400">
@@ -388,7 +388,7 @@ export default async function Home() {
               Pas besoin de leur demander de créer un nouveau compte ou d&apos;utiliser une méthode de paiement compliquée.
             </p>
           </div>
-          <div className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3">
+          <div className="mt-8 grid grid-cols-2 gap-4 sm:mt-10 sm:grid-cols-3">
             {MOMO_NETWORKS.map((n) => (
               <div
                 key={n.id}
@@ -405,7 +405,7 @@ export default async function Home() {
       </section>
 
       {/* ===== Fonctionnalités (brief §5) ===== */}
-      <section id="fonctionnalites" className="border-y border-slate-100 bg-slate-50 py-24 dark:border-slate-800 dark:bg-slate-900/40">
+      <section id="fonctionnalites" className="border-y border-slate-100 bg-slate-50 py-14 dark:border-slate-800 dark:bg-slate-900/40 sm:py-24">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
           <div className="mx-auto max-w-2xl text-center">
             <h2 className="text-3xl font-extrabold tracking-tight sm:text-4xl">
@@ -415,17 +415,17 @@ export default async function Home() {
               SIGMA EVENTS vous accompagne de la création de l&apos;événement au contrôle des entrées.
             </p>
           </div>
-          <div className="mt-14 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-8 grid grid-cols-2 gap-4 sm:mt-14 sm:grid-cols-2 lg:grid-cols-3 lg:gap-5">
             {FEATURES.map((f) => (
               <div
                 key={f.title}
-                className="group rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:border-brand-300 hover:shadow-xl dark:border-slate-800 dark:bg-slate-900 dark:hover:border-brand-800"
+                className="group rounded-2xl border border-slate-200 bg-white p-4 shadow-sm transition hover:-translate-y-1 hover:border-brand-300 hover:shadow-xl dark:border-slate-800 dark:bg-slate-900 dark:hover:border-brand-800 sm:p-6"
               >
-                <div className="grid h-12 w-12 place-items-center rounded-xl bg-gradient-to-br from-brand-50 to-emerald-50 text-brand-600 transition group-hover:scale-110 group-hover:from-brand-600 group-hover:to-brand-700 group-hover:text-white dark:from-brand-950 dark:to-slate-800 dark:text-brand-400">
+                <div className="grid h-10 w-10 place-items-center rounded-xl bg-gradient-to-br from-brand-50 to-emerald-50 text-brand-600 transition group-hover:scale-110 group-hover:from-brand-600 group-hover:to-brand-700 group-hover:text-white dark:from-brand-950 dark:to-slate-800 dark:text-brand-400 sm:h-12 sm:w-12">
                   {f.icon}
                 </div>
-                <h3 className="mt-4 text-base font-extrabold text-slate-900 dark:text-white">{f.title}</h3>
-                <p className="mt-1.5 text-sm leading-relaxed text-slate-500 dark:text-slate-400">{f.desc}</p>
+                <h3 className="mt-3 text-sm font-extrabold text-slate-900 dark:text-white sm:mt-4 sm:text-base">{f.title}</h3>
+                <p className="mt-1 text-[13px] leading-relaxed text-slate-500 dark:text-slate-400 sm:mt-1.5 sm:text-sm">{f.desc}</p>
               </div>
             ))}
           </div>
@@ -433,7 +433,7 @@ export default async function Home() {
       </section>
 
       {/* ===== Le parcours est simple (brief §6) ===== */}
-      <section id="parcours" className="bg-slate-950 py-24 text-white">
+      <section id="parcours" className="bg-slate-950 py-14 text-white sm:py-24">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
           <div className="mx-auto max-w-2xl text-center">
             <h2 className="text-3xl font-extrabold tracking-tight sm:text-4xl">Le parcours est simple</h2>
@@ -441,15 +441,15 @@ export default async function Home() {
               CRÉER <span className="text-brand-400">↓</span> PARTAGER <span className="text-brand-400">↓</span> VENDRE <span className="text-brand-400">↓</span> CONTRÔLER
             </p>
           </div>
-          <div className="relative mt-14 grid grid-cols-1 gap-6 md:grid-cols-4">
+          <div className="relative mt-8 grid grid-cols-2 gap-4 md:mt-14 md:grid-cols-4 md:gap-6">
             <div className="pointer-events-none absolute left-0 right-0 top-8 hidden h-px bg-gradient-to-r from-transparent via-brand-500/40 to-transparent md:block" />
             {JOURNEY.map((s) => (
-              <div key={s.n} className="relative rounded-3xl border border-slate-800 bg-slate-900/60 p-7 backdrop-blur transition hover:border-brand-700/60">
-                <div className="grid h-12 w-12 place-items-center rounded-2xl bg-gradient-to-br from-brand-500 to-brand-700 text-lg font-extrabold text-white shadow-lg shadow-brand-600/30">
+              <div key={s.n} className="relative rounded-3xl border border-slate-800 bg-slate-900/60 p-4 backdrop-blur transition hover:border-brand-700/60 sm:p-7">
+                <div className="grid h-10 w-10 place-items-center rounded-2xl bg-gradient-to-br from-brand-500 to-brand-700 text-base font-extrabold text-white shadow-lg shadow-brand-600/30 sm:h-12 sm:w-12 sm:text-lg">
                   {s.n}
                 </div>
-                <h3 className="mt-5 text-lg font-extrabold">{s.title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-slate-400">{s.desc}</p>
+                <h3 className="mt-3 text-base font-extrabold sm:mt-5 sm:text-lg">{s.title}</h3>
+                <p className="mt-1.5 text-[13px] leading-relaxed text-slate-400 sm:mt-2 sm:text-sm">{s.desc}</p>
               </div>
             ))}
           </div>
@@ -457,7 +457,7 @@ export default async function Home() {
       </section>
 
       {/* ===== Tarifs (brief §7) ===== */}
-      <section id="tarifs" className="mx-auto max-w-6xl px-4 py-24 sm:px-6">
+      <section id="tarifs" className="mx-auto max-w-6xl px-4 py-14 sm:px-6 sm:py-24">
         <div className="mx-auto max-w-2xl text-center">
           <h2 className="text-3xl font-extrabold tracking-tight sm:text-4xl">Une tarification transparente</h2>
           <p className="mt-4 text-sm text-slate-500 dark:text-slate-400">
@@ -465,8 +465,8 @@ export default async function Home() {
             Aucun abonnement obligatoire, rien à payer à l&apos;avance — vous payez uniquement lorsque vous vendez.
           </p>
         </div>
-        <div className="mt-14 grid grid-cols-1 gap-5 md:grid-cols-3">
-          <div className="rounded-3xl border border-slate-200 bg-white p-7 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+        <div className="mt-8 grid grid-cols-1 gap-5 md:mt-14 md:grid-cols-3">
+          <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900 sm:p-7">
             <p className="text-xs font-bold uppercase tracking-widest text-emerald-600 dark:text-emerald-400">Offre gratuite</p>
             <p className="mt-3 text-2xl font-extrabold text-slate-900 dark:text-white">0 FCFA</p>
             <ul className="mt-4 space-y-2 text-sm text-slate-500 dark:text-slate-400">
@@ -477,7 +477,7 @@ export default async function Home() {
               <li className="flex items-start gap-2"><svg className="mt-0.5 h-4 w-4 shrink-0 text-emerald-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6L9 17l-5-5" /></svg> Statistiques et rapports</li>
             </ul>
           </div>
-          <div className="relative rounded-3xl border-2 border-brand-600 bg-gradient-to-br from-brand-700 to-brand-900 p-7 text-white shadow-2xl shadow-brand-600/30">
+          <div className="relative rounded-3xl border-2 border-brand-600 bg-gradient-to-br from-brand-700 to-brand-900 p-5 text-white shadow-2xl shadow-brand-600/30 sm:p-7">
             <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-brand-600 px-4 py-1 text-[11px] font-extrabold uppercase tracking-widest text-white">
               À la vente
             </span>
@@ -490,7 +490,7 @@ export default async function Home() {
               <li className="flex items-start gap-2"><svg className="mt-0.5 h-4 w-4 shrink-0 text-emerald-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6L9 17l-5-5" /></svg> Taux adaptable selon votre volume</li>
             </ul>
           </div>
-          <div className="rounded-3xl border border-slate-200 bg-white p-7 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+          <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900 sm:p-7">
             <p className="text-xs font-bold uppercase tracking-widest text-sky-600 dark:text-sky-400">Réception du billet</p>
             <p className="mt-3 text-2xl font-extrabold text-slate-900 dark:text-white">Au choix du client</p>
             <ul className="mt-4 space-y-2 text-sm text-slate-500 dark:text-slate-400">
@@ -503,7 +503,7 @@ export default async function Home() {
       </section>
 
       {/* ===== FAQ (brief §8) ===== */}
-      <section id="faq" className="border-t border-slate-100 bg-slate-50 py-24 dark:border-slate-800 dark:bg-slate-900/40">
+      <section id="faq" className="border-t border-slate-100 bg-slate-50 py-14 dark:border-slate-800 dark:bg-slate-900/40 sm:py-24">
         <div className="mx-auto max-w-3xl px-4 sm:px-6">
           <div className="mx-auto max-w-2xl text-center">
             <h2 className="text-3xl font-extrabold tracking-tight sm:text-4xl">Questions fréquentes</h2>
@@ -539,7 +539,7 @@ export default async function Home() {
       </section>
 
       {/* ===== CTA final (brief §10) ===== */}
-      <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
+      <section className="mx-auto max-w-6xl px-4 py-10 sm:px-6 sm:py-16">
         <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-brand-700 via-brand-800 to-slate-900 px-8 py-14 text-center text-white sm:px-14">
           <div className="pointer-events-none absolute -right-16 -top-16 h-64 w-64 rounded-full bg-white/10 blur-2xl" />
           <div className="pointer-events-none absolute -bottom-24 -left-16 h-64 w-64 rounded-full bg-emerald-400/20 blur-2xl" />
@@ -554,7 +554,7 @@ export default async function Home() {
               href="/register"
               className="rounded-2xl bg-white px-7 py-3.5 text-base font-bold text-brand-800 shadow-xl transition hover:-translate-y-0.5"
             >
-              Créer mon événement gratuitement →
+              Créer mon événement →
             </Link>
             <Link
               href="/login"
