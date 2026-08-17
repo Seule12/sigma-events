@@ -232,8 +232,18 @@ export default async function Home() {
       {/* ===== Navigation ===== */}
       <header className="sticky top-0 z-40 border-b border-slate-200/60 bg-white/80 backdrop-blur dark:border-slate-800 dark:bg-slate-950/80">
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6">
-          <Link href="/" className="font-display text-lg font-bold uppercase tracking-[0.06em] text-slate-900 transition hover:opacity-90 dark:text-white">
-            Sigma <span className="text-brand-600 dark:text-brand-400">Events</span>
+          <Link href="/" className="flex items-center gap-2.5">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/sigma-logo.png"
+              alt="Sigma Events"
+              width={36}
+              height={31}
+              className="h-[31px] w-[36px] shrink-0 rounded-lg bg-slate-950 object-contain p-0.5"
+            />
+            <span className="font-display text-lg font-bold uppercase tracking-[0.06em] text-slate-900 transition hover:opacity-90 dark:text-white">
+              Sigma <span className="text-brand-600 dark:text-brand-400">Events</span>
+            </span>
           </Link>
           <nav className="hidden items-center gap-6 text-sm font-semibold text-slate-600 md:flex dark:text-slate-300">
             <a href="#fonctionnalites" className="transition hover:text-brand-600 dark:hover:text-brand-400">Fonctionnalités</a>
@@ -559,8 +569,18 @@ export default async function Home() {
       {/* ===== Footer ===== */}
       <footer className="border-t border-slate-800 bg-slate-950 py-12 text-slate-300">
         <div className="mx-auto flex max-w-6xl flex-col items-center gap-4 px-4 text-center sm:px-6">
-          <span className="font-display text-base font-bold uppercase tracking-[0.06em] text-white">
-            Sigma <span className="text-brand-400">Events</span>
+          <span className="flex items-center gap-2.5">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/sigma-logo.png"
+              alt="Sigma Events"
+              width={28}
+              height={24}
+              className="h-6 w-7 shrink-0 rounded bg-slate-950 object-contain"
+            />
+            <span className="font-display text-base font-bold uppercase tracking-[0.06em] text-white">
+              Sigma <span className="text-brand-400">Events</span>
+            </span>
           </span>
           <p className="max-w-md text-xs leading-relaxed text-slate-400">
             SIGMA EVENTS — Organisez. Vendez. Contrôlez.

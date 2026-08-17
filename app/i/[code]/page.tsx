@@ -40,7 +40,7 @@ export default async function InvitationPage({ params }: { params: Promise<{ cod
         <div className="mb-5 flex items-center gap-2">
           <Logo height={30} className="rounded-lg bg-slate-950 p-1" />
           <span className="text-sm font-extrabold text-slate-800 dark:text-white">
-            Sigma <span className="text-brand-600 dark:text-brand-400">Security</span>
+            Sigma <span className="text-brand-600 dark:text-brand-400">Events</span>
           </span>
         </div>
 
