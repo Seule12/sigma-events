@@ -73,11 +73,10 @@ export async function sendSms(input: { to: string; text: string; otpCode?: strin
  * son `purpose` : un OTP de retrait ne peut pas valider une inscription et
  * inversement.
  *
- * Canaux selon le purpose :
- *  - inscription : email uniquement
- *  - recuperation : SMS (le téléphone est le seul canal connu)
- *  - retrait (organisateur) : email (si connu) + SMS — sécurisation du retrait
- *    par code de validation (brief sigma-events-commissions-brief-1.md)
+ * Canaux : le SMS part TOUJOURS (le téléphone est le canal de vérification
+ * fiable — inscription, récupération, retrait) ; l'email part en plus quand il
+ * est connu. Le retrait est en plus sécurisé par ce code de validation
+ * (brief sigma-events-commissions-brief-1.md).
  */
 export async function issueOtp(input: {
   phone: string;
