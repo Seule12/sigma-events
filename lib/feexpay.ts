@@ -19,7 +19,7 @@
 import crypto from "node:crypto";
 import { clientTotal } from "@/lib/shop";
 
-const FEEXPAY_API_BASE = "https://api.feexpay.me/v1";
+const FEEXPAY_API_BASE = "https://api-v2.feexpay.me/v1";
 
 function feexPayConfig() {
   return {
