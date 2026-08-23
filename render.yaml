@@ -41,20 +41,12 @@ services:
         value: "re_SuAEZ8TR_3WRd6aU4Hdx41WPHzkxnBFFU"
       - key: EMAIL_FROM
         value: "Sigma Security <onboarding@resend.dev>"
-      - key: KKIA_PUBLIC_KEY
-        value: "a16bcd70951311f1b881ad2d7b892a71"
-      - key: KKIA_PRIVATE_KEY
-        value: "tpk_a16bf481951311f1b881ad2d7b892a71"
-      - key: KKIA_SECRET_KEY
-        value: "tsk_a16bf482951311f1b881ad2d7b892a71"
-      - key: KKIA_SANDBOX
-        value: "true"
-      - key: DODO_API_KEY
-        sync: false
-      - key: DODO_PRODUCT_ID
-        value: "ticket"
-      - key: DODO_WEBHOOK_SECRET
-        sync: false
+      - key: FEEXPAY_PRIVATE_KEY
+        value: "fp_Xcl3090aU2vQYD65ZFnGDCRdRIxX3btOk9nkmHYzg8xRPpsxmevFBGMsroUUdY7l"
+      - key: FEEXPAY_IDENTIFIER
+        value: "UjCyDv7hL7oJBAE"
+      - key: FEEXPAY_MODE
+        value: "LIVE"
       - key: INFOBIP_API_KEY
         value: "872782b3d09dcb4ef67d0e21e4efdba3-4e2492c7-9bbe-4e2f-b124-35916e7350a5"
       - key: INFOBIP_BASE_URL

@@ -22,7 +22,6 @@ import { publishLiveNotification, publishEventUpdate } from "@/lib/ably";
 import { isRealPaymentEnabled, initiatePayment } from "@/lib/payments";
 import { organizerAvailableBalance, expireStalePendingPayouts, payoutAdminThreshold } from "@/lib/payouts";
 import { isFedaPayPayoutEnabled, createFedaPayPayout, startFedaPayPayouts, getFedaPayPayoutStatus } from "@/lib/fedapay";
-import { isKkiapayEnabled, isKkiapaySandbox } from "@/lib/kkiapay";
 import { notifyOrderPaid } from "@/lib/order-events";
 
 // ============ HELPERS ============
@@ -1020,12 +1019,9 @@ export async function simulatePaymentAction(formData: FormData) {
       ? (delivery as DeliveryMethod)
       : undefined;
 
-  // --- Passerelle réelle (Dodo Payments) ---
+  // --- Passerelle réelle (FeexPay) ---
   if (order && isRealPaymentEnabled() && order.status === OrderStatus.PENDING) {
     try {
-      // La livraison choisie est enregistrée AVANT l'initiation : le montant
-      // facturé inclut le frais de livraison, et le webhook la retrouvera pour
-      // déclencher l'envoi (email / WhatsApp) après confirmation.
       await prisma.order.update({
         where: { id: order.id },
         data: safeDelivery
@@ -1036,54 +1032,28 @@ export async function simulatePaymentAction(formData: FormData) {
       const init = await initiatePayment({
         orderId: order.id,
         reference: order.reference,
-        // Prix tout compris (billets + livraison) avec gross-up FedaPay : c'est
-        // le montant réellement débité au client, vérifié ensuite par le webhook.
         amount: clientTotal(fresh ?? order),
         customerName: order.customerName,
         customerEmail: order.customerEmail,
         customerPhone: order.customerPhone,
         eventName: order.event.name,
+        network: network || undefined,
       });
-      if (init.mode === "dodo") {
-        // Stocke l'identifiant de paiement externe : le webhook s'en sert pour
-        // retrouver la commande et confirmer (émission des billets).
+      if (init.mode === "feexpay") {
         await prisma.order.update({
           where: { id: order.id },
           data: {
             externalPaymentId: init.paymentId,
-            externalProvider: "dodo",
+            externalProvider: "feexpay",
             externalStatus: "pending",
           },
         });
-        // Le client règle sur le checkout Dodo (MTN MoMo / Moov Money / Celtiis Cash).
         redirect(init.redirectUrl);
       }
     } catch (e) {
-      // Passerelle configurée mais en échec (clé invalide, produit inexistant…) :
-      // on NE simule PAS en production — un paiement simulé donnerait un billet
-      // gratuit. Si une autre passerelle est configurée (KKIAPAY), on bascule
-      // dessus ; sinon on renvoie vers la page de paiement avec une erreur.
-      console.error("[payments] initiation Dodo échouée", e);
-      if (isKkiapayEnabled()) {
-        redirect(`/acheter/payer/${order.id}?kkiapay=1`);
-      }
+      console.error("[payments] initiation FeexPay échouée", e);
       redirect(`/acheter/payer/${order.id}?err=PAYMENT_UNAVAILABLE`);
     }
-  }
-
-  // --- Passerelle réelle (KKIAPAY) ---
-  // La livraison est enregistrée AVANT l'ouverture du widget (le montant facturé
-  // inclut le frais de livraison), puis on redirige vers la page de paiement en
-  // mode widget : le client paie dans openKkiapayWidget, KKIAPAY redirige vers
-  // la confirmation, et le webhook /api/webhook/kkiapay confirme la commande.
-  if (order && isKkiapayEnabled() && order.status === OrderStatus.PENDING) {
-    await prisma.order.update({
-      where: { id: order.id },
-      data: safeDelivery
-        ? { deliveryMethod: safeDelivery, deliveryFee: DELIVERY_FEES[safeDelivery] }
-        : {},
-    });
-    redirect(`/acheter/payer/${order.id}?kkiapay=1`);
   }
 
   // --- Mode démo (simulation) ---
@@ -1097,37 +1067,6 @@ export async function simulatePaymentAction(formData: FormData) {
 
   // Temps réel + file d'emails : paiement validé → notification à l'organisateur,
   // facture + billet mis en file d'attente (CloudAMQP, worker scripts/email-worker.ts).
-  await notifyOrderPaid(orderId);
-  revalidatePath(`/acheter/confirmation/${orderId}`);
-  redirect(`/acheter/confirmation/${orderId}`);
-}
-
-// ============ FINALISATION DE SECOURS (PHASE DE TEST UNIQUEMENT) ============
-
-// Pendant la phase de test (sandbox KKIA), si la passerelle externe ne répond
-// pas (webhook non reçu, widget bloqué…), l'organisateur ou le client peut
-// finaliser la commande en mode simulé pour ne pas rester bloqué : le billet
-// est émis normalement, sans débit réel. ⚠️ À RETIRER au passage en production
-// (garde-fou : l'action n'existe que quand KKIA tourne en sandbox).
-export async function finalizeOrderTestAction(formData: FormData) {
-  const orderId = String(formData.get("orderId") || "");
-  const delivery = String(formData.get("delivery") || "") || undefined;
-
-  // Garde-fou : jamais disponible hors mode test (clés sandbox).
-  if (!isKkiapaySandbox()) redirect("/");
-
-  const order = await prisma.order.findUnique({ where: { id: orderId } });
-  if (!order || order.status !== OrderStatus.PENDING) {
-    redirect(order ? `/acheter/confirmation/${order.id}` : "/");
-  }
-
-  const result = await shopSimulatePayment(orderId, "MTN_MOMO", delivery);
-  if (!result.ok) {
-    const slug = (await prisma.event.findUnique({ where: { id: order.eventId } }))?.salesSlug;
-    if (slug) redirect(`/acheter/${slug}?err=${result.error}`);
-    redirect("/");
-  }
-
   await notifyOrderPaid(orderId);
   revalidatePath(`/acheter/confirmation/${orderId}`);
   redirect(`/acheter/confirmation/${orderId}`);

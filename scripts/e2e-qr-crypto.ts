@@ -9,6 +9,8 @@ import { encryptTicketQr, decryptTicketQr, deriveEventSessionKey, isEncryptedTic
 import { ticketQrContent } from "../lib/qr";
 
 const API = process.env.APP_URL || "http://localhost:3000";
+// Base SQLite : `DATABASE_URL` (format `file:./ci.db`) ou défaut local dev.db.
+const DB_FILE = (process.env.DATABASE_URL || "file:./dev.db").replace(/^file:/, "");
 const EVENT_ID = "demo-event";
 const TICKET_ID = "cmsm505i90004ca757vp38vck";
 const TICKET_CODE = "C50DAEAFFA914C1CBAB25221BB19E19D";
@@ -78,7 +80,7 @@ async function main() {
   // Pré-nettoyage : le rate limiting anti-bruteforce de /agents/authenticate
   // s'accumule entre les runs de test (téléphone + IP) → on vide ses compteurs.
   const Database0 = require("better-sqlite3");
-  const db0 = new Database0("dev.db");
+  const db0 = new Database0(DB_FILE);
   db0.prepare("DELETE FROM RateLimitHit WHERE key LIKE 'agent-auth:%'").run();
   db0.close();
 
@@ -132,7 +134,7 @@ async function main() {
 
   // ---- 5. Parcours complet : entrée acceptée (événement en cours) ----
   const Database = require("better-sqlite3");
-  const db = new Database("dev.db");
+  const db = new Database(DB_FILE);
   const AGENT_ID = "cmsl0owft0001y375vv5nm3mz"; // Rachidi Agbessi (AGENT)
   const originalDate = db.prepare("SELECT date FROM Event WHERE id = ?").get(EVENT_ID)?.date;
   // Décale l'événement pour qu'il soit EN COURS (fenêtre valide)…
@@ -170,7 +172,7 @@ async function main() {
   }
 
   // Vérifie le journal CheckIn et l'incrément d'entrées, puis restaure tout.
-  const db2 = new Database("dev.db");
+  const db2 = new Database(DB_FILE);
   const checkin = db2.prepare("SELECT id, ticketId, status, source FROM CheckIn WHERE ticketId = ? ORDER BY scannedAt DESC LIMIT 1").get(TICKET_ID);
   check("journal CheckIn créé (entrée)", Boolean(checkin) && (checkin.status === "VALID" || checkin.status === "ENTRY"), checkin ? `${checkin.status} (${checkin.source})` : "aucun");
   db2.prepare("UPDATE Event SET date = ? WHERE id = ?").run(originalDate, EVENT_ID);
@@ -232,7 +234,7 @@ async function decryptWithWebCrypto(qrContent: string, keyHex: string, expectedE
 
 async function ensureActiveTerminal() {
   const Database = require("better-sqlite3");
-  const db = new Database("dev.db");
+  const db = new Database(DB_FILE);
   const token = require("crypto").randomBytes(32).toString("hex");
   const terminalId = "term-e2e-" + Date.now();
   const future = new Date(Date.now() + 12 * 3600_000).toISOString();

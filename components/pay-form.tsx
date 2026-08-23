@@ -3,12 +3,9 @@
 import { useState } from "react";
 import { simulatePaymentAction } from "@/app/actions";
 import { MOMO_NETWORKS } from "@/lib/momo";
-import { displayPhone } from "@/lib/format";
 
 export type DeliveryChoice = "DOWNLOAD" | "EMAIL" | "WHATSAPP";
 
-// Le choix du canal détermine seulement COMMENT le billet est reçu (les frais
-// de service ne sont pas affichés au client).
 const DELIVERY_OPTIONS: Array<{ id: DeliveryChoice; icon: React.ReactNode; title: string; desc: string }> = [
   {
     id: "DOWNLOAD",
@@ -39,53 +36,18 @@ const DELIVERY_OPTIONS: Array<{ id: DeliveryChoice; icon: React.ReactNode; title
 export default function PayForm({ orderId, phone }: { orderId: string; phone: string }) {
   const [networkId, setNetworkId] = useState(MOMO_NETWORKS[0].id);
   const [delivery, setDelivery] = useState<DeliveryChoice>("WHATSAPP");
-  const [step, setStep] = useState<"idle" | "requesting" | "confirmed">("idle");
+  const [busy, setBusy] = useState(false);
   const network = MOMO_NETWORKS.find((n) => n.id === networkId) ?? MOMO_NETWORKS[0];
-  const deliveryOption = DELIVERY_OPTIONS.find((d) => d.id === delivery) ?? DELIVERY_OPTIONS[2];
-
-  const handleClick = () => {
-    if (step !== "idle") return;
-    setStep("requesting");
-    // Simule la demande USSD (le client reçoit la notification sur son téléphone)
-    setTimeout(() => setStep("confirmed"), 2200);
-  };
-
-  if (step === "requesting") {
-    return (
-      <div className="animate-fade-up rounded-2xl border border-brand-200 bg-brand-50 p-6 text-center dark:border-brand-800 dark:bg-brand-950/40">
-        <div className="mx-auto mb-3 h-10 w-10 animate-spin rounded-full border-4 border-brand-200 border-t-brand-600" />
-        <p className="text-sm font-bold text-brand-700 dark:text-brand-300">Paiement en cours…</p>
-        <p className="mt-1 text-xs text-brand-600/80 dark:text-brand-400/80">
-          Composez <b className="font-mono">{network.ussd}</b> sur le {displayPhone(phone)} et confirmez la demande.
-        </p>
-      </div>
-    );
-  }
-
-  if (step === "confirmed") {
-    return (
-      <form action={simulatePaymentAction}>
-        <input type="hidden" name="orderId" value={orderId} />
-        <input type="hidden" name="network" value={network.id} />
-        <input type="hidden" name="delivery" value={delivery} />
-        <div className="animate-fade-up mb-4 flex items-center gap-2 rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-xs font-semibold text-emerald-700 dark:border-emerald-900 dark:bg-emerald-950/40 dark:text-emerald-300">
-          <svg className="h-4 w-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" /><path d="M3.27 6.96L12 12.01l8.73-5.05M12 22.08V12" /></svg>
-          Réception : <b>{deliveryOption.title}</b> — le billet vous sera envoyé après validation.
-        </div>
-        <button
-          type="submit"
-          autoFocus
-          className="flex w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-brand-600 to-brand-700 px-6 py-4 text-base font-bold text-white shadow-xl shadow-brand-600/30 transition hover:-translate-y-0.5 hover:shadow-2xl"
-        >
-          Paiement reçu — valider
-          <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6L9 17l-5-5" /></svg>
-        </button>
-      </form>
-    );
-  }
 
   return (
-    <div className="space-y-4">
+    <form
+      action={simulatePaymentAction}
+      className="space-y-4"
+    >
+      <input type="hidden" name="orderId" value={orderId} />
+      <input type="hidden" name="network" value={networkId} />
+      <input type="hidden" name="delivery" value={delivery} />
+
       {/* Choix du réseau mobile money */}
       <div>
         <p className="mb-2 text-sm font-semibold text-slate-700 dark:text-slate-300">1. Choisissez votre réseau</p>
@@ -115,7 +77,7 @@ export default function PayForm({ orderId, phone }: { orderId: string; phone: st
             );
           })}
         </div>
-        <p className="mt-2 text-xs text-slate-400">{network.hint} · composez {network.ussd} pour payer</p>
+        <p className="mt-2 text-xs text-slate-400">{network.hint} · vous serez redirigé(e) vers FeexPay</p>
       </div>
 
       {/* Choix du mode de réception du billet */}
@@ -132,7 +94,7 @@ export default function PayForm({ orderId, phone }: { orderId: string; phone: st
                 aria-pressed={active}
                 className={`flex w-full items-center gap-3 rounded-xl border-2 p-3 text-left transition ${
                   active
-                    ? "border-brand-600 bg-brand-50 shadow-lg shadow-brand-600/10 dark:border-brand-500 dark:bg-brand-950/40"
+                    ? "border-brand-600 bg-brand-50 shadow-lg shadow-brand-600/10 dark:border-brand-800 dark:bg-brand-950/40"
                     : "border-slate-200 bg-white hover:border-brand-300 dark:border-slate-700 dark:bg-slate-900 dark:hover:border-brand-700"
                 }`}
               >
@@ -148,19 +110,26 @@ export default function PayForm({ orderId, phone }: { orderId: string; phone: st
             );
           })}
         </div>
-        <p className="mt-2 text-xs text-slate-400">
-          Le billet vous est remis par le canal de votre choix.
-        </p>
       </div>
 
       <button
-        type="button"
-        onClick={handleClick}
-        className="flex w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-brand-600 to-brand-700 px-6 py-4 text-base font-bold text-white shadow-xl shadow-brand-600/30 transition hover:-translate-y-0.5 hover:shadow-2xl"
+        type="submit"
+        disabled={busy}
+        onClick={() => setBusy(true)}
+        className="flex w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-brand-600 to-brand-700 px-6 py-4 text-base font-bold text-white shadow-xl shadow-brand-600/30 transition hover:-translate-y-0.5 hover:shadow-2xl disabled:opacity-60"
       >
-        <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="5" width="20" height="14" rx="2" /><path d="M2 10h20" /></svg>
-        Payer avec {network.name}
+        {busy ? (
+          <>
+            <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/40 border-t-white" />
+            Redirection en cours…
+          </>
+        ) : (
+          <>
+            <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="5" width="20" height="14" rx="2" /><path d="M2 10h20" /></svg>
+            Payer avec {network.name}
+          </>
+        )}
       </button>
-    </div>
+    </form>
   );
 }

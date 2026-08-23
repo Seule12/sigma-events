@@ -3,10 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { OrderStatus } from "@/app/generated/prisma/enums";
 import Logo from "@/components/logo";
 import PayForm from "@/components/pay-form";
-import KkiapayWidget from "@/components/kkiapay-widget";
 import { formatFcfa, displayPhone } from "@/lib/format";
-import { isKkiapayEnabled, isKkiapaySandbox, kkiapayConfig, kkiapayAmount } from "@/lib/kkiapay";
-import { finalizeOrderTestAction } from "@/app/actions";
 import { clientTotal } from "@/lib/shop";
 
 export const metadata = {
@@ -18,14 +15,11 @@ export default async function PayPage({
   searchParams,
 }: {
   params: Promise<{ orderId: string }>;
-  searchParams: Promise<{ err?: string; kkiapay?: string }>;
+  searchParams: Promise<{ err?: string }>;
 }) {
   const { orderId } = await params;
-  const { err, kkiapay } = await searchParams;
+  const { err } = await searchParams;
   const paymentError = err === "PAYMENT_UNAVAILABLE";
-  // Mode widget KKIAPAY : simulatePaymentAction a enregistré la livraison puis
-  // redirigé ici avec ?kkiapay=1 — le widget client ouvre openKkiapayWidget.
-  const kkiapayMode = kkiapay === "1" && isKkiapayEnabled();
   const order = await prisma.order.findUnique({
     where: { id: orderId },
     include: { event: true, category: true },
@@ -93,52 +87,7 @@ export default async function PayPage({
               <p className="mb-2 text-xs font-semibold text-slate-400">
                 Paiement sur le {displayPhone(order.customerPhone)} · MTN MoMo · Moov Money · Celtiis Cash
               </p>
-              {kkiapayMode ? (
-                <div className="rounded-2xl border border-brand-200 bg-brand-50 p-4 dark:border-brand-800 dark:bg-brand-950/40">
-                  <div className="mb-3 flex items-center justify-between text-sm">
-                    <span className="font-semibold text-slate-600 dark:text-slate-300">Total à payer</span>
-                    <span className="text-xl font-extrabold text-brand-600 dark:text-brand-400">
-                      {formatFcfa(kkiapayAmount(order))}
-                    </span>
-                  </div>
-                  <KkiapayWidget
-                    amount={kkiapayAmount(order)}
-                    publicKey={kkiapayConfig().publicKey}
-                    sandbox={kkiapayConfig().sandbox}
-                    phone={order.customerPhone}
-                    name={order.customerName}
-                    email={order.customerEmail}
-                    callback={`${process.env.APP_URL || "http://localhost:3000"}/acheter/confirmation/${order.id}`}
-                    partnerId={order.reference}
-                    data={JSON.stringify({ orderId: order.id })}
-                  />
-                  <a
-                    href={`/acheter/payer/${order.id}`}
-                    className="mt-3 block text-center text-xs font-semibold text-brand-600 hover:underline dark:text-brand-400"
-                  >
-                    ← Modifier la réception
-                  </a>
-                  {/* Finalisation de secours — phase de test uniquement (sandbox KKIA).
-                      À retirer au passage en production. */}
-                  {isKkiapaySandbox() && (
-                    <form action={finalizeOrderTestAction} className="mt-4 rounded-xl border border-dashed border-slate-200 bg-slate-50 p-3 text-center dark:border-slate-700 dark:bg-slate-900/60">
-                      <input type="hidden" name="orderId" value={order.id} />
-                      <input type="hidden" name="delivery" value={order.deliveryMethod ?? "WHATSAPP"} />
-                      <p className="text-[11px] text-slate-400">
-                        La fenêtre de paiement ne s&apos;ouvre pas ou le test est bloqué ?
-                      </p>
-                      <button
-                        type="submit"
-                        className="mt-1.5 rounded-lg bg-slate-800 px-3 py-1.5 text-[11px] font-bold text-white transition hover:bg-slate-700 dark:bg-slate-200 dark:text-slate-900 dark:hover:bg-white"
-                      >
-                        Finaliser en mode test
-                      </button>
-                    </form>
-                  )}
-                </div>
-              ) : (
-                <PayForm orderId={order.id} phone={order.customerPhone} />
-              )}
+              <PayForm orderId={order.id} phone={order.customerPhone} />
               <p className="mt-3 text-center text-[11px] text-slate-400">
                 Votre commande expire dans <b>20 minutes</b> si le paiement n&apos;est pas validé.
               </p>
