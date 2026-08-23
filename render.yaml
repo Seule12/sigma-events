@@ -2,12 +2,6 @@
 # SIGMA EVENTS — Blueprint Render
 # ============================================================
 
-databases:
-  - name: sigma-events-db
-    plan: free
-    databaseName: sigma
-    user: sigma
-
 services:
   - type: web
     name: sigma-events
@@ -27,11 +21,9 @@ services:
         value: 22
       - key: NODE_ENV
         value: production
-      - key: DATABASE_URL
-        fromDatabase:
-          name: sigma-events-db
-          property: connectionString
       - key: APP_URL
+        sync: false
+      - key: DATABASE_URL
         sync: false
       - key: TICKET_QR_SECRET
         sync: false
