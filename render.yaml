@@ -42,9 +42,9 @@ services:
       - key: EMAIL_FROM
         value: "Sigma Security <onboarding@resend.dev>"
       - key: FEEXPAY_PRIVATE_KEY
-        value: "fp_Xcl3090aU2vQYD65ZFnGDCRdRIxX3btOk9nkmHYzg8xRPpsxmevFBGMsroUUdY7l"
+        sync: false
       - key: FEEXPAY_IDENTIFIER
-        value: "UjCyDv7hL7oJBAE"
+        sync: false
       - key: FEEXPAY_MODE
         value: "LIVE"
       - key: INFOBIP_API_KEY
