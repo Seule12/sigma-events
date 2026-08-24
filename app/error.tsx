@@ -1,11 +1,7 @@
-// Error boundary de segment (App Router) : erreurs de rendu dans une page,
-// avec le layout global toujours affiché. Remonte à Sentry côté client.
+// Error boundary de segment (App Router) : erreurs de rendu dans une page.
 "use client";
 
-import * as Sentry from "@sentry/browser";
 import { useEffect } from "react";
-// Initialise le SDK navigateur (no-op sans SENTRY_DSN).
-import "../sentry.client.config";
 
 export default function Error({
   error,
@@ -15,7 +11,7 @@ export default function Error({
   reset: () => void;
 }) {
   useEffect(() => {
-    Sentry.captureException(error);
+    console.error("[Client Error]", error);
   }, [error]);
 
   return (
@@ -33,7 +29,7 @@ export default function Error({
     >
       <h1 style={{ fontSize: "1.25rem", fontWeight: 700 }}>Oups, une erreur est survenue</h1>
       <p style={{ color: "#64748b" }}>
-        L&apos;équipe a été prévenue. Recharge la page pour réessayer.
+        Recharge la page pour réessayer.
       </p>
       <button
         onClick={reset}

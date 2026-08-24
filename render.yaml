@@ -55,23 +55,11 @@ services:
         sync: false
       - key: GOOGLE_CLIENT_SECRET
         sync: false
-      - key: FACEBOOK_CLIENT_ID
-        sync: false
-      - key: FACEBOOK_CLIENT_SECRET
-        sync: false
       - key: FEDAPAY_SECRET_KEY
         sync: false
       - key: FEDAPAY_ENV
         sync: false
       - key: PAYOUT_ADMIN_THRESHOLD
         sync: false
-      - key: DODO_PRODUCT_ID
-        sync: false
-      - key: KKIA_SANDBOX
-        sync: false
-      - key: KKIA_SECRET_KEY
-        sync: false
-      - key: KKIA_PRIVATE_KEY
-        sync: false
-      - key: KKIA_PUBLIC_KEY
+      - key: SENTRY_DSN
         sync: false
