@@ -6,7 +6,7 @@
 //    POST /api/scanner/sync      (scans hors-ligne → résolution de conflits)
 import { PrismaClient } from "../app/generated/prisma/client";
 import { PrismaBetterSqlite3 } from "@prisma/adapter-better-sqlite3";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import "dotenv/config";
 
 const prisma = new PrismaClient({

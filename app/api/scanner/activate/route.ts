@@ -4,7 +4,7 @@ import { activateTerminalWithCode } from "@/lib/terminal";
 import { prisma } from "@/lib/prisma";
 import { normalizePhone } from "@/lib/csv";
 import { getCurrentUser } from "@/lib/auth";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 
 // Activation d'un terminal depuis SIGMA Scanner (app mobile, pas de session cookie) :
 // l'agent saisit son téléphone + PIN, puis l'identifiant du terminal (ex : T-9281)

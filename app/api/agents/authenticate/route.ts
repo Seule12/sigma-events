@@ -4,7 +4,7 @@ import { activateTerminalWithCode } from "@/lib/terminal";
 import { prisma } from "@/lib/prisma";
 import { normalizePhone } from "@/lib/csv";
 import { getCurrentUser } from "@/lib/auth";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 
 // Authentification d'un agent pour l'app SIGMA Scanner (projet de référence) :
 // l'agent fournit téléphone + PIN + identifiant du terminal (ex : T-9281, fourni

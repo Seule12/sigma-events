@@ -3,7 +3,7 @@ import { PrismaBetterSqlite3 } from "@prisma/adapter-better-sqlite3";
 import { PrismaClient as PgPrismaClient } from "../app/generated/prisma-pg/client";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { InvitationStatus, DeliveryMethod } from "../app/generated/prisma/enums";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import "dotenv/config";
 
 // Sélection du moteur selon DATABASE_URL (identique à lib/prisma.ts) :

@@ -4,7 +4,7 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { normalizePhone } from "@/lib/csv";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import { Role } from "@/app/generated/prisma/enums";
 
 

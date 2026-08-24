@@ -6,7 +6,7 @@ import path from "node:path";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/prisma";
 import { loginWithPhone, logout as destroySession, requireUser, hashPin, createSession, roleHome } from "@/lib/auth";
 import { CheckInStatus, OrderStatus, Role, TicketStatus, InvitationStatus, EventMode, TerminalStatus, DeliveryMethod, PayoutStatus } from "@/app/generated/prisma/enums";
