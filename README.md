@@ -420,3 +420,4 @@ public/sw.js          # Service worker (PWA installable + cache hors-ligne)
 
 Le **rate limiting** est désormais **persistant en base de données** (`RateLimitHit`)
 — partagé entre toutes les instances (production multi-serveur), plus en mémoire.
+# deploy test
