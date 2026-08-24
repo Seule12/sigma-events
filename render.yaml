@@ -1,0 +1,73 @@
+# ============================================================
+# SIGMA EVENTS — Render Blueprint
+# ============================================================
+
+services:
+  - type: web
+    name: sigma-events
+    runtime: node
+    plan: free
+    autoDeploy: true
+    buildCommand: |
+      npm ci
+      npx prisma generate --schema prisma/schema.prisma
+      npx prisma generate --schema prisma/schema.postgres.prisma
+      npm run build
+    startCommand: |
+      npx prisma migrate deploy --schema prisma/schema.postgres.prisma
+      npm run start
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      - key: NODE_ENV
+        value: production
+      - key: APP_URL
+        sync: false
+      - key: DATABASE_URL
+        sync: false
+      - key: TICKET_QR_SECRET
+        sync: false
+      - key: ABLY_API_KEY
+        sync: false
+      - key: CLOUDAMQP_URL
+        sync: false
+      - key: RESEND_API_KEY
+        sync: false
+      - key: EMAIL_FROM
+        sync: false
+      - key: INFOBIP_API_KEY
+        sync: false
+      - key: INFOBIP_BASE_URL
+        sync: false
+      - key: INFOBIP_SENDER
+        sync: false
+      - key: GOOGLE_CLIENT_ID
+        sync: false
+      - key: GOOGLE_CLIENT_SECRET
+        sync: false
+      - key: FEDAPAY_SECRET_KEY
+        sync: false
+      - key: FEDAPAY_ENV
+        sync: false
+      - key: PAYOUT_ADMIN_THRESHOLD
+        sync: false
+      - key: DODO_PRODUCT_ID
+        sync: false
+      - key: KKIA_SANDBOX
+        sync: false
+      - key: KKIA_SECRET_KEY
+        sync: false
+      - key: KKIA_PRIVATE_KEY
+        sync: false
+      - key: KKIA_PUBLIC_KEY
+        sync: false
+      - key: FEEXPAY_PRIVATE_KEY
+        sync: false
+      - key: FEEXPAY_IDENTIFIER
+        sync: false
+      - key: FEEXPAY_MODE
+        sync: false
+      - key: WHATSAPP_TOKEN
+        sync: false
+      - key: WHATSAPP_PHONE_NUMBER_ID
+        sync: false
