@@ -7,22 +7,96 @@ export const metadata = {
   title: "Aide & Support — Sigma Events",
 };
 
+const ORGANIZER_GUIDE = [
+  {
+    title: "1. Créer votre compte",
+    body: "Inscrivez-vous avec votre numéro de téléphone (validez le code reçu par SMS) ou avec Google. Votre code personnel (PIN) à 4 chiffres protège votre espace : ne le partagez jamais.",
+  },
+  {
+    title: "2. Créer votre événement",
+    body: "Depuis votre tableau de bord, cliquez sur « Créer un événement ». Renseignez le nom, la date, le lieu et une belle image de couverture. Vous pouvez choisir une image proposée automatiquement selon le type d'événement (concert, conférence, sport…).",
+  },
+  {
+    title: "3. Configurer la billetterie",
+    body: "Définissez vos catégories de billets (VIP, standard…), les prix et les quantités. Dès que l'événement est annoncé, votre lien de boutique est généré : partagez-le sur vos réseaux, vos invités achètent en ligne en quelques secondes.",
+  },
+  {
+    title: "4. Importer vos invités",
+    body: "Utilisez « Invitations privées » pour importer une liste (fichier CSV) ou ajouter vos invités manuellement. Chacun reçoit un billet avec un QR code unique par SMS ou par lien.",
+  },
+  {
+    title: "5. Créer vos portes (terminaux)",
+    body: "Dans la gestion de l'événement, créez une porte par point de contrôle (Entrée principale, VIP, Backstage…). Chaque porte reçoit un identifiant permanent (ex : T-9281) que vous communiquez à l'agent qui tient le scanner.",
+  },
+  {
+    title: "6. Contrôler les entrées",
+    body: "L'agent installe SIGMA Scanner sur son téléphone, active le terminal avec l'identifiant de la porte, puis scanne chaque billet. La validation est instantanée : valide, déjà utilisé, invalide, trop tôt. Le scanner fonctionne même sans réseau et synchronise les scans dès qu'il se reconnecte.",
+  },
+  {
+    title: "7. Suivre vos ventes et entrées",
+    body: "Le tableau de bord affiche en temps réel les billets vendus, les entrées validées par porte, et l'état de vos caisses. Vous pouvez aussi exporter vos billets et les statistiques à tout moment.",
+  },
+  {
+    title: "8. Retirer votre argent",
+    body: "Vos ventes sont versées sur votre solde organisateur. Demandez un retrait quand vous voulez : les fonds sont transférés sur votre compte mobile money via notre partenaire de paiement. La commission Sigma (3 % par billet vendu) est prélevée automatiquement.",
+  },
+];
+
+const AGENT_GUIDE = [
+  {
+    title: "1. Installer l'application",
+    body: "Téléchargez SIGMA Scanner (Android) et installez le fichier APK sur le téléphone de l'agent. Autorisez l'accès à la caméra pour le scan des QR codes.",
+  },
+  {
+    title: "2. Activer le terminal",
+    body: "L'organisateur vous communique l'identifiant de la porte (ex : T-9281) ainsi qu'un numéro de téléphone et un code. Saisissez ces informations dans l'écran d'activation : le terminal est alors lié à votre téléphone et prêt à scanner.",
+  },
+  {
+    title: "3. Scanner les billets",
+    body: "Pointez la caméra sur le QR code du billet. L'écran affiche la décision : billet valide (entrée acceptée), déjà utilisé (refusé), inconnu (refusé) ou trop tôt. La validation temps réel est faite par le serveur quand le réseau est disponible.",
+  },
+  {
+    title: "4. Mode hors-ligne",
+    body: "Si la connexion est coupée, le scanner continue de fonctionner : les scans sont enregistrés sur le téléphone et synchronisés automatiquement dès que le réseau revient. Aucune entrée ne peut être doublée grâce à la protection anti double-scan.",
+  },
+  {
+    title: "5. Bonnes pratiques",
+    body: "Gardez l'écran allumé et la batterie chargée, vérifiez la synchronisation après chaque affluence, et signalez immédiatement à l'organisateur tout téléphone perdu pour révoquer le terminal.",
+  },
+];
+
 const FAQS = [
   {
     question: "Comment modifier mon code personnel (PIN) ?",
-    answer: "Vous pouvez modifier votre code PIN dans la section 'Mon Profil'. Allez dans l'onglet sécurité, saisissez votre code actuel, puis définissez-en un nouveau de 4 chiffres.",
+    answer: "Vous pouvez modifier votre code PIN dans la section « Mon Profil ». Allez dans l'onglet sécurité, saisissez votre code actuel, puis définissez-en un nouveau de 4 chiffres.",
   },
   {
     question: "Où trouver mes liens de boutique ?",
-    answer: "Rendez-vous dans la gestion de votre événement. Le lien de vente est généré automatiquement dès que vous passez l'événement en statut 'Annoncé' (LIVE).",
+    answer: "Rendez-vous dans la gestion de votre événement. Le lien de vente est généré automatiquement dès que vous passez l'événement en statut « Annoncé ». Partagez-le pour commencer à vendre.",
   },
   {
-    question: "Qu'est-ce que la commission Sigma ?",
-    answer: "Sigma Events prélève une commission fixe sur chaque billet vendu via notre plateforme pour couvrir les frais de transaction et la maintenance du service.",
+    question: "Quelle est la commission Sigma Events ?",
+    answer: "Sigma Events prélève une commission fixe de 3 % sur chaque billet vendu via la plateforme. Elle couvre les frais de transaction et la maintenance du service. Le reste vous est reversé lors de vos retraits.",
+  },
+  {
+    question: "Comment se fait l'activation du scanner ?",
+    answer: "Créez une porte dans votre événement : elle reçoit un identifiant permanent (ex : T-9281). Communiquez cet identifiant à votre agent, qui le saisit dans SIGMA Scanner avec le téléphone et le code fournis. Aucun code temporaire n'est nécessaire.",
+  },
+  {
+    question: "Comment retirer l'argent de mes ventes ?",
+    answer: "Dans votre tableau de bord, ouvrez la section retraits, indiquez le montant et votre compte mobile money. Le transfert est traité par notre partenaire FedaPay, généralement en quelques minutes.",
   },
   {
     question: "Comment importer mes invités ?",
-    answer: "Dans la page de gestion de l'événement, utilisez l'option 'Invitations privées'. Vous pourrez alors importer une liste ou ajouter vos invités manuellement.",
+    answer: "Dans la page de gestion de l'événement, utilisez l'option « Invitations privées ». Vous pouvez importer une liste (fichier CSV) ou ajouter vos invités manuellement.",
+  },
+  {
+    question: "Que se passe-t-il si un billet est scanné deux fois ?",
+    answer: "Le deuxième scan est refusé : chaque billet n'est valable qu'une seule fois, même hors-ligne. Le journal des entrées garde la trace de chaque scan pour vous protéger des fraudes.",
+  },
+  {
+    question: "L'événement est annulé ou reporté, que faire ?",
+    answer: "Contactez le support : nous pouvons reporter la date de l'événement (les billets restent valables) ou organiser le remboursement des billets non utilisés selon votre politique.",
   },
 ];
 
@@ -48,15 +122,15 @@ export default async function SupportPage() {
               Centre d&apos;Assistance
             </h1>
             <p className="mt-3 text-lg text-slate-500 dark:text-slate-400">
-              Besoin d'aide ? Nous sommes là pour vous accompagner dans la réussite de vos événements.
+              Guides pas à pas, questions fréquentes et support — tout pour réussir vos événements.
             </p>
           </div>
 
           {/* Canaux de support rapide */}
           <div className="mb-12 grid grid-cols-1 gap-6 sm:grid-cols-3">
-            <a 
-              href="https://wa.me/22900000000" 
-              target="_blank" 
+            <a
+              href="https://wa.me/22900000000"
+              target="_blank"
               rel="noopener noreferrer"
               className="group relative overflow-hidden rounded-3xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-xl dark:border-slate-800 dark:bg-slate-900"
             >
@@ -67,10 +141,10 @@ export default async function SupportPage() {
                 <h3 className="font-bold text-slate-900 dark:text-white">WhatsApp</h3>
                 <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">Réponse rapide et instantanée.</p>
               </div>
-              <div className="absolute -right-4 -bottom-4 h-24 w-24 rounded-full bg-emerald-500/10 blur-2xl group-hover:bg-emerald-500/20 transition-all" />
+              <div className="absolute -right-4 -bottom-4 h-24 w-24 rounded-full bg-emerald-500/10 blur-2xl transition-all group-hover:bg-emerald-500/20" />
             </a>
 
-            <a 
+            <a
               href="mailto:support@sigma-security.app"
               className="group relative overflow-hidden rounded-3xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-xl dark:border-slate-800 dark:bg-slate-900"
             >
@@ -81,7 +155,7 @@ export default async function SupportPage() {
                 <h3 className="font-bold text-slate-900 dark:text-white">Email</h3>
                 <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">Pour les demandes détaillées.</p>
               </div>
-              <div className="absolute -right-4 -bottom-4 h-24 w-24 rounded-full bg-blue-500/10 blur-2xl group-hover:bg-blue-500/20 transition-all" />
+              <div className="absolute -right-4 -bottom-4 h-24 w-24 rounded-full bg-blue-500/10 blur-2xl transition-all group-hover:bg-blue-500/20" />
             </a>
 
             <div className="relative overflow-hidden rounded-3xl border border-slate-200 bg-white p-6 shadow-sm transition dark:border-slate-800 dark:bg-slate-900">
@@ -90,14 +164,76 @@ export default async function SupportPage() {
                   <svg className="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10" /><path d="M9.09 9a3 3 0 0 1 5.83 0c0 2-3 3-3 3" /><line x1="12" y1="17" x2="12.01" y2="17" /></svg>
                 </div>
                 <h3 className="font-bold text-slate-900 dark:text-white">Centre d&apos;aide</h3>
-                <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">Consultez notre FAQ ci-dessous.</p>
+                <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">Guides et FAQ ci-dessous.</p>
               </div>
               <div className="absolute -right-4 -bottom-4 h-24 w-24 rounded-full bg-brand-500/10 blur-2xl" />
             </div>
           </div>
 
+          {/* Guide organisateur */}
+          <section className="mb-10 rounded-3xl border border-slate-200 bg-white p-8 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+            <div className="mb-8">
+              <div className="mb-3 inline-flex items-center gap-2 rounded-full bg-emerald-100 px-3 py-1 text-xs font-bold uppercase tracking-wide text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400">
+                <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" /></svg>
+                Guide organisateur
+              </div>
+              <h2 className="text-xl font-extrabold tracking-tight text-slate-900 dark:text-white">
+                De la création à l&apos;encaissement
+              </h2>
+              <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+                Suivez ces étapes dans l&apos;ordre pour organiser un événement de bout en bout.
+              </p>
+            </div>
+            <div className="grid grid-cols-1 gap-4">
+              {ORGANIZER_GUIDE.map((step, i) => (
+                <details key={i} className="group rounded-2xl border border-slate-100 bg-slate-50 p-4 transition hover:bg-slate-100 dark:border-slate-800 dark:bg-slate-800/50 dark:hover:bg-slate-800">
+                  <summary className="flex cursor-pointer items-center justify-between font-bold text-slate-700 dark:text-slate-200">
+                    <span className="text-sm">{step.title}</span>
+                    <span className="transition group-open:rotate-180">
+                      <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m6 9 6 6 6-6" /></svg>
+                    </span>
+                  </summary>
+                  <p className="mt-3 text-sm leading-relaxed text-slate-500 dark:text-slate-400">
+                    {step.body}
+                  </p>
+                </details>
+              ))}
+            </div>
+          </section>
+
+          {/* Guide agent */}
+          <section className="mb-10 rounded-3xl border border-slate-200 bg-white p-8 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+            <div className="mb-8">
+              <div className="mb-3 inline-flex items-center gap-2 rounded-full bg-blue-100 px-3 py-1 text-xs font-bold uppercase tracking-wide text-blue-700 dark:bg-blue-900/30 dark:text-blue-400">
+                <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 7v11a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-6l-2-2H5a2 2 0 0 0-2 2z" /><path d="M9 14l2 2 4-4" /></svg>
+                Guide agent de contrôle
+              </div>
+              <h2 className="text-xl font-extrabold tracking-tight text-slate-900 dark:text-white">
+                Prendre en main SIGMA Scanner
+              </h2>
+              <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+                À transmettre aux agents qui tiennent les portes le jour J.
+              </p>
+            </div>
+            <div className="grid grid-cols-1 gap-4">
+              {AGENT_GUIDE.map((step, i) => (
+                <details key={i} className="group rounded-2xl border border-slate-100 bg-slate-50 p-4 transition hover:bg-slate-100 dark:border-slate-800 dark:bg-slate-800/50 dark:hover:bg-slate-800">
+                  <summary className="flex cursor-pointer items-center justify-between font-bold text-slate-700 dark:text-slate-200">
+                    <span className="text-sm">{step.title}</span>
+                    <span className="transition group-open:rotate-180">
+                      <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m6 9 6 6 6-6" /></svg>
+                    </span>
+                  </summary>
+                  <p className="mt-3 text-sm leading-relaxed text-slate-500 dark:text-slate-400">
+                    {step.body}
+                  </p>
+                </details>
+              ))}
+            </div>
+          </section>
+
           {/* Section FAQ */}
-          <div className="rounded-3xl border border-slate-200 bg-white p-8 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+          <section className="rounded-3xl border border-slate-200 bg-white p-8 shadow-sm dark:border-slate-800 dark:bg-slate-900">
             <div className="mb-8">
               <h2 className="text-xl font-extrabold tracking-tight text-slate-900 dark:text-white">Questions Fréquentes</h2>
               <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">Les réponses aux interrogations les plus courantes.</p>
@@ -117,7 +253,7 @@ export default async function SupportPage() {
                 </details>
               ))}
             </div>
-          </div>
+          </section>
         </main>
       </div>
     </div>

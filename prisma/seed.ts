@@ -312,6 +312,24 @@ async function main() {
     }
   }
 
+  // ============ SIGMA Alert — Catégories par défaut ============
+  const alertCategories = [
+    { name: "Sécurité", icon: "shield", defaultLevel: "CRITICAL" as const },
+    { name: "Médical", icon: "medical", defaultLevel: "CRITICAL" as const },
+    { name: "Logistique", icon: "truck", defaultLevel: "WARNING" as const },
+    { name: "Fraude", icon: "flag", defaultLevel: "WARNING" as const },
+    { name: "Technique", icon: "tool", defaultLevel: "INFO" as const },
+    { name: "Incident de foule", icon: "users", defaultLevel: "CRITICAL" as const },
+  ];
+
+  for (const cat of alertCategories) {
+    await prisma.alertCategory.upsert({
+      where: { name: cat.name },
+      update: {},
+      create: cat,
+    });
+  }
+
   console.log("✅ Seed terminé !");
   console.log("   Super admin  : +229 96 00 00 00 / PIN 1234 (/admin)");
   console.log("   Organisateur : +229 97 00 00 00 / PIN 1234");

@@ -147,6 +147,8 @@ model User {
   terminals        Terminal[]
   payoutsRequested Payout[]  @relation("PayoutsRequested")
   payoutsProcessed Payout[]  @relation("PayoutsProcessed")
+  alerts           Alert[]
+  alertResponses   AlertResponse[]
 }
 
 model Session {
@@ -196,6 +198,7 @@ model Event {
   agents          EventAgent[]
   capacityAlerts  CapacityAlert[]
   terminals       Terminal[]
+  alerts          Alert[]
 }
 
 model TicketCategory {
@@ -382,4 +385,66 @@ model Payout {
 
   @@index([organizerId])
   @@index([status])
+}
+
+// ============ SIGMA ALERT — Gestion des incidents ============
+
+enum AlertLevel {
+  INFO
+  WARNING
+  CRITICAL
+}
+
+enum AlertStatus {
+  OPEN
+  ACKNOWLEDGED
+  RESOLVED
+  CLOSED
+}
+
+enum AlertSource {
+  SYSTEM
+  AGENT
+  USER
+}
+
+model AlertCategory {
+  id           String     @id @default(cuid())
+  name         String     @unique // ex : "Sécurité", "Médical", "Logistique", "Fraude"
+  icon         String?    // icône SVG ou emoji
+  defaultLevel AlertLevel @default(WARNING)
+  createdAt    DateTime   @default(now())
+  alerts       Alert[]
+}
+
+model Alert {
+  id         String      @id @default(cuid())
+  categoryId String
+  category   AlertCategory @relation(fields: [categoryId], references: [id])
+  level      AlertLevel
+  source     AlertSource
+  content    String      // description de l'incident
+  location   String?     // zone ou porte concernée
+  status     AlertStatus @default(OPEN)
+  userId     String?     // auteur de l'alerte
+  user       User?       @relation(fields: [userId], references: [id])
+  eventId    String?     // événement lié (si applicable)
+  event      Event?      @relation(fields: [eventId], references: [id], onDelete: SetNull)
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+  responses  AlertResponse[]
+
+  @@index([eventId])
+  @@index([status])
+  @@index([level])
+}
+
+model AlertResponse {
+  id        String   @id @default(cuid())
+  alertId   String
+  alert     Alert    @relation(fields: [alertId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User?    @relation(fields: [userId], references: [id])
+  action    String   // description de l'action entreprise
+  createdAt DateTime @default(now())
 }

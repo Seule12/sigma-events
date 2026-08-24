@@ -16,7 +16,7 @@ export function ablyRest(): Ably.Rest {
 }
 
 export type LiveNotification = {
-  kind: "gauge" | "payment" | "tickets" | "checkin";
+  kind: "gauge" | "payment" | "tickets" | "checkin" | "alert";
   title: string;
   desc: string;
   href?: string;
