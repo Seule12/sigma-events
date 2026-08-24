@@ -1,8 +1,0 @@
-services:
-  - type: web
-    name: sigma-events
-    runtime: node
-    plan: free
-    autoDeploy: true
-    buildCommand: npm ci && npx prisma generate --schema prisma/schema.prisma && npx prisma generate --schema prisma/schema.postgres.prisma && npm run build
-    startCommand: npx prisma migrate deploy --schema prisma/schema.postgres.prisma && npm run start
