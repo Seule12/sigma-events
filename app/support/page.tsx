@@ -2,6 +2,7 @@ import { requireUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { Role } from "@/app/generated/prisma/enums";
 import Sidebar from "@/components/sidebar";
+import ContactForm from "@/components/contact-form";
 
 export const metadata = {
   title: "Aide & Support — Sigma Events",
@@ -230,6 +231,17 @@ export default async function SupportPage() {
                 </details>
               ))}
             </div>
+          </section>
+
+          {/* Formulaire de contact */}
+          <section className="mb-10 rounded-3xl border border-slate-200 bg-white p-8 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+            <div className="mb-6">
+              <h2 className="text-xl font-extrabold tracking-tight text-slate-900 dark:text-white">Nous contacter</h2>
+              <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+                Envoyez-nous un message et nous vous répondrons dans les plus brefs délais.
+              </p>
+            </div>
+            <ContactForm />
           </section>
 
           {/* Section FAQ */}

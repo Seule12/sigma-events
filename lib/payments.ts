@@ -16,7 +16,7 @@ export function isRealPaymentEnabled(): boolean {
 
 export type InitiatePaymentResult =
   | { mode: "demo" }
-  | { mode: "feexpay"; redirectUrl: string; paymentId: string };
+  | { mode: "feexpay"; redirectUrl: string; paymentId: string }  // redirectUrl peut être vide (Mobile Money STK push)
 
 /**
  * Initie un paiement mobile money pour une commande.

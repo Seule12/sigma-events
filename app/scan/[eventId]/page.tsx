@@ -6,6 +6,7 @@ import { Role, CheckInStatus } from "@/app/generated/prisma/enums";
 import Logo from "@/components/logo";
 import Scanner from "@/components/scanner";
 import { ThemeToggle } from "@/components/theme-provider";
+import EmergencyButton from "@/components/emergency-button";
 
 // Code couleur par statut (cohérent avec le scanner) :
 //  VALID/ENTRY → vert, ALREADY_SCANNED → ambre, INVALID/FULL/BLACKLISTED/EXPIRED → rouge,
@@ -141,6 +142,9 @@ export default async function ScanEventPage({
           <span className="text-sm font-bold text-slate-300">Scanner le billet</span>
         </div>
         <Scanner eventId={event.id} />
+
+        {/* Bouton d'urgence flottant */}
+        <EmergencyButton eventId={event.id} eventCapacity={event.capacity} validCount={valid} />
 
         {/* Historique de mes scans (Écran 18) */}
         <section className="mt-8">

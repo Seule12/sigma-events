@@ -51,3 +51,14 @@ export async function publishEventUpdate(eventId: string, data: Record<string, u
     console.error("[ably] update événement non publié", e);
   }
 }
+
+// Canal global des alertes (Command Center) : notifie tous les clients connectés
+// qu'une nouvelle alerte a été créée.
+export async function publishAlertEvent(alertId: string, level: string, categoryName: string): Promise<void> {
+  try {
+    const channel = ablyRest().channels.get("alerts");
+    await channel.publish("new", { alertId, level, categoryName, at: Date.now() });
+  } catch (e) {
+    console.error("[ably] alerte non publiée", e);
+  }
+}

@@ -150,12 +150,12 @@ async function handleStatuses(statuses: Record<string, unknown>[]) {
  * Retourne la liste des statuts éligibles pour une mise à jour vers targetStatus.
  * Empêche de rétrograder (ex: un billet déjà "OPENED" ne revient pas à "SENT").
  */
-function getStatusesUpTo(targetStatus: string): string[] {
-  const progression = ["CREATED", "GENERATED", "SENT", "OPENED", "CONFIRMED", "ENTERED"];
-  const targetIdx = progression.indexOf(targetStatus);
-  if (targetIdx < 0) return ["CREATED", "GENERATED"];
+function getStatusesUpTo(targetStatus: string): ("CREATED" | "GENERATED" | "SENT" | "OPENED" | "CONFIRMED" | "ENTERED" | "CANCELLED")[] {
+  const progression = ["CREATED", "GENERATED", "SENT", "OPENED", "CONFIRMED", "ENTERED"] as const;
+  const idx = progression.indexOf(targetStatus as (typeof progression)[number]);
+  if (idx < 0) return ["CREATED", "GENERATED"];
   // Tous les statuts avant (ou égal) le target sont éligibles
-  return progression.slice(0, targetIdx + 1);
+  return [...progression.slice(0, idx + 1)];
 }
 
 // ──────────────────────────────────────────────────────────────

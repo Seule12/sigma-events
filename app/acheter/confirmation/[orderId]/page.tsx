@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { OrderStatus, DeliveryMethod } from "@/app/generated/prisma/enums";
 import Logo from "@/components/logo";
 import ConfirmationPoll from "@/components/confirmation-poll";
+import StkPushWaiting from "@/components/stk-push-waiting";
 import { formatFcfa, displayPhone } from "@/lib/format";
 import { purchaseUrl, clientTotal } from "@/lib/shop";
 import { ticketQrDataUrl, whatsappTicketLink } from "@/lib/qr";
@@ -30,16 +31,31 @@ export default async function ConfirmationPage({
     order.status !== OrderStatus.PAID &&
     (order.externalPaymentId || order.status === OrderStatus.PENDING);
   if (waitingConfirmation) {
+    const isFeexPayStk = order.externalProvider === "feexpay" && order.externalPaymentId;
     return (
       <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-br from-slate-100 to-slate-200 p-4 dark:from-slate-950 dark:to-slate-900">
         <div className="animate-fade-up w-full max-w-md text-center">
-          <div className="mx-auto mb-6 grid h-16 w-16 place-items-center">
-            <svg className="h-10 w-10 animate-spin text-brand-600" viewBox="0 0 24 24" fill="none"><circle className="opacity-20" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3" /><path className="opacity-90" fill="currentColor" d="M4 12a8 8 0 0 1 8-8v4a4 4 0 0 0-4 4H4z" /></svg>
+          <div className="mb-6 flex justify-center">
+            <Logo height={40} className="rounded-xl bg-slate-950 p-1.5" />
           </div>
+
           <h1 className="text-xl font-extrabold text-slate-900 dark:text-white">Confirmation du paiement</h1>
-          <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">
-            Votre paiement est en cours de validation… La page se met à jour automatiquement.
-          </p>
+
+          {isFeexPayStk ? (
+            <div className="mt-4">
+              <StkPushWaiting orderId={order.id} />
+            </div>
+          ) : (
+            <div className="mt-4">
+              <div className="mx-auto mb-4 grid h-16 w-16 place-items-center">
+                <svg className="h-10 w-10 animate-spin text-brand-600" viewBox="0 0 24 24" fill="none"><circle className="opacity-20" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3" /><path className="opacity-90" fill="currentColor" d="M4 12a8 8 0 0 1 8-8v4a4 4 0 0 0-4 4H4z" /></svg>
+              </div>
+              <p className="text-sm text-slate-500 dark:text-slate-400">
+                Votre paiement est en cours de validation… La page se met à jour automatiquement.
+              </p>
+            </div>
+          )}
+
           <p className="mt-6 text-xs text-slate-400">Référence : {order.reference}</p>
           <ConfirmationPoll orderId={order.id} />
         </div>

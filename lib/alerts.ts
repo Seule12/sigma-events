@@ -3,7 +3,7 @@
 
 import { prisma } from "@/lib/prisma";
 import { AlertLevel, AlertStatus, AlertSource } from "@/app/generated/prisma/enums";
-import { publishLiveNotification } from "@/lib/ably";
+import { publishLiveNotification, publishAlertEvent } from "@/lib/ably";
 
 // ============ CRÉATION D'ALERTE ============
 
@@ -31,7 +31,10 @@ export async function createAlert(input: CreateAlertInput) {
     include: { category: true, user: { select: { id: true, name: true } } },
   });
 
-  // Notification temps réel via Ably (niveau CRITICAL)
+  // Notification temps réel via Ably — canal global "alerts" (Command Center)
+  void publishAlertEvent(alert.id, alert.level, alert.category.name);
+
+  // Notification perso à l'admin (niveau CRITICAL)
   if (input.level === AlertLevel.CRITICAL) {
     void publishLiveNotification("admin", {
       kind: "alert",

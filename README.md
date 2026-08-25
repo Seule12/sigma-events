@@ -266,35 +266,24 @@ npm run worker
 En l'absence de clés, l'application continue de fonctionner (notifications
 journalisées, emails en mode dégradé) — jamais bloquant pour le flux métier.
 
-## 🔑 Connexion sociale (Google · Facebook · Apple)
+## 🔑 Connexion sociale (Google)
 
-Les boutons « Continuer avec Google / Facebook / Apple » apparaissent sur le
-panneau de connexion et d'inscription de la page d'accueil. Ils restent **grisés**
-tant que les identifiants du fournisseur ne sont pas renseignés dans `.env`.
+Le bouton « Continuer avec Google » apparaît sur le panneau de connexion et
+d'inscription de la page d'accueil. Il reste **grisé** tant que les identifiants
+du fournisseur ne sont pas renseignés dans `.env`.
 
 Le flux est un **OAuth 2.0 Authorization Code + PKCE** maison (`lib/oauth.ts`,
-route `/api/auth/[provider]` → `/api/auth/[provider]/callback`) : aucun SDK lourd.
-Un compte créé via un réseau social n'a **ni téléphone ni PIN** (`phone`/`pin` NULL,
+route `/api/auth/google` → `/api/auth/google/callback`) : aucun SDK lourd.
+Un compte créé via Google n'a **ni téléphone ni PIN** (`phone`/`pin` NULL,
 identité = `email` + `authProvider` + `providerId`) ; il reçoit la même session
 cookie que les autres comptes (rôles, blocage admin, sessions inchangés). Le
 login téléphone classique refuse ces comptes (pas de PIN).
 
-### 🟥 Google (le plus simple)
+### 🟥 Google
 1. Rendez-vous sur **console.cloud.google.com** → créez un projet → **API et services** → **Écran de consentement OAuth** (Externe) → publiez.
 2. **Identifiants** → **Créer des identifiants** → **ID client OAuth** → type **Application Web**.
 3. Dans **URI de redirection autorisés**, ajoutez : `http://localhost:3000/api/auth/google/callback` (et votre URL de production).
 4. Copiez l'**ID client** et le **Secret** dans `.env` : `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`.
-
-### 🟦 Facebook
-1. **developers.facebook.com** → **Mes applications** → **Créer une application** (type « Entreprise ») → configurer « Facebook pour les développeurs ».
-2. **Paramètres** → **Base** : notez l'**ID d'application** et le **Secret d'application**.
-3. **Produits** → **Connexion avec Facebook** → **Paramètres** → ajoutez `http://localhost:3000/api/auth/facebook/callback` en URI de redirection OAuth.
-4. Renseignez `FACEBOOK_CLIENT_ID` et `FACEBOOK_CLIENT_SECRET` dans `.env`.
-
-### ⬛ Apple (Sign in with Apple)
-1. **developer.apple.com** → **Identifiants** → créez un **App ID** (avec « Sign in with Apple » activé) et un **Services ID** — le Service ID sert de `APPLE_CLIENT_ID` (ex : `com.sigma.security.login`), avec l'URL de redirection `http://localhost:3000/api/auth/apple/callback`.
-2. **Clés** → créez une **clé Sign in with Apple** (téléchargez le fichier `.p8`) — notez l'**ID de la clé** (`APPLE_KEY_ID`) et votre **Team ID** (`APPLE_TEAM_ID`).
-3. Renseignez dans `.env` : `APPLE_CLIENT_ID`, `APPLE_TEAM_ID`, `APPLE_KEY_ID` et `APPLE_PRIVATE_KEY` (contenu du `.p8` entre guillemets).
 
 > La vérification du code OAuth se fait au callback : en cas de refus, d'erreur ou
 > de compte bloqué, l'utilisateur est renvoyé à l'accueil avec un message clair.
@@ -321,19 +310,13 @@ bash scripts/test-http.sh
 #    réseaux mobile money — 37 tests)
 npx tsx scripts/test-shop.ts
 
-# 7. KKIAPAY (signature webhook, montants, remboursement — 14 tests)
-npx tsx scripts/test-kkiapay.ts
+# 7. FeexPay (signature webhook, montants, remboursement)
+npx tsx scripts/test-feexpay.ts
 
 # 8. Cohérence des invitations (15 validations)
 npx tsx scripts/val-invites.ts
 
-# 7. Invitations : cycle de vie, check-in multi-personnes (+1), frais de livraison,
-#    CSV enrichi, mode INVITE (15 validations)
-npx tsx scripts/val-invites.ts
-
-# 8. (Manuel) Créer une commande de test : npx tsx scripts/make-order.ts [--pay]
-
-# 8. (Manuel) Créer une commande de test : npx tsx scripts/make-order.ts [--pay]
+# 9. (Manuel) Créer une commande de test : npx tsx scripts/make-order.ts [--pay]
 ```
 
 ## 🏗️ Architecture
@@ -344,24 +327,35 @@ app/
 ├── admin/            # Super admin : stats plateforme, commissions
 ├── admin/organisateurs  # Super admin : gestion des comptes + taux de commission
 ├── admin/evenements     # Super admin : tous les événements
+├── admin/retraits       # Super admin : validation des retraits organisateurs
+├── alerts/          # SIGMA Alert : Command Center temps réel (incidents)
 ├── dashboard/        # Organisateur : stats, événements, création
 ├── events/[id]/      # Détail : jauge, invités, QR, WhatsApp, liste noire
 ├── events/[id]/rapport  # Rapport PDF imprimable (bouton Imprimer)
 ├── events/[id]/billets  # Billets imprimables A4
+├── events/[id]/edit   # Modification de l'événement et des catégories
 ├── profil/            # Profil & ventes : CA, évolution, ventes par événement/type
-├── transactions/       # Transactions : solde, commission, reversé, liste complète
+├── transactions/       # Transactions : solde, commission, reversé, liste complète + retraits
 ├── notifications/      # Notifications : jauge, paiements, billets générés
+├── support/          # Centre d'aide : guides, FAQ, formulaire de contact
 ├── acheter/[slug]/      # Boutique publique : formulaire, quantité, choix du billet, montant
-├── acheter/payer/[id]/  # Paiement mobile money simulé (mode démo)
+├── acheter/payer/[id]/  # Paiement FeexPay (mobile money réel ou simulé)
 ├── acheter/confirmation/[id]/ # Facture + N billets QR + envoi WhatsApp
 ├── mon-billet/        # Public : retrouver ses billets par téléphone
 ├── i/[code]/          # Invitation nominative publique (QR, statut « Ouverte »)
 ├── register/verify    # Inscription : vérification OTP + création du PIN
-├── events/[id]/edit   # Modification de l'événement et des catégories
+├── recuperer/         # Récupération de code PIN (OTP + nouveau PIN)
 ├── scan/             # Agent : sélection d'événement
 ├── scan/[eventId]/   # Scanner caméra + hors-ligne + recherche nom/téléphone
 ├── t/[code]/         # Billet public (QR)
+├── api/ably/auth     # Token Ably pour notifications temps réel
+├── api/alerts/       # SIGMA Alert CRUD
+├── api/auth/google/  # OAuth Google (PKCE)
 ├── api/events/[id]/export  # Export CSV (organisateur uniquement)
+├── api/scanner/      # Activation, bootstrap, vérification, sync terminaux
+├── api/tickets/      # Vérification QR + sync hors-ligne
+├── api/webhook/feexpay    # Webhook FeexPay (confirmation paiement)
+├── api/webhook/whatsapp   # Webhook WhatsApp (statuts livraison + messages)
 └── api/csv-template  # Modèle CSV d'import (public)
 components/           # scanner (html5-qrcode), logo, thème, enregistreur SW…
 lib/                  # prisma (client auto SQLite/Postgres), auth (sessions), csv, qr
@@ -389,13 +383,11 @@ public/sw.js          # Service worker (PWA installable + cache hors-ligne)
 
 ## 📌 Limites connues (MVP)
 
-- **Paiement mobile money réel** : **KKIAPAY** est intégré et actif en sandbox
-  (`lib/kkiapay.ts` + webhook `/api/webhook/kkiapay` + widget client). Basculer en
-  production : `KKIA_SANDBOX="false"` + clés live. Dodo Payments reste disponible
-  (`lib/payments.ts` + `/api/webhook/dodo`) en renseignant `DODO_API_KEY`.
-- **FedaPay** (3ᵉ passerelle prévue) : l'abstraction `externalProvider` en base
-  permet d'ajouter un module `lib/fedapay.ts` sans toucher au reste.
-- **SMS réel** (Vonage) : `lib/sms.ts` prêt — s'active avec `VONAGE_API_KEY`/`VONAGE_API_SECRET`.
+- **Paiement mobile money réel** : **FeexPay** est la passerelle principale
+  (`lib/feexpay.ts` + webhook `/api/webhook/feexpay`). Configurer `FEEXPAY_PRIVATE_KEY`
+  et `FEEXPAY_IDENTIFIER` sur le dashboard FeexPay, puis `FEEXPAY_MODE=LIVE`.
+- **FedaPay** :用于 les retraits d'argent des organisateurs (`lib/fedapay.ts`).
+- **SMS réel** : `lib/sms.ts` prêt — s'active avec `VONAGE_API_KEY`/`VONAGE_API_SECRET`.
   Sans clé, les codes OTP sont journalisés côté serveur (jamais exposés au client).
 - **WhatsApp automatisé** (Meta Business Cloud) : `lib/whatsapp.ts` prêt — s'active avec
   `WHATSAPP_TOKEN` + `WHATSAPP_PHONE_NUMBER_ID`. Sans clé, les liens `wa.me` restent utilisés.
@@ -405,19 +397,12 @@ public/sw.js          # Service worker (PWA installable + cache hors-ligne)
 
 | Service | Variables à renseigner | Comportement sans clé |
 |---|---|---|
-| Paiement mobile money | `KKIA_PUBLIC_KEY`, `KKIA_PRIVATE_KEY`, `KKIA_SECRET_KEY` | Paiement simulé (démo) |
+| Paiement mobile money (FeexPay) | `FEEXPAY_PRIVATE_KEY`, `FEEXPAY_IDENTIFIER`, `FEEXPAY_MODE` | Paiement simulé (démo) |
 | SMS OTP | `VONAGE_API_KEY`, `VONAGE_API_SECRET` | OTP journalisés (dégradé) |
 | WhatsApp | `WHATSAPP_TOKEN`, `WHATSAPP_PHONE_NUMBER_ID` | Liens `wa.me` (partage manuel) |
-
-> ⚠️ **WhatsApp Business Cloud** : l'envoi de messages initié par l'entreprise
-> (hors fenêtre de 24 h après un message du client) exige un **template approuvé**
-> par Meta. Le module `lib/whatsapp.ts` envoie un message texte direct ; en
-> production, créez un template (ex. « billet ») et basculez l'appel API sur
-> `type: "template"` avec `template.name`. Sans cela, Meta renvoie l'erreur 131047.
 | Email transactionnel | `RESEND_API_KEY`, `EMAIL_FROM` | Emails journalisés (dégradé) |
 | Temps réel | `ABLY_API_KEY` | Notifications journalisées |
 | File d'emails | `CLOUDAMQP_URL` | Emails en direct (sans file) |
 
 Le **rate limiting** est désormais **persistant en base de données** (`RateLimitHit`)
 — partagé entre toutes les instances (production multi-serveur), plus en mémoire.
-# deploy test

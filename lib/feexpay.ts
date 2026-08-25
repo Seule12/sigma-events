@@ -99,10 +99,18 @@ export async function initiateFeexPayPayment(input: {
     url?: string;
     status?: string;
     message?: string;
+    received?: boolean;
   };
 
   const transactionId = data.id || "";
   const paymentUrl = data.payment_url || data.url || "";
+
+  // Mobile Money : FeexPay envoie un STK push sur le téléphone du client.
+  // La réponse est { received: true } sans URL de redirection.
+  // Le client confirme directement sur son téléphone, puis le webhook notifie.
+  if (!paymentUrl && data.received) {
+    return { mode: "feexpay", paymentUrl: "", transactionId };
+  }
 
   if (!paymentUrl) {
     throw new Error("FeexPay createPayment : réponse incomplète (payment_url manquant)");

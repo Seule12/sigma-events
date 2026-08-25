@@ -23,6 +23,7 @@ import { isRealPaymentEnabled, initiatePayment } from "@/lib/payments";
 import { organizerAvailableBalance, expireStalePendingPayouts, payoutAdminThreshold } from "@/lib/payouts";
 import { isFedaPayPayoutEnabled, createFedaPayPayout, startFedaPayPayouts, getFedaPayPayoutStatus } from "@/lib/fedapay";
 import { notifyOrderPaid } from "@/lib/order-events";
+import { createAlert } from "@/lib/alerts";
 
 // ============ HELPERS ============
 
@@ -565,7 +566,7 @@ async function maybeTriggerCapacityAlerts(eventId: string, capacity: number) {
       triggered.push(threshold);
     }
   }
-  // Temps réel : avertit l'organisateur quand un palier de jauge est franchi.
+  // Temps réel + SIGMA Alert : crée une alerte système pour chaque palier franchi.
   if (triggered.length > 0) {
     const event = await prisma.event.findUnique({
       where: { id: eventId },
@@ -580,6 +581,21 @@ async function maybeTriggerCapacityAlerts(eventId: string, capacity: number) {
         href: `/events/${eventId}`,
       });
       void publishEventUpdate(eventId, { pct, entered, capacity: event.capacity, threshold });
+
+      // Créer une SIGMA Alert pour que le Command Center soit au courant
+      // Trouver la catégorie "Logistique" par défaut
+      const logistiqueCat = await prisma.alertCategory.findFirst({ where: { name: "Logistique" } });
+      if (logistiqueCat) {
+        const level = threshold >= 100 ? "CRITICAL" : threshold >= 90 ? "WARNING" : "INFO";
+        await createAlert({
+          categoryId: logistiqueCat.id,
+          level: level as "INFO" | "WARNING" | "CRITICAL",
+          source: "SYSTEM",
+          content: `${event.name} — ${threshold}% de la capacité atteinte (${entered}/${event.capacity} entrées)`,
+          location: event.name,
+          eventId,
+        });
+      }
     }
   }
 }
@@ -1048,7 +1064,15 @@ export async function simulatePaymentAction(formData: FormData) {
             externalStatus: "pending",
           },
         });
-        redirect(init.redirectUrl);
+        // Mobile Money : pas d'URL de redirection — le STK push est envoyé
+        // directement sur le téléphone du client. On redirige vers la page
+        // confirmation qui pollera le statut en attendant le webhook.
+        if (init.redirectUrl) {
+          redirect(init.redirectUrl);
+        }
+        // Pas d'URL = STK push en cours. Rediriger vers la page confirmation
+        // qui affichera "en attente de validation".
+        redirect(`/acheter/confirmation/${order.id}`);
       }
     } catch (e) {
       console.error("[payments] initiation FeexPay échouée", e);

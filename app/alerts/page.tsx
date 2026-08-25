@@ -1,8 +1,9 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { AlertLevel, AlertStatus } from "@/app/generated/prisma/enums";
 import AdminNav from "@/components/admin-nav";
+import AlertsSubscription from "@/components/alerts-subscription"
 
 type AlertItem = {
   id: string;
@@ -57,7 +58,7 @@ export default function AlertsPage() {
   const [filterStatus, setFilterStatus] = useState<string>("");
   const [loading, setLoading] = useState(true);
 
-  const fetchAlerts = async () => {
+  const fetchAlerts = useCallback(async () => {
     const params = new URLSearchParams();
     if (filterLevel) params.set("level", filterLevel);
     if (filterStatus) params.set("status", filterStatus);
@@ -68,14 +69,13 @@ export default function AlertsPage() {
       setStats(data.stats);
     }
     setLoading(false);
-  };
+  }, [filterLevel, filterStatus]);
 
   useEffect(() => {
     fetchAlerts();
-    const interval = setInterval(fetchAlerts, 10_000); // polling 10s
+    const interval = setInterval(fetchAlerts, 15_000); // polling fallback 15s
     return () => clearInterval(interval);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filterLevel, filterStatus]);
+  }, [fetchAlerts]);
 
   const handleAction = async (alertId: string, action: string, note?: string) => {
     await fetch(`/api/alerts/${alertId}`, {
@@ -115,6 +115,9 @@ export default function AlertsPage() {
             </div>
           ))}
         </div>
+
+        {/* Souscription Ably temps réel — rafraîchit quand une alerte arrive */}
+        <AlertsSubscription onNewAlert={fetchAlerts} />
 
         {/* Filtres */}
         <div className="mb-6 flex flex-wrap gap-2">
