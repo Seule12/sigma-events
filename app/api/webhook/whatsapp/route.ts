@@ -12,6 +12,7 @@
 
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { extractReferenceFromMessage, handleTicketRequestByReference, sendWhatsApp } from "@/lib/whatsapp";
 
 export const dynamic = "force-dynamic";
 
@@ -159,7 +160,7 @@ function getStatusesUpTo(targetStatus: string): ("CREATED" | "GENERATED" | "SENT
 }
 
 // ──────────────────────────────────────────────────────────────
-// Messages entrants : réponses client (support basique)
+// Messages entrants : détection référence → envoi billet PNG
 // ──────────────────────────────────────────────────────────────
 async function handleIncomingMessages(messages: Record<string, unknown>[]) {
   for (const msg of messages) {
@@ -167,13 +168,27 @@ async function handleIncomingMessages(messages: Record<string, unknown>[]) {
     const type = String(msg.type ?? "");
     const textBody = type === "text" ? String((msg.text as Record<string, unknown>)?.body ?? "") : "";
 
-    console.log(`[whatsapp:webhook] Message reçu de ${from} : ${textBody.slice(0, 100)}`);
+    console.log(`[whatsapp:webhook] Message reçu de ${from} : ${textBody.slice(0, 200)}`);
 
-    // Réponse automatique basique : si le client envoie "billet" ou "ticket"
-    if (textBody && isTicketRequest(textBody)) {
+    if (!textBody) continue;
+
+    // ── 1. Chercher une référence de commande dans le message ──
+    const reference = extractReferenceFromMessage(textBody);
+    if (reference) {
+      console.log(`[whatsapp:webhook] Référence détectée : ${reference}`);
+      const result = await handleTicketRequestByReference(from, reference);
+      if (result.found) {
+        console.log(`[whatsapp:webhook] ✓ Billet trouvé et envoyé pour ref=${reference}`);
+      } else {
+        console.log(`[whatsapp:webhook] ✗ Aucune commande pour ref=${reference}`);
+      }
+      continue;
+    }
+
+    // ── 2. Fallback : si le message contient "billet" / "ticket" → chercher par téléphone ──
+    if (isTicketRequest(textBody)) {
       const phone = normalizePhoneForMatch(from);
 
-      // Chercher les billets actifs de ce client
       const tickets = await prisma.ticket.findMany({
         where: {
           guestPhone: { contains: phone },
@@ -185,18 +200,30 @@ async function handleIncomingMessages(messages: Record<string, unknown>[]) {
       });
 
       if (tickets.length === 0) {
-        await sendAutoReply(from, "Aucun billet trouvé pour ce numéro. Si vous avez acheté avec un autre numéro, contactez-nous.");
+        await sendWhatsApp({
+          to: from,
+          text: "Aucun billet trouvé pour ce numéro. Si vous avez acheté avec un autre numéro, envoyez votre référence de commande (ex: SIGMA-ABC123).",
+        });
         continue;
       }
 
-      const lines = tickets.map((t) => {
-        const eventDate = t.event.date.toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "long" });
-        const ticketUrl = `${process.env.APP_URL || "http://localhost:3000"}/t/${t.code}`;
-        return `🎟 ${t.event.name}\n📅 ${eventDate} — ${t.event.location}\n🔗 ${ticketUrl}\nStatut : ${t.inviteStatus}`;
-      });
+      // Si un seul billet, l'envoyer directement
+      if (tickets.length === 1) {
+        const ticket = tickets[0];
+        const { handleTicketRequestByReference } = await import("@/lib/whatsapp");
+        await handleTicketRequestByReference(from, ticket.code);
+      } else {
+        // Plusieurs billets : lister les références
+        const lines = tickets.map((t) => {
+          const eventDate = t.event.date.toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "long" });
+          return `🎟 *${t.event.name}*\n📅 ${eventDate} — ${t.event.location}\n📋 Réf: ${t.code}\nStatut: ${t.inviteStatus}`;
+        });
 
-      const reply = `Bonjour ! Voici vos billets :\n\n${lines.join("\n\n")}\n\nPrésentez le QR code à l'entrée.`;
-      await sendAutoReply(from, reply);
+        await sendWhatsApp({
+          to: from,
+          text: `Bonjour ! Voici vos billets :\n\n${lines.join("\n\n")}\n\nEnvoyez-moi une référence pour recevoir le billet correspondant.`,
+        });
+      }
     }
   }
 }

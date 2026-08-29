@@ -97,8 +97,9 @@ export default function LiveNotifications() {
     const connect = async () => {
       try {
         const res = await fetch("/api/ably/auth", { cache: "no-store" });
-        if (!res.ok) return; // non connecté / Ably non configuré : silencieux
+        if (!res.ok || res.status === 401) return; // non connecté / Ably non configuré : silencieux
         const token = await res.json();
+        if (!token || token.error) return; // réponse d'erreur → silencieux
         client = new Ably.Realtime({
           authCallback: (_data, cb) => cb(null, token),
         });

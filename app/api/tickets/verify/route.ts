@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { findTerminalByToken } from "@/lib/terminal";
 import { terminalCheckInAction } from "@/app/actions";
 import { prisma } from "@/lib/prisma";
+import { withErrorCapture } from "@/lib/sentry";
 
 // Vérification EN LIGNE d'un billet scanné (projet de référence) : l'app envoie
 // le contenu BRUT du QR (blob chiffré AES-256-GCM) — le serveur le déchiffre
@@ -10,7 +11,7 @@ import { prisma } from "@/lib/prisma";
 // double-scan atomique). Le scanner n'a jamais la clé maîtresse.
 // POST /api/tickets/verify  Authorization: Bearer <token>  { qrContent, agentId? }
 
-export async function POST(req: Request) {
+export const POST = withErrorCapture(async function POST(req: Request) {
   const token = req.headers.get("authorization")?.replace(/^Bearer\s+/i, "");
   const terminal = await findTerminalByToken(token);
   if (!terminal) {
@@ -35,4 +36,4 @@ export async function POST(req: Request) {
 
   // Réponse au format du projet de référence (status + détail).
   return NextResponse.json({ ok: result.status === "VALID" || result.status === "ENTRY", ...result });
-}
+});

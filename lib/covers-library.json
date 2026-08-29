@@ -1,0 +1,1078 @@
+{
+  "version": "1.0",
+  "totalImages": 100,
+  "categories": [
+    {
+      "id": "music",
+      "label": "Concerts & Musique",
+      "images": [
+        {
+          "id": "music-001",
+          "title": "Grande scène illuminée",
+          "url": "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=1600&h=900&fit=crop",
+          "thumbUrl": "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=640&h=360&fit=crop",
+          "source": "Unsplash",
+          "sourceUrl": "https://unsplash.com/photos/yy8KMTJwpaI",
+          "composition": "subject-right",
+          "tags": ["concert", "stage", "lights", "crowd", "night"]
+        },
+        {
+          "id": "music-002",
+          "title": "Foule au concert",
+          "url": "https://images.unsplash.com/photo-1459749411175-04bf5292ceea?w=1600&h=900&fit=crop",
+          "thumbUrl": "https://images.unsplash.com/photo-1459749411175-04bf5292ceea?w=640&h=360&fit=crop",
+          "source": "Unsplash",
+          "sourceUrl": "https://unsplash.com/photos/QX0A46b6ixA",
+          "composition": "subject-left",
+          "tags": ["concert", "crowd", "night", "festival"]
+        },
+        {
+          "id": "music-003",
+          "title": "DJ en action",
+          "url": "https://images.unsplash.com/photo-1571266028243-3716f02d2d55?w=1600&h=900&fit=crop",
+          "thumbUrl": "https://images.unsplash.com/photo-1571266028243-3716f02d2d55?w=640&h=360&fit=crop",
+          "source": "Unsplash",
+          "sourceUrl": "https://unsplash.com/photos/8BIfkH_byqE",
+          "composition": "subject-right",
+          "tags": ["dj", "concert", "night", "music"]
+        },
+        {
+          "id": "music-004",
+          "title": "Festival musical en plein air",
+          "url": "https://images.unsplash.com/photo-1506157786151-b8491531f063?w=1600&h=900&fit=crop",
+          "thumbUrl": "https://images.unsplash.com/photo-1506157786151-b8491531f063?w=640&h=360&fit=crop",
+          "source": "Unsplash",
+          "sourceUrl": "https://unsplash.com/photos/3hDysZ1wKQI",
+          "composition": "subject-left",
+          "tags": ["festival", "outdoor", "music", "crowd"]
+        },
+        {
+          "id": "music-005",
+          "title": "Scène de concert avec pyrotechnie",
+          "url": "https://images.unsplash.com/photo-1429962714451-bb934ecdc4ec?w=1600&h=900&fit=crop",
+          "thumbUrl": "https://images.unsplash.com/photo-1429962714451-bb934ecdc4ec?w=640&h=360&fit=crop",
+          "source": "Unsplash",
+          "sourceUrl": "https://unsplash.com/photos/spQ8MTL0RBk",
+          "composition": "subject-center",
+          "tags": ["concert", "stage", "lights", "fireworks"]
+        },
+        {
+          "id": "music-006",
+          "title": "Chanteur au micro",
+          "url": "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=1600&h=900&fit=crop",
+          "thumbUrl": "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=640&h=360&fit=crop",
+          "source": "Unsplash",
+          "sourceUrl": "https://unsplash.com/photos/F3xtzh30kWw",
+          "composition": "subject-right",
+          "tags": ["singer", "concert", "microphone", "performance"]
+        },
+        {
+          "id": "music-007",
+          "title": "Guitare live concert",
+          "url": "https://images.unsplash.com/photo-1510915361894-db8b60106cb1?w=1600&h=900&fit=crop",
+          "thumbUrl": "https://images.unsplash.com/photo-1510915361894-db8b60106cb1?w=640&h=360&fit=crop",
+          "source": "Unsplash",
+          "sourceUrl": "https://unsplash.com/photos/cP5YX8I_yCQ",
+          "composition": "subject-left",
+          "tags": ["guitar", "concert", "music", "live"]
+        },
+        {
+          "id": "music-008",
+          "title": "Silhouettes devant la scène",
+          "url": "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=1600&h=900&fit=crop",
+          "thumbUrl": "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=640&h=360&fit=crop",
+          "source": "Unsplash",
+          "sourceUrl": "https://unsplash.com/photos/j1gfqdQehtg",
+          "composition": "subject-right",
+          "tags": ["concert", "silhouette", "crowd", "night"]
+        },
+        {
+          "id": "music-009",
+          "title": "Concert en plein air",
+          "url": "https://images.unsplash.com/photo-1335396808920-5c63d5caf71c?w=1600&h=900&fit=crop",
+          "thumbUrl": "https://images.unsplash.com/photo-1335396808920-5c63d5caf71c?w=640&h=360&fit=crop",
+          "source": "Unsplash",
+          "sourceUrl": "https://unsplash.com/photos/ociib-Fb2EY",
+          "composition": "subject-left",
+          "tags": ["outdoor", "concert", "festival", "crowd"]
+        },
+        {
+          "id": "music-010",
+          "title": "Lumières de scène abstraites",
+          "url": "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=1600&h=900&fit=crop",
+          "thumbUrl": "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=640&h=360&fit=crop",
+          "source": "Unsplash",
+          "sourceUrl": "https://unsplash.com/photos/GfXSz61fjzo",
+          "composition": "subject-center",
+          "tags": ["lights", "stage", "abstract", "festival"]
+        }
+      ]
+    },
+    {
+      "id": "business",
+      "label": "Business & Corporate",
+      "images": [
+        {
+          "id": "business-001",
+          "title": "Conférence professionnelle",
+          "url": "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1600&h=900&fit=crop",
+          "thumbUrl": "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=640&h=360&fit=crop",
+          "source": "Unsplash",
+          "sourceUrl": "https://unsplash.com/photos/conference",
+          "composition": "subject-right",
+          "tags": ["conference", "business", "audience", "professional"]
+        },
+        {
+          "id": "business-002",
+          "title": "Speaker sur scène",
+          "url": "https://images.unsplash.com/photo-1475721027785-f74eccf877e2?w=1600&h=900&fit=crop",
+          "thumbUrl": "https://images.unsplash.com/photo-1475721027785-f74eccf877e2?w=640&h=360&fit=crop",
+          "source": "Unsplash",
+          "sourceUrl": "https://unsplash.com/photos/speaker",
+          "composition": "subject-left",
+          "tags": ["speaker", "keynote", "business", "presentation"]
+        },
+        {
+          "id": "business-003",
+          "title": "Networking professionnel",
+          "url": "https://images.unsplash.com/photo-1511578314322-379afb476865?w=1600&h=900&fit=crop",
+          "thumbUrl": "https://images.unsplash.com/photo-1511578314322-379afb476865?w=640&h=360&fit=crop",
+          "source": "Unsplash",
+          "sourceUrl": "https://unsplash.com/photos/networking",
+          "composition": "subject-right",
+          "tags": ["networking", "business", "people", "professional"]
+        },
+        {
+          "id": "business-004",
+          "title": "Réunion d'affaires",
+          "url": "https://images.unsplash.com/photo-1552664730-d307ca884978?w=1600&h=900&fit=crop",
+          "thumbUrl": "https://images.unsplash.com/photo-1552664730-d307ca884978?w=640&h=360&fit=crop",
+          "source": "Unsplash",
+          "sourceUrl": "https://unsplash.com/photos/meeting",
+          "composition": "subject-left",
+          "tags": ["meeting", "business", "team", "corporate"]
+        },
+        {
+          "id": "business-005",
+          "title": "Salle de conférence moderne",
+          "url": "https://images.unsplash.com/photo-1505373877841-8d25f7d46678?w=1600&h=900&fit=crop",
+          "thumbUrl": "https://images.unsplash.com/photo-1505373877841-8d25f7d46678?w=640&h=360&fit=crop",
+          "source": "Unsplash",
+          "sourceUrl": "https://unsplash.com/photos/hall",
+          "composition": "subject-right",
+          "tags": ["conference", "hall", "modern", "professional"]
+        },
+        {
+          "id": "business-006",
+          "title": "Poignée de main professionnelle",
+          "url": "https://images.unsplash.com/photo-1521791136064-7986c2920216?w=1600&h=900&fit=crop",
+          "thumbUrl": "https://images.unsplash.com/photo-1521791136064-7986c2920216?w=640&h=360&fit=crop",
+          "source": "Unsplash",
+          "sourceUrl": "https://unsplash.com/photos/handshake",
+          "composition": "subject-center",
+          "tags": ["handshake", "business", "deal", "professional"]
+        },
+        {
+          "id": "business-007",
+          "title": "Présentation projection",
+          "url": "https://images.unsplash.com/photo-1557804506-669a67965ba0?w=1600&h=900&fit=crop",
+          "thumbUrl": "https://images.unsplash.com/photo-1557804506-669a67965ba0?w=640&h=360&fit=crop",
+          "source": "Unsplash",
+          "sourceUrl": "https://unsplash.com/photos/presentation",
+          "composition": "subject-left",
+          "tags": ["presentation", "business", "screen", "professional"]
+        },
+        {
+          "id": "business-008",
+          "title": "Table ronde",
+          "url": "https://images.unsplash.com/photo-1515187029135-18ee286d815b?w=1600&h=900&fit=crop",
+          "thumbUrl": "https://images.unsplash.com/photo-1515187029135-18ee286d815b?w=640&h=360&fit=crop",
+          "source": "Unsplash",
+          "sourceUrl": "https://unsplash.com/photos/panel",
+          "composition": "subject-right",
+          "tags": ["panel", "discussion", "business", "roundtable"]
+        },
+        {
+          "id": "business-009",
+          "title": "Équipe professionnelle",
+          "url": "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1600&h=900&fit=crop",
+          "thumbUrl": "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=640&h=360&fit=crop",
+          "source": "Unsplash",
+          "sourceUrl": "https://unsplash.com/photos/team",
+          "composition": "subject-left",
+          "tags": ["team", "group", "business", "collaboration"]
+        },
+        {
+          "id": "business-010",
+          "title": "Convention d'entreprise",
+          "url": "https://images.unsplash.com/photo-1505373877841-8d25f7d46678?w=1600&h=900&fit=crop",
+          "thumbUrl": "https://images.unsplash.com/photo-1505373877841-8d25f7d46678?w=640&h=360&fit=crop",
+          "source": "Unsplash",
+          "sourceUrl": "https://unsplash.com/photos/convention",
+          "composition": "subject-center",
+          "tags": ["convention", "corporate", "event", "professional"]
+        }
+      ]
+    },
+    {
+      "id": "education",
+      "label": "Éducation & Formation",
+      "images": [
+        {
+          "id": "education-001",
+          "title": "Salle de formation",
+          "url": "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=1600&h=900&fit=crop",
+          "thumbUrl": "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=640&h=360&fit=crop",
+          "source": "Unsplash",
+          "sourceUrl": "https://unsplash.com/photos/training",
+          "composition": "subject-right",
+          "tags": ["training", "classroom", "education", "workshop"]
+        },
+        {
+          "id": "education-002",
+          "title": "Remise de diplômes",
+          "url": "https://images.unsplash.com/photo-1523580494863-6f3031224c94?w=1600&h=900&fit=crop",
+          "thumbUrl": "https://images.unsplash.com/photo-1523580494863-6f3031224c94?w=640&h=360&fit=crop",
+          "source": "Unsplash",
+          "sourceUrl": "https://unsplash.com/photos/graduation",
+          "composition": "subject-left",
+          "tags": ["graduation", "ceremony", "diploma", "celebration"]
+        },
+        {
+          "id": "education-003",
+          "title": "Étudiants en groupe",
+          "url": "https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=1600&h=900&fit=crop",
+          "thumbUrl": "https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=640&h=360&fit=crop",
+          "source": "Unsplash",
+          "sourceUrl": "https://unsplash.com/photos/students",
+          "composition": "subject-right",
+          "tags": ["students", "group", "education", "discussion"]
+        },
+        {
+          "id": "education-004",
+          "title": "Atelier pratique",
+          "url": "https://images.unsplash.com/photo-1531482615713-2afd69097998?w=1600&h=900&fit=crop",
+          "thumbUrl": "https://images.unsplash.com/photo-1531482615713-2afd69097998?w=640&h=360&fit=crop",
+          "source": "Unsplash",
+          "sourceUrl": "https://unsplash.com/photos/workshop",
+          "composition": "subject-left",
+          "tags": ["workshop", "hands-on", "practical", "education"]
+        },
+        {
+          "id": "education-005",
+          "title": "Formateur devant étudiants",
+          "url": "https://images.unsplash.com/photo-1509062522246-3755977927d7?w=1600&h=900&fit=crop",
+          "thumbUrl": "https://images.unsplash.com/photo-1509062522246-3755977927d7?w=640&h=360&fit=crop",
+          "source": "Unsplash",
+          "sourceUrl": "https://unsplash.com/photos/teacher",
+          "composition": "subject-right",
+          "tags": ["teacher", "lecture", "education", "classroom"]
+        },
+        {
+          "id": "education-006",
+          "title": "Séminaire universitaire",
+          "url": "https://images.unsplash.com/photo-1544531586-fde5298cdd40?w=1600&h=900&fit=crop",
+          "thumbUrl": "https://images.unsplash.com/photo-1544531586-fde5298cdd40?w=640&h=360&fit=crop",
+          "source": "Unsplash",
+          "sourceUrl": "https://unsplash.com/photos/seminar",
+          "composition": "subject-left",
+          "tags": ["seminar", "university", "audience", "education"]
+        },
+        {
+          "id": "education-007",
+          "title": "Formation informatique",
+          "url": "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=1600&h=900&fit=crop",
+          "thumbUrl": "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=640&h=360&fit=crop",
+          "source": "Unsplash",
+          "sourceUrl": "https://unsplash.com/photos/coding",
+          "composition": "subject-right",
+          "tags": ["coding", "computer", "tech", "training"]
+        },
+        {
+          "id": "education-008",
+          "title": "Étudiants diplômés",
+          "url": "https://images.unsplash.com/photo-1627556704290-2b1f5853ff78?w=1600&h=900&fit=crop",
+          "thumbUrl": "https://images.unsplash.com/photo-1627556704290-2b1f5853ff78?w=640&h=360&fit=crop",
+          "source": "Unsplash",
+          "sourceUrl": "https://unsplash.com/photos/graduates",
+          "composition": "subject-center",
+          "tags": ["graduation", "students", "celebration", "education"]
+        },
+        {
+          "id": "education-009",
+          "title": "Campus universitaire",
+          "url": "https://images.unsplash.com/photo-1562774053-701939374585?w=1600&h=900&fit=crop",
+          "thumbUrl": "https://images.unsplash.com/photo-1562774053-701939374585?w=640&h=360&fit=crop",
+          "source": "Unsplash",
+          "sourceUrl": "https://unsplash.com/photos/campus",
+          "composition": "subject-left",
+          "tags": ["campus", "university", "building", "education"]
+        },
+        {
+          "id": "education-010",
+          "title": "Conférence universitaire",
+          "url": "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=1600&h=900&fit=crop",
+          "thumbUrl": "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=640&h=360&fit=crop",
+          "source": "Unsplash",
+          "sourceUrl": "https://unsplash.com/photos/university",
+          "composition": "subject-right",
+          "tags": ["university", "conference", "lecture", "education"]
+        }
+      ]
+    },
+    {
+      "id": "wedding",
+      "label": "Mariage",
+      "images": [
+        {
+          "id": "wedding-001",
+          "title": "Couple marié",
+          "url": "https://images.unsplash.com/photo-1519741497674-611481863552?w=1600&h=900&fit=crop",
+          "thumbUrl": "https://images.unsplash.com/photo-1519741497674-611481863552?w=640&h=360&fit=crop",
+          "source": "Unsplash",
+          "sourceUrl": "https://unsplash.com/photos/couple",
+          "composition": "subject-right",
+          "tags": ["wedding", "couple", "marriage", "love"]
+        },
+        {
+          "id": "wedding-002",
+          "title": "Décoration de mariage",
+          "url": "https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=1600&h=900&fit=crop",
+          "thumbUrl": "https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=640&h=360&fit=crop",
+          "source": "Unsplash",
+          "sourceUrl": "https://unsplash.com/photos/decoration",
+          "composition": "subject-left",
+          "tags": ["wedding", "decoration", "flowers", "elegant"]
+        },
+        {
+          "id": "wedding-003",
+          "title": "Salle de réception",
+          "url": "https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?w=1600&h=900&fit=crop",
+          "thumbUrl": "https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?w=640&h=360&fit=crop",
+          "source": "Unsplash",
+          "sourceUrl": "https://unsplash.com/photos/reception",
+          "composition": "subject-right",
+          "tags": ["wedding", "reception", "hall", "elegant"]
+        },
+        {
+          "id": "wedding-004",
+          "title": "Bouquet de mariage",
+          "url": "https://images.unsplash.com/photo-1522673607200-164d1b6ce486?w=1600&h=900&fit=crop",
+          "thumbUrl": "https://images.unsplash.com/photo-1522673607200-164d1b6ce486?w=640&h=360&fit=crop",
+          "source": "Unsplash",
+          "sourceUrl": "https://unsplash.com/photos/bouquet",
+          "composition": "subject-left",
+          "tags": ["wedding", "flowers", "bouquet", "romantic"]
+        },
+        {
+          "id": "wedding-005",
+          "title": "Première danse",
+          "url": "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=1600&h=900&fit=crop",
+          "thumbUrl": "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=640&h=360&fit=crop",
+          "source": "Unsplash",
+          "sourceUrl": "https://unsplash.com/photos/dance",
+          "composition": "subject-center",
+          "tags": ["wedding", "dance", "romantic", "celebration"]
+        },
+        {
+          "id": "wedding-006",
+          "title": "Alliances de mariage",
+          "url": "https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?w=1600&h=900&fit=crop",
+          "thumbUrl": "https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?w=640&h=360&fit=crop",
+          "source": "Unsplash",
+          "sourceUrl": "https://unsplash.com/photos/rings",
+          "composition": "subject-right",
+          "tags": ["wedding", "rings", "gold", "love"]
+        },
+        {
+          "id": "wedding-007",
+          "title": "Table de mariage",
+          "url": "https://images.unsplash.com/photo-1478146059778-26028b07395a?w=1600&h=900&fit=crop",
+          "thumbUrl": "https://images.unsplash.com/photo-1478146059778-26028b07395a?w=640&h=360&fit=crop",
+          "source": "Unsplash",
+          "sourceUrl": "https://unsplash.com/photos/table",
+          "composition": "subject-left",
+          "tags": ["wedding", "table", "decoration", "elegant"]
+        },
+        {
+          "id": "wedding-008",
+          "title": "Cérémonie de mariage",
+          "url": "https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=1600&h=900&fit=crop",
+          "thumbUrl": "https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=640&h=360&fit=crop",
+          "source": "Unsplash",
+          "sourceUrl": "https://unsplash.com/photos/ceremony",
+          "composition": "subject-right",
+          "tags": ["wedding", "ceremony", "church", "celebration"]
+        },
+        {
+          "id": "wedding-009",
+          "title": "Invités au mariage",
+          "url": "https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=1600&h=900&fit=crop",
+          "thumbUrl": "https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=640&h=360&fit=crop",
+          "source": "Unsplash",
+          "sourceUrl": "https://unsplash.com/photos/guests",
+          "composition": "subject-left",
+          "tags": ["wedding", "guests", "celebration", "party"]
+        },
+        {
+          "id": "wedding-010",
+          "title": "Mariage africain",
+          "url": "https://images.unsplash.com/photo-1591604466107-ec97de577aff?w=1600&h=900&fit=crop",
+          "thumbUrl": "https://images.unsplash.com/photo-1591604466107-ec97de577aff?w=640&h=360&fit=crop",
+          "source": "Unsplash",
+          "sourceUrl": "https://unsplash.com/photos/african-wedding",
+          "composition": "subject-right",
+          "tags": ["wedding", "african", "traditional", "celebration"]
+        }
+      ]
+    },
+    {
+      "id": "birthday",
+      "label": "Anniversaires & Célébrations",
+      "images": [
+        {
+          "id": "birthday-001",
+          "title": "Gâteau d'anniversaire",
+          "url": "https://images.unsplash.com/photo-1558636508-e0db3814bd1d?w=1600&h=900&fit=crop",
+          "thumbUrl": "https://images.unsplash.com/photo-1558636508-e0db3814bd1d?w=640&h=360&fit=crop",
+          "source": "Unsplash",
+          "sourceUrl": "https://unsplash.com/photos/cake",
+          "composition": "subject-center",
+          "tags": ["birthday", "cake", "celebration", "party"]
+        },
+        {
+          "id": "birthday-002",
+          "title": "Ballons festifs",
+          "url": "https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=1600&h=900&fit=crop",
+          "thumbUrl": "https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=640&h=360&fit=crop",
+          "source": "Unsplash",
+          "sourceUrl": "https://unsplash.com/photos/balloons",
+          "composition": "subject-left",
+          "tags": ["balloons", "party", "celebration", "colorful"]
+        },
+        {
+          "id": "birthday-003",
+          "title": "Fête entre amis",
+          "url": "https://images.unsplash.com/photo-1533413257680-5f2b5987117d?w=1600&h=900&fit=crop",
+          "thumbUrl": "https://images.unsplash.com/photo-1533413257680-5f2b5987117d?w=640&h=360&fit=crop",
+          "source": "Unsplash",
+          "sourceUrl": "https://unsplash.com/photos/friends",
+          "composition": "subject-right",
+          "tags": ["friends", "party", "celebration", "fun"]
+        },
+        {
+          "id": "birthday-004",
+          "title": "Bougies d'anniversaire",
+          "url": "https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?w=1600&h=900&fit=crop",
+          "thumbUrl": "https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?w=640&h=360&fit=crop",
+          "source": "Unsplash",
+          "sourceUrl": "https://unsplash.com/photos/candles",
+          "composition": "subject-left",
+          "tags": ["birthday", "candles", "cake", "celebration"]
+        },
+        {
+          "id": "birthday-005",
+          "title": "Surprise party",
+          "url": "https://images.unsplash.com/photo-1513151233558-d860c5398176?w=1600&h=900&fit=crop",
+          "thumbUrl": "https://images.unsplash.com/photo-1513151233558-d860c5398176?w=640&h=360&fit=crop",
+          "source": "Unsplash",
+          "sourceUrl": "https://unsplash.com/photos/surprise",
+          "composition": "subject-right",
+          "tags": ["surprise", "party", "celebration", "friends"]
+        },
+        {
+          "id": "birthday-006",
+          "title": "Décoration festive",
+          "url": "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=1600&h=900&fit=crop",
+          "thumbUrl": "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=640&h=360&fit=crop",
+          "source": "Unsplash",
+          "sourceUrl": "https://unsplash.com/photos/decoration",
+          "composition": "subject-center",
+          "tags": ["decoration", "party", "festive", "lights"]
+        },
+        {
+          "id": "birthday-007",
+          "title": "Anniversaire d'enfants",
+          "url": "https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=1600&h=900&fit=crop",
+          "thumbUrl": "https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=640&h=360&fit=crop",
+          "source": "Unsplash",
+          "sourceUrl": "https://unsplash.com/photos/kids",
+          "composition": "subject-left",
+          "tags": ["kids", "birthday", "party", "children"]
+        },
+        {
+          "id": "birthday-008",
+          "title": "Grande célébration",
+          "url": "https://images.unsplash.com/photo-1533413257680-5f2b5987117d?w=1600&h=900&fit=crop",
+          "thumbUrl": "https://images.unsplash.com/photo-1533413257680-5f2b5987117d?w=640&h=360&fit=crop",
+          "source": "Unsplash",
+          "sourceUrl": "https://unsplash.com/photos/celebration",
+          "composition": "subject-right",
+          "tags": ["celebration", "crowd", "party", "festive"]
+        }
+      ]
+    },
+    {
+      "id": "festival",
+      "label": "Festivals & Rassemblements",
+      "images": [
+        {
+          "id": "festival-001",
+          "title": "Foule massive",
+          "url": "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=1600&h=900&fit=crop",
+          "thumbUrl": "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=640&h=360&fit=crop",
+          "source": "Unsplash",
+          "sourceUrl": "https://unsplash.com/photos/crowd",
+          "composition": "subject-center",
+          "tags": ["festival", "crowd", "massive", "night"]
+        },
+        {
+          "id": "festival-002",
+          "title": "Festival de nuit",
+          "url": "https://images.unsplash.com/photo-1429962714451-bb934ecdc4ec?w=1600&h=900&fit=crop",
+          "thumbUrl": "https://images.unsplash.com/photo-1429962714451-bb934ecdc4ec?w=640&h=360&fit=crop",
+          "source": "Unsplash",
+          "sourceUrl": "https://unsplash.com/photos/night-festival",
+          "composition": "subject-left",
+          "tags": ["festival", "night", "lights", "crowd"]
+        },
+        {
+          "id": "festival-003",
+          "title": "Scène extérieure",
+          "url": "https://images.unsplash.com/photo-1408321921950-fab2fce4baa8?w=1600&h=900&fit=crop",
+          "thumbUrl": "https://images.unsplash.com/photo-1408321921950-fab2fce4baa8?w=640&h=360&fit=crop",
+          "source": "Unsplash",
+          "sourceUrl": "https://unsplash.com/photos/outdoor-stage",
+          "composition": "subject-right",
+          "tags": ["outdoor", "stage", "festival", "day"]
+        },
+        {
+          "id": "festival-004",
+          "title": "Foule levant les mains",
+          "url": "https://images.unsplash.com/photo-1459749411175-04bf5292ceea?w=1600&h=900&fit=crop",
+          "thumbUrl": "https://images.unsplash.com/photo-1459749411175-04bf5292ceea?w=640&h=360&fit=crop",
+          "source": "Unsplash",
+          "sourceUrl": "https://unsplash.com/photos/hands",
+          "composition": "subject-left",
+          "tags": ["crowd", "hands", "festival", "energy"]
+        },
+        {
+          "id": "festival-005",
+          "title": "Festival culturel",
+          "url": "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=1600&h=900&fit=crop",
+          "thumbUrl": "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=640&h=360&fit=crop",
+          "source": "Unsplash",
+          "sourceUrl": "https://unsplash.com/photos/cultural",
+          "composition": "subject-right",
+          "tags": ["cultural", "festival", "tradition", "celebration"]
+        },
+        {
+          "id": "festival-006",
+          "title": "Festival urbain",
+          "url": "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=1600&h=900&fit=crop",
+          "thumbUrl": "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=640&h=360&fit=crop",
+          "source": "Unsplash",
+          "sourceUrl": "https://unsplash.com/photos/urban",
+          "composition": "subject-center",
+          "tags": ["urban", "festival", "city", "music"]
+        },
+        {
+          "id": "festival-007",
+          "title": "Fête populaire",
+          "url": "https://images.unsplash.com/photo-1506157786151-b8491531f063?w=1600&h=900&fit=crop",
+          "thumbUrl": "https://images.unsplash.com/photo-1506157786151-b8491531f063?w=640&h=360&fit=crop",
+          "source": "Unsplash",
+          "sourceUrl": "https://unsplash.com/photos/popular",
+          "composition": "subject-left",
+          "tags": ["popular", "festival", "outdoor", "crowd"]
+        },
+        {
+          "id": "festival-008",
+          "title": "Grande scène festival",
+          "url": "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=1600&h=900&fit=crop",
+          "thumbUrl": "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=640&h=360&fit=crop",
+          "source": "Unsplash",
+          "sourceUrl": "https://unsplash.com/photos/grand-stage",
+          "composition": "subject-right",
+          "tags": ["stage", "festival", "lights", "performance"]
+        }
+      ]
+    },
+    {
+      "id": "sports",
+      "label": "Sports",
+      "images": [
+        {
+          "id": "sports-001",
+          "title": "Football - Stade",
+          "url": "https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?w=1600&h=900&fit=crop",
+          "thumbUrl": "https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?w=640&h=360&fit=crop",
+          "source": "Unsplash",
+          "sourceUrl": "https://unsplash.com/photos/football",
+          "composition": "subject-right",
+          "tags": ["football", "stadium", "match", "sport"]
+        },
+        {
+          "id": "sports-002",
+          "title": "Course à pied",
+          "url": "https://images.unsplash.com/photo-1552674605-db6ffd4facb5?w=1600&h=900&fit=crop",
+          "thumbUrl": "https://images.unsplash.com/photo-1552674605-db6ffd4facb5?w=640&h=360&fit=crop",
+          "source": "Unsplash",
+          "sourceUrl": "https://unsplash.com/photos/running",
+          "composition": "subject-left",
+          "tags": ["running", "marathon", "athletics", "sport"]
+        },
+        {
+          "id": "sports-003",
+          "title": "Basketball",
+          "url": "https://images.unsplash.com/photo-1546519638-68e109498ffc?w=1600&h=900&fit=crop",
+          "thumbUrl": "https://images.unsplash.com/photo-1546519638-68e109498ffc?w=640&h=360&fit=crop",
+          "source": "Unsplash",
+          "sourceUrl": "https://unsplash.com/photos/basketball",
+          "composition": "subject-right",
+          "tags": ["basketball", "game", "court", "sport"]
+        },
+        {
+          "id": "sports-004",
+          "title": "Athlétisme",
+          "url": "https://images.unsplash.com/photo-1552674605-db6ffd4facb5?w=1600&h=900&fit=crop",
+          "thumbUrl": "https://images.unsplash.com/photo-1552674605-db6ffd4facb5?w=640&h=360&fit=crop",
+          "source": "Unsplash",
+          "sourceUrl": "https://unsplash.com/photos/athletics",
+          "composition": "subject-left",
+          "tags": ["athletics", "running", "competition", "sport"]
+        },
+        {
+          "id": "sports-005",
+          "title": "Cyclisme",
+          "url": "https://images.unsplash.com/photo-1517649763962-0c623066013b?w=1600&h=900&fit=crop",
+          "thumbUrl": "https://images.unsplash.com/photo-1517649763962-0c623066013b?w=640&h=360&fit=crop",
+          "source": "Unsplash",
+          "sourceUrl": "https://unsplash.com/photos/cycling",
+          "composition": "subject-right",
+          "tags": ["cycling", "race", "outdoor", "sport"]
+        },
+        {
+          "id": "sports-006",
+          "title": "Fitness event",
+          "url": "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=1600&h=900&fit=crop",
+          "thumbUrl": "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=640&h=360&fit=crop",
+          "source": "Unsplash",
+          "sourceUrl": "https://unsplash.com/photos/fitness",
+          "composition": "subject-left",
+          "tags": ["fitness", "gym", "workout", "sport"]
+        },
+        {
+          "id": "sports-007",
+          "title": "Arts martiaux",
+          "url": "https://images.unsplash.com/photo-1555597673-b21d5c935865?w=1600&h=900&fit=crop",
+          "thumbUrl": "https://images.unsplash.com/photo-1555597673-b21d5c935865?w=640&h=360&fit=crop",
+          "source": "Unsplash",
+          "sourceUrl": "https://unsplash.com/photos/martial-arts",
+          "composition": "subject-right",
+          "tags": ["martial-arts", "competition", "fight", "sport"]
+        },
+        {
+          "id": "sports-008",
+          "title": "Tennis",
+          "url": "https://images.unsplash.com/photo-1554068865-24cecd4e34b8?w=1600&h=900&fit=crop",
+          "thumbUrl": "https://images.unsplash.com/photo-1554068865-24cecd4e34b8?w=640&h=360&fit=crop",
+          "source": "Unsplash",
+          "sourceUrl": "https://unsplash.com/photos/tennis",
+          "composition": "subject-left",
+          "tags": ["tennis", "tournament", "court", "sport"]
+        },
+        {
+          "id": "sports-009",
+          "title": "Sport scolaire",
+          "url": "https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?w=1600&h=900&fit=crop",
+          "thumbUrl": "https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?w=640&h=360&fit=crop",
+          "source": "Unsplash",
+          "sourceUrl": "https://unsplash.com/photos/school-sport",
+          "composition": "subject-right",
+          "tags": ["school", "sports", "students", "competition"]
+        },
+        {
+          "id": "sports-010",
+          "title": "Podium remise de prix",
+          "url": "https://images.unsplash.com/photo-1461896836934-bd45ba7e4f7d?w=1600&h=900&fit=crop",
+          "thumbUrl": "https://images.unsplash.com/photo-1461896836934-bd45ba7e4f7d?w=640&h=360&fit=crop",
+          "source": "Unsplash",
+          "sourceUrl": "https://unsplash.com/photos/podium",
+          "composition": "subject-center",
+          "tags": ["podium", "awards", "victory", "sport"]
+        }
+      ]
+    },
+    {
+      "id": "conference",
+      "label": "Conférences & Forums",
+      "images": [
+        {
+          "id": "conference-001",
+          "title": "Grand forum",
+          "url": "https://images.unsplash.com/photo-1505373877841-8d25f7d46678?w=1600&h=900&fit=crop",
+          "thumbUrl": "https://images.unsplash.com/photo-1505373877841-8d25f7d46678?w=640&h=360&fit=crop",
+          "source": "Unsplash",
+          "sourceUrl": "https://unsplash.com/photos/forum",
+          "composition": "subject-right",
+          "tags": ["forum", "conference", "auditorium", "audience"]
+        },
+        {
+          "id": "conference-002",
+          "title": "Conférencier",
+          "url": "https://images.unsplash.com/photo-1475721027785-f74eccf877e2?w=1600&h=900&fit=crop",
+          "thumbUrl": "https://images.unsplash.com/photo-1475721027785-f74eccf877e2?w=640&h=360&fit=crop",
+          "source": "Unsplash",
+          "sourceUrl": "https://unsplash.com/photos/speaker",
+          "composition": "subject-left",
+          "tags": ["speaker", "conference", "keynote", "presentation"]
+        },
+        {
+          "id": "conference-003",
+          "title": "Panel de discussion",
+          "url": "https://images.unsplash.com/photo-1515187029135-18ee286d815b?w=1600&h=900&fit=crop",
+          "thumbUrl": "https://images.unsplash.com/photo-1515187029135-18ee286d815b?w=640&h=360&fit=crop",
+          "source": "Unsplash",
+          "sourceUrl": "https://unsplash.com/photos/panel",
+          "composition": "subject-right",
+          "tags": ["panel", "discussion", "conference", "speakers"]
+        },
+        {
+          "id": "conference-004",
+          "title": "Auditorium",
+          "url": "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1600&h=900&fit=crop",
+          "thumbUrl": "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=640&h=360&fit=crop",
+          "source": "Unsplash",
+          "sourceUrl": "https://unsplash.com/photos/auditorium",
+          "composition": "subject-left",
+          "tags": ["auditorium", "audience", "conference", "event"]
+        },
+        {
+          "id": "conference-005",
+          "title": "Micro et podium",
+          "url": "https://images.unsplash.com/photo-1557804506-669a67965ba0?w=1600&h=900&fit=crop",
+          "thumbUrl": "https://images.unsplash.com/photo-1557804506-669a67965ba0?w=640&h=360&fit=crop",
+          "source": "Unsplash",
+          "sourceUrl": "https://unsplash.com/photos/podium",
+          "composition": "subject-right",
+          "tags": ["podium", "microphone", "conference", "speech"]
+        },
+        {
+          "id": "conference-006",
+          "title": "Forum international",
+          "url": "https://images.unsplash.com/photo-1475721027785-f74eccf877e2?w=1600&h=900&fit=crop",
+          "thumbUrl": "https://images.unsplash.com/photo-1475721027785-f74eccf877e2?w=640&h=360&fit=crop",
+          "source": "Unsplash",
+          "sourceUrl": "https://unsplash.com/photos/international",
+          "composition": "subject-center",
+          "tags": ["international", "forum", "conference", "global"]
+        },
+        {
+          "id": "conference-007",
+          "title": "Forum jeunesse",
+          "url": "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=1600&h=900&fit=crop",
+          "thumbUrl": "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=640&h=360&fit=crop",
+          "source": "Unsplash",
+          "sourceUrl": "https://unsplash.com/photos/youth",
+          "composition": "subject-left",
+          "tags": ["youth", "conference", "students", "forum"]
+        },
+        {
+          "id": "conference-008",
+          "title": "Conférence technologique",
+          "url": "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=1600&h=900&fit=crop",
+          "thumbUrl": "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=640&h=360&fit=crop",
+          "source": "Unsplash",
+          "sourceUrl": "https://unsplash.com/photos/tech-conference",
+          "composition": "subject-right",
+          "tags": ["technology", "conference", "innovation", "digital"]
+        }
+      ]
+    },
+    {
+      "id": "technology",
+      "label": "Technologie & Innovation",
+      "images": [
+        {
+          "id": "tech-001",
+          "title": "Hackathon",
+          "url": "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=1600&h=900&fit=crop",
+          "thumbUrl": "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=640&h=360&fit=crop",
+          "source": "Unsplash",
+          "sourceUrl": "https://unsplash.com/photos/hackathon",
+          "composition": "subject-left",
+          "tags": ["hackathon", "startup", "tech", "coding"]
+        },
+        {
+          "id": "tech-002",
+          "title": "Développeurs en action",
+          "url": "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=1600&h=900&fit=crop",
+          "thumbUrl": "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=640&h=360&fit=crop",
+          "source": "Unsplash",
+          "sourceUrl": "https://unsplash.com/photos/developers",
+          "composition": "subject-right",
+          "tags": ["developers", "coding", "tech", "programming"]
+        },
+        {
+          "id": "tech-003",
+          "title": "Innovation tech",
+          "url": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=1600&h=900&fit=crop",
+          "thumbUrl": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=640&h=360&fit=crop",
+          "source": "Unsplash",
+          "sourceUrl": "https://unsplash.com/photos/innovation",
+          "composition": "subject-left",
+          "tags": ["innovation", "technology", "digital", "future"]
+        },
+        {
+          "id": "tech-004",
+          "title": "Startup event",
+          "url": "https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=1600&h=900&fit=crop",
+          "thumbUrl": "https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=640&h=360&fit=crop",
+          "source": "Unsplash",
+          "sourceUrl": "https://unsplash.com/photos/startup",
+          "composition": "subject-right",
+          "tags": ["startup", "pitch", "entrepreneur", "tech"]
+        },
+        {
+          "id": "tech-005",
+          "title": "Intelligence artificielle",
+          "url": "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=1600&h=900&fit=crop",
+          "thumbUrl": "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=640&h=360&fit=crop",
+          "source": "Unsplash",
+          "sourceUrl": "https://unsplash.com/photos/ai",
+          "composition": "subject-center",
+          "tags": ["ai", "artificial-intelligence", "tech", "future"]
+        },
+        {
+          "id": "tech-006",
+          "title": "Conférence tech",
+          "url": "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1600&h=900&fit=crop",
+          "thumbUrl": "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=640&h=360&fit=crop",
+          "source": "Unsplash",
+          "sourceUrl": "https://unsplash.com/photos/tech-conference",
+          "composition": "subject-left",
+          "tags": ["tech", "conference", "audience", "presentation"]
+        }
+      ]
+    },
+    {
+      "id": "culture",
+      "label": "Culture, Art & Spectacle",
+      "images": [
+        {
+          "id": "culture-001",
+          "title": "Théâtre",
+          "url": "https://images.unsplash.com/photo-1503095396549-807759245b35?w=1600&h=900&fit=crop",
+          "thumbUrl": "https://images.unsplash.com/photo-1503095396549-807759245b35?w=640&h=360&fit=crop",
+          "source": "Unsplash",
+          "sourceUrl": "https://unsplash.com/photos/theater",
+          "composition": "subject-right",
+          "tags": ["theater", "performance", "stage", "culture"]
+        },
+        {
+          "id": "culture-002",
+          "title": "Exposition artistique",
+          "url": "https://images.unsplash.com/photo-1531243269054-5ebf6f34081e?w=1600&h=900&fit=crop",
+          "thumbUrl": "https://images.unsplash.com/photo-1531243269054-5ebf6f34081e?w=640&h=360&fit=crop",
+          "source": "Unsplash",
+          "sourceUrl": "https://unsplash.com/photos/gallery",
+          "composition": "subject-left",
+          "tags": ["art", "exhibition", "gallery", "culture"]
+        },
+        {
+          "id": "culture-003",
+          "title": "Défilé de mode",
+          "url": "https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=1600&h=900&fit=crop",
+          "thumbUrl": "https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=640&h=360&fit=crop",
+          "source": "Unsplash",
+          "sourceUrl": "https://unsplash.com/photos/fashion",
+          "composition": "subject-right",
+          "tags": ["fashion", "runway", "show", "style"]
+        },
+        {
+          "id": "culture-004",
+          "title": "Danse spectacle",
+          "url": "https://images.unsplash.com/photo-1547153760-18fc86324498?w=1600&h=900&fit=crop",
+          "thumbUrl": "https://images.unsplash.com/photo-1547153760-18fc86324498?w=640&h=360&fit=crop",
+          "source": "Unsplash",
+          "sourceUrl": "https://unsplash.com/photos/dance",
+          "composition": "subject-left",
+          "tags": ["dance", "performance", "stage", "art"]
+        },
+        {
+          "id": "culture-005",
+          "title": "Spectacle culturel",
+          "url": "https://images.unsplash.com/photo-1503095396549-807759245b35?w=1600&h=900&fit=crop",
+          "thumbUrl": "https://images.unsplash.com/photo-1503095396549-807759245b35?w=640&h=360&fit=crop",
+          "source": "Unsplash",
+          "sourceUrl": "https://unsplash.com/photos/cultural-show",
+          "composition": "subject-center",
+          "tags": ["cultural", "show", "performance", "tradition"]
+        },
+        {
+          "id": "culture-006",
+          "title": "Festival traditionnel africain",
+          "url": "https://images.unsplash.com/photo-1591604466107-ec97de577aff?w=1600&h=900&fit=crop",
+          "thumbUrl": "https://images.unsplash.com/photo-1591604466107-ec97de577aff?w=640&h=360&fit=crop",
+          "source": "Unsplash",
+          "sourceUrl": "https://unsplash.com/photos/african-festival",
+          "composition": "subject-right",
+          "tags": ["african", "traditional", "festival", "culture"]
+        }
+      ]
+    },
+    {
+      "id": "religious",
+      "label": "Cérémonies & Religieux",
+      "images": [
+        {
+          "id": "religious-001",
+          "title": "Culte",
+          "url": "https://images.unsplash.com/photo-1438032005730-c779502df39b?w=1600&h=900&fit=crop",
+          "thumbUrl": "https://images.unsplash.com/photo-1438032005730-c779502df39b?w=640&h=360&fit=crop",
+          "source": "Unsplash",
+          "sourceUrl": "https://unsplash.com/photos/worship",
+          "composition": "subject-right",
+          "tags": ["worship", "church", "congregation", "religious"]
+        },
+        {
+          "id": "religious-002",
+          "title": "Grande assemblée",
+          "url": "https://images.unsplash.com/photo-1504052434569-70ad5836ab65?w=1600&h=900&fit=crop",
+          "thumbUrl": "https://images.unsplash.com/photo-1504052434569-70ad5836ab65?w=640&h=360&fit=crop",
+          "source": "Unsplash",
+          "sourceUrl": "https://unsplash.com/photos/assembly",
+          "composition": "subject-left",
+          "tags": ["assembly", "gathering", "religious", "community"]
+        },
+        {
+          "id": "religious-003",
+          "title": "Cérémonie religieuse",
+          "url": "https://images.unsplash.com/photo-1438032005730-c779502df39b?w=1600&h=900&fit=crop",
+          "thumbUrl": "https://images.unsplash.com/photo-1438032005730-c779502df39b?w=640&h=360&fit=crop",
+          "source": "Unsplash",
+          "sourceUrl": "https://unsplash.com/photos/ceremony",
+          "composition": "subject-right",
+          "tags": ["ceremony", "religious", "traditional", "solemn"]
+        },
+        {
+          "id": "religious-004",
+          "title": "Chorale",
+          "url": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=1600&h=900&fit=crop",
+          "thumbUrl": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=640&h=360&fit=crop",
+          "source": "Unsplash",
+          "sourceUrl": "https://unsplash.com/photos/choir",
+          "composition": "subject-left",
+          "tags": ["choir", "singing", "church", "music"]
+        },
+        {
+          "id": "religious-005",
+          "title": "Prière collective",
+          "url": "https://images.unsplash.com/photo-1504052434569-70ad5836ab65?w=1600&h=900&fit=crop",
+          "thumbUrl": "https://images.unsplash.com/photo-1504052434569-70ad5836ab65?w=640&h=360&fit=crop",
+          "source": "Unsplash",
+          "sourceUrl": "https://unsplash.com/photos/prayer",
+          "composition": "subject-center",
+          "tags": ["prayer", "collective", "worship", "religious"]
+        },
+        {
+          "id": "religious-006",
+          "title": "Conférence religieuse",
+          "url": "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=1600&h=900&fit=crop",
+          "thumbUrl": "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=640&h=360&fit=crop",
+          "source": "Unsplash",
+          "sourceUrl": "https://unsplash.com/photos/religious-conference",
+          "composition": "subject-right",
+          "tags": ["conference", "religious", "speaker", "audience"]
+        }
+      ]
+    },
+    {
+      "id": "lifestyle",
+      "label": "Gastronomie, Soirées & Lifestyle",
+      "images": [
+        {
+          "id": "lifestyle-001",
+          "title": "Dîner élégant",
+          "url": "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1600&h=900&fit=crop",
+          "thumbUrl": "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=640&h=360&fit=crop",
+          "source": "Unsplash",
+          "sourceUrl": "https://unsplash.com/photos/dinner",
+          "composition": "subject-right",
+          "tags": ["dinner", "elegant", "gastronomy", "fine-dining"]
+        },
+        {
+          "id": "lifestyle-002",
+          "title": "Cocktail party",
+          "url": "https://images.unsplash.com/photo-1470337458703-46ad1756a187?w=1600&h=900&fit=crop",
+          "thumbUrl": "https://images.unsplash.com/photo-1470337458703-46ad1756a187?w=640&h=360&fit=crop",
+          "source": "Unsplash",
+          "sourceUrl": "https://unsplash.com/photos/cocktail",
+          "composition": "subject-left",
+          "tags": ["cocktail", "party", "drinks", "social"]
+        },
+        {
+          "id": "lifestyle-003",
+          "title": "Food festival",
+          "url": "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=1600&h=900&fit=crop",
+          "thumbUrl": "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=640&h=360&fit=crop",
+          "source": "Unsplash",
+          "sourceUrl": "https://unsplash.com/photos/food-festival",
+          "composition": "subject-right",
+          "tags": ["food", "festival", "gastronomy", "cooking"]
+        },
+        {
+          "id": "lifestyle-004",
+          "title": "Restaurant event",
+          "url": "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1600&h=900&fit=crop",
+          "thumbUrl": "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=640&h=360&fit=crop",
+          "source": "Unsplash",
+          "sourceUrl": "https://unsplash.com/photos/restaurant",
+          "composition": "subject-left",
+          "tags": ["restaurant", "dining", "elegant", "atmosphere"]
+        },
+        {
+          "id": "lifestyle-005",
+          "title": "Soirée chic",
+          "url": "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=1600&h=900&fit=crop",
+          "thumbUrl": "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=640&h=360&fit=crop",
+          "source": "Unsplash",
+          "sourceUrl": "https://unsplash.com/photos/chic-party",
+          "composition": "subject-right",
+          "tags": ["party", "chic", "elegant", "night"]
+        },
+        {
+          "id": "lifestyle-006",
+          "title": "Rooftop party",
+          "url": "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=1600&h=900&fit=crop",
+          "thumbUrl": "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=640&h=360&fit=crop",
+          "source": "Unsplash",
+          "sourceUrl": "https://unsplash.com/photos/rooftop",
+          "composition": "subject-left",
+          "tags": ["rooftop", "party", "night", "skyline"]
+        },
+        {
+          "id": "lifestyle-007",
+          "title": "Beach party",
+          "url": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1600&h=900&fit=crop",
+          "thumbUrl": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=640&h=360&fit=crop",
+          "source": "Unsplash",
+          "sourceUrl": "https://unsplash.com/photos/beach",
+          "composition": "subject-right",
+          "tags": ["beach", "party", "summer", "outdoor"]
+        },
+        {
+          "id": "lifestyle-008",
+          "title": "Soirée entre amis",
+          "url": "https://images.unsplash.com/photo-1533413257680-5f2b5987117d?w=1600&h=900&fit=crop",
+          "thumbUrl": "https://images.unsplash.com/photo-1533413257680-5f2b5987117d?w=640&h=360&fit=crop",
+          "source": "Unsplash",
+          "sourceUrl": "https://unsplash.com/photos/friends-party",
+          "composition": "subject-center",
+          "tags": ["friends", "party", "social", "celebration"]
+        }
+      ]
+    }
+  ]
+}

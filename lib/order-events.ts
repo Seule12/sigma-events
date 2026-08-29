@@ -7,7 +7,7 @@ import { DeliveryMethod } from "@/app/generated/prisma/enums";
 import { clientTotal } from "@/lib/shop";
 import { publishLiveNotification, publishEventUpdate } from "@/lib/ably";
 import { enqueueEmail } from "@/lib/queue";
-import { sendWhatsApp, ticketMessage } from "@/lib/whatsapp";
+import { sendWhatsApp, ticketMessage, trackPendingTicketRequest } from "@/lib/whatsapp";
 
 export async function notifyOrderPaid(orderId: string): Promise<void> {
   const order = await prisma.order.findUnique({
@@ -21,13 +21,11 @@ export async function notifyOrderPaid(orderId: string): Promise<void> {
     ? `${process.env.APP_URL || "http://localhost:3000"}/t/${firstTicket.code}`
     : undefined;
 
-  // Livraison WhatsApp choisie par le client : envoi automatisé du billet
-  // (API Business Cloud si configurée, sinon log — le lien wa.me reste dispo).
-  if (order.deliveryMethod === DeliveryMethod.WHATSAPP && firstTicket && ticketUrl) {
-    void sendWhatsApp({
-      to: order.customerPhone,
-      text: ticketMessage(order.event.name, order.customerName, ticketUrl),
-    });
+  // Livraison WhatsApp : on track la demande pour que le client écrive en premier.
+  // Si pas de message après 5 min → envoi automatique du billet PNG.
+  if (order.deliveryMethod === DeliveryMethod.WHATSAPP && firstTicket) {
+    trackPendingTicketRequest(order.id, order.customerPhone);
+    console.log(`[order-events] WhatsApp en attente : commande ${order.id} (${order.customerPhone})`);
   }
 
   void publishLiveNotification(order.event.organizerId, {

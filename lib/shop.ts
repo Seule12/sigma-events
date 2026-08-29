@@ -25,7 +25,7 @@ export const ORDER_EXPIRY_MS = 20 * 60_000; // 20 minutes
 // Les composants client importent lib/pricing (sans Prisma) ; le code serveur
 // passe ici pour la cohérence.
 import { DELIVERY_FEE } from "@/lib/pricing";
-export { DELIVERY_FEE, FEDAPAY_MARGIN, grossUpFedaPay, clientTotal } from "@/lib/pricing";
+export { DELIVERY_FEE, CLIENT_MARGIN, FEEXPAY_FEE, SIGMA_BUFFER, SIGMA_COMMISSION, clientTotal, sigmaCommission, organizerNet, feexPayFee, sigmaNet } from "@/lib/pricing";
 
 // Frais de service du billet : unifiés à 50 FCFA par commande.
 export const DELIVERY_FEES: Record<DeliveryMethod, number> = {

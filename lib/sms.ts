@@ -8,6 +8,7 @@
 import { randomInt } from "node:crypto";
 import { prisma } from "@/lib/prisma";
 import { normalizePhone, toE164 } from "@/lib/phone";
+import { isResendEnabled, sendOtpEmail } from "@/lib/resend-direct";
 
 export function isSmsEnabled(): boolean {
   return Boolean(process.env.INFOBIP_API_KEY && process.env.INFOBIP_BASE_URL);
@@ -94,26 +95,26 @@ export async function issueOtp(input: {
     }),
   ]);
 
-  // Le SMS est TOUJOURS envoyé : le numéro de téléphone est le canal fiable de
-  // vérification (inscription, récupération, retrait). L'email part en plus quand
-  // il est connu. C'est la correction du flux « je ne reçois jamais le code » :
-  // seul le retrait envoyait un SMS, l'inscription et la récupération n'envoyaient
-  // qu'un email (ou rien si pas d'email connu).
-  const purposeLabel: Record<string, string> = {
-    inscription: "de vérification",
-    recuperation: "de récupération",
-    retrait: "de retrait",
-  };
-  const message = `SIGMA Events — votre code ${purposeLabel[input.purpose] ?? "de vérification"} : ${code}. Valable 10 minutes. Ne le partagez avec personne.`;
-  await sendSms({ to: input.phone, text: message, otpCode: code });
-
+  // Canal principal : EMAIL via Resend (direct, sans queue).
+  // L'email est prioritaire car il est gratuit et fiable.
+  // Le SMS Infobip est un fallback optionnel (si configuré).
   if (input.email) {
-    const { enqueueEmail } = await import("./queue");
-    await enqueueEmail({
-      type: "otp",
+    await sendOtpEmail({
       to: input.email,
       name: input.name,
       code,
+      purpose: input.purpose,
     });
+  }
+
+  // Fallback SMS : seulement si Infobip est configuré ET pas d'email fourni.
+  if (!input.email || !isResendEnabled()) {
+    const purposeLabel: Record<string, string> = {
+      inscription: "de vérification",
+      recuperation: "de récupération",
+      retrait: "de retrait",
+    };
+    const message = `SIGMA Events — votre code ${purposeLabel[input.purpose] ?? "de vérification"} : ${code}. Valable 10 minutes. Ne le partagez avec personne.`;
+    await sendSms({ to: input.phone, text: message, otpCode: code });
   }
 }

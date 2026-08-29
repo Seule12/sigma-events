@@ -30,6 +30,9 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
+# env files (can opt-in for committing if needed)
+.env*
+
 # vercel
 .vercel
 
@@ -37,24 +40,42 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# clients Prisma générés (régénérés au build : `prisma generate`)
 /app/generated/prisma*
 
-# ===== Secrets & fichiers sensibles (NE JAMAIS committer) =====
-# .env.example est conservé (template sans valeurs réelles) ; tout le reste est exclu.
+# Secrets & environnements (ne jamais committer)
 .env
 .env.*
 !.env.example
 chaine.txt
 env.txt
+
+# Binaries & archives
+ngrok.zip
+officecli.exe
+*.lnk
+
+# Sensitive tokens / secrets
 token.txt
-infobip.txt
-conversation.txt
+env.txt
+chaine.txt
 
-# Base de données locale (SQLite)
-dev.db
-dev.db-*
+# Presentation
+*.docx
+*.doc
 
-# Artifacts de build / logs
-*.log
-.DS_Store
+# Database files
+*.db
+*.db-journal
+
+# OS
+Thumbs.db
+Desktop.ini
+
+# Agent tools
+.agents/
+
+# Screenshots (presentation)
+screenshots/
+
+# IDE / Agent tools
+.claude/

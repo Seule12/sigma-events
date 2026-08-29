@@ -19,8 +19,9 @@ export default function AlertsSubscription({
   const connect = useCallback(async () => {
     try {
       const res = await fetch("/api/ably/auth", { cache: "no-store" });
-      if (!res.ok) return;
+      if (!res.ok || res.status === 401) return;
       const token = await res.json();
+      if (!token || token.error) return;
 
       const client = new Ably.Realtime({
         authCallback: (_data, cb) => cb(null, token),

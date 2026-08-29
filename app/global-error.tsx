@@ -1,7 +1,12 @@
-// Error boundary racine (App Router) : capture toute erreur de rendu non rattrapée.
+// Error boundary racine (App Router) : capture toute erreur de rendu non
+// rattrapée et la remonte à Sentry côté client, avant d'afficher un écran
+// minimal (le layout global n'est pas disponible ici).
 "use client";
 
+import * as Sentry from "@sentry/browser";
 import { useEffect } from "react";
+// Initialise le SDK navigateur (no-op sans SENTRY_DSN).
+import "../sentry.client.config";
 
 export default function GlobalError({
   error,
@@ -11,7 +16,7 @@ export default function GlobalError({
   reset: () => void;
 }) {
   useEffect(() => {
-    console.error("[Global Error]", error);
+    Sentry.captureException(error);
   }, [error]);
 
   return (
@@ -20,7 +25,7 @@ export default function GlobalError({
         <div style={{ textAlign: "center", padding: "2rem", maxWidth: 480 }}>
           <h1 style={{ fontSize: "1.5rem", marginBottom: "0.75rem" }}>Oups, une erreur est survenue</h1>
           <p style={{ color: "#94a3b8", marginBottom: "1.5rem" }}>
-            Recharge la page pour réessayer.
+            L&apos;équipe a été prévenue. Recharge la page pour réessayer.
           </p>
           <button
             onClick={reset}

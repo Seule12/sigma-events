@@ -44,13 +44,23 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Body invalide" }, { status: 400 });
   }
 
-  const { categoryId, level, content, location, eventId } = body;
-  if (!categoryId || !content) {
-    return NextResponse.json({ error: "categoryId et content requis" }, { status: 400 });
+  const { categoryId, categoryName, level, content, location, eventId } = body;
+  if ((!categoryId && !categoryName) || !content) {
+    return NextResponse.json({ error: "categoryId/categoryName et content requis" }, { status: 400 });
+  }
+
+  // Résoudre le categoryId depuis le nom (utilisé par le scanner)
+  let resolvedCategoryId = categoryId;
+  if (!resolvedCategoryId && categoryName) {
+    const cat = await prisma.alertCategory.findFirst({ where: { name: categoryName } });
+    if (!cat) {
+      return NextResponse.json({ error: `Catégorie "${categoryName}" inconnue` }, { status: 400 });
+    }
+    resolvedCategoryId = cat.id;
   }
 
   const alert = await createAlert({
-    categoryId,
+    categoryId: resolvedCategoryId,
     level: level ?? AlertLevel.WARNING,
     source: user.role === Role.AGENT ? AlertSource.AGENT : AlertSource.USER,
     content,

@@ -4,10 +4,12 @@ import { OrderStatus, DeliveryMethod } from "@/app/generated/prisma/enums";
 import Logo from "@/components/logo";
 import ConfirmationPoll from "@/components/confirmation-poll";
 import StkPushWaiting from "@/components/stk-push-waiting";
+import WhatsAppBilletButton from "@/components/whatsapp-billet-button";
 import { formatFcfa, displayPhone } from "@/lib/format";
 import { purchaseUrl, clientTotal } from "@/lib/shop";
-import { ticketQrDataUrl, whatsappTicketLink } from "@/lib/qr";
+import { ticketQrDataUrl } from "@/lib/qr";
 import { paymentMethodLabel } from "@/lib/momo";
+import { ticketRef } from "@/lib/ticket-ref";
 
 export const metadata = {
   title: "Achat confirmé",
@@ -79,7 +81,6 @@ export default async function ConfirmationPage({
     order.tickets.map(async (t) => ({
       ...t,
       qr: await ticketQrDataUrl(t),
-      whatsapp: whatsappTicketLink(t.guestPhone, order.event.name, t.guestName, t.code),
     }))
   );
 
@@ -186,17 +187,13 @@ export default async function ConfirmationPage({
                   <p className="mt-3 text-sm font-bold text-slate-900 dark:text-white">{ticket.guestName}</p>
                   <p className="text-xs text-slate-400">Présentez ce QR à l&apos;entrée</p>
 
-                  {ticket.whatsapp && (
-                    <a
-                      href={ticket.whatsapp}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="mt-4 flex items-center justify-center gap-2 rounded-xl bg-[#25D366] py-3 text-sm font-bold text-white transition hover:brightness-95"
-                    >
-                      <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
-                      Envoyer ce billet sur WhatsApp
-                    </a>
-                  )}
+                  <WhatsAppBilletButton
+                    orderId={order.id}
+                    phone={order.customerPhone}
+                    reference={ticketRef(order.reference)}
+                    eventName={order.event.name}
+                    guestName={ticket.guestName}
+                  />
 
                   <a
                     href={`/t/${ticket.code}`}
@@ -210,7 +207,7 @@ export default async function ConfirmationPage({
           </div>
         </div>
 
-        {/* Mode de livraison choisi */}
+        {/* Réception du billet */}
         <div className="animate-fade-up mt-6 overflow-hidden rounded-3xl bg-white shadow-xl dark:bg-slate-900">
           <div className="border-b border-slate-100 px-6 py-4 dark:border-slate-800">
             <h2 className="flex items-center gap-2 font-bold text-slate-900 dark:text-white">
@@ -219,34 +216,18 @@ export default async function ConfirmationPage({
             </h2>
           </div>
           <div className="p-6">
-            {order.deliveryMethod === DeliveryMethod.WHATSAPP ? (
-              <div>
-                <p className="text-sm text-slate-600 dark:text-slate-300">
-                  Votre billet part sur <b>WhatsApp</b> au <b>{displayPhone(order.customerPhone)}</b>. Envoyez-le dès maintenant :
-                </p>
-                <a
-                  href={ticketsWithQr[0]?.whatsapp ?? "#"}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-4 flex items-center justify-center gap-2 rounded-2xl bg-[#25D366] py-3.5 text-sm font-bold text-white shadow-lg shadow-green-600/20 transition hover:-translate-y-0.5 hover:brightness-95"
-                >
-                  <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
-                  Envoyer sur WhatsApp
-                </a>
-              </div>
-            ) : order.deliveryMethod === DeliveryMethod.EMAIL ? (
-              <div>
-                <p className="text-sm text-slate-600 dark:text-slate-300">
-                  Votre billet a été envoyé à <b>{order.customerEmail || "votre adresse email"}</b>. Vous y trouverez le lien « Voir mon billet ».
-                </p>
-                <p className="mt-2 text-xs text-slate-400">Pas reçu ? Vérifiez vos courriers indésirables ou utilisez la recherche par téléphone.</p>
-              </div>
-            ) : (
-              <div>
-                <p className="text-sm text-slate-600 dark:text-slate-300">
-                  Votre billet est prêt : il s&apos;affiche ci-dessus avec son QR code. Vous pouvez aussi le retrouver à tout moment sur /mon-billet.
-                </p>
-              </div>
+            <WhatsAppBilletButton
+              orderId={order.id}
+              phone={order.customerPhone}
+              reference={ticketRef(order.reference)}
+              eventName={order.event.name}
+              guestName={order.customerName}
+              fullWidth
+            />
+            {order.deliveryMethod === DeliveryMethod.EMAIL && order.customerEmail && (
+              <p className="mt-3 text-center text-xs text-slate-400">
+                Votre billet a aussi été envoyé à <b>{order.customerEmail}</b>.
+              </p>
             )}
           </div>
         </div>
