@@ -1,0 +1,2 @@
+INFOBIP_API_KEY=872782b3d09dcb4ef67d0e21e4efdba3-4e2492c7-9bbe-4e2f-b124-35916e7350a5
+INFOBIP_BASE_URL=w4ke4y.api.infobip.com
