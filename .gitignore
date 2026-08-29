@@ -79,3 +79,9 @@ screenshots/
 
 # IDE / Agent tools
 .claude/
+
+# Chats & misc
+conversation.txt
+infobip.txt
+skills-lock.json
+.windsurf/
