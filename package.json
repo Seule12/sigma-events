@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "postinstall": "npx prisma generate --schema prisma/schema.prisma && npx prisma generate --schema prisma/schema.postgres.prisma",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
@@ -30,7 +29,7 @@
     "html5-qrcode": "^2.3.8",
     "idb": "^8.0.3",
     "jose": "^6.2.8",
-    "lightningcss-win32-x64-msvc": "^1.32.0",
+    
     "next": "16.3.0",
     "pg": "^8.23.0",
     "qrcode": "^1.5.4",
