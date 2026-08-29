@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { createOrderAction } from "@/app/actions";
 import { formatFcfa } from "@/lib/format";
-import { grossUpFedaPay, DELIVERY_FEE } from "@/lib/pricing";
+import { clientTotal, DELIVERY_FEE } from "@/lib/pricing";
 
 type Category = { id: string; name: string; price: number; capacity: number; sold: number };
 
@@ -30,7 +30,7 @@ export default function BuyTicketForm({
   const total = (selected?.price ?? 0) * qty;
   // Prix tout compris : billets + frais de service (50 F), commission intégrée
   // par gross-up — le client paie un montant unique, sans breakdown.
-  const totalAllIncluded = total > 0 ? grossUpFedaPay(total + DELIVERY_FEE) : 0;
+  const totalAllIncluded = total > 0 ? clientTotal({ amount: total, deliveryFee: DELIVERY_FEE }) : 0;
 
   const selectCategory = (id: string) => {
     setCategoryId(id);

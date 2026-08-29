@@ -1,6 +1,6 @@
-// Couvertures suggérées par type d'événement — bibliothèque de 100 images.
+// Couvertures suggérées par type d'événement — bibliothèque de 160 images.
 //
-// Le fichier covers-library.json contient ~100 couvertures organisées par
+// Le fichier covers-library.json contient ~160 couvertures organisées par
 // catégorie (Unsplash 1600×900 + thumbnails 640×360). Ce module les charge
 // et les associe au type saisi par l'organisateur via des mots-clés.
 //
@@ -135,6 +135,33 @@ const CATEGORIES: Array<{
     variations: ["#0f172a,#334155,#facc15", "#1e1b4b,#4c1d95,#fbbf24", "#3f1d0e,#92400e,#fde68a"],
   },
   {
+    id: "nightlife",
+    label: "Nuit / Clubbing",
+    keywords: ["nuit", "night", "club", "clubbing", "boite de nuit", "soirée", "soiree", "fête", "fete", "nuit", "after", "lounge", "party", "mix"],
+    base: "#581c87",
+    accent: "#e879f9",
+    icon: '<path d="M16 44V20c0-8.8 7.2-16 16-16s16 7.2 16 16v24" fill="none" stroke="rgba(255,255,255,.7)" stroke-width="2.5"/><path d="M20 44h24" stroke="rgba(255,255,255,.6)" stroke-width="2"/><circle cx="32" cy="20" r="6" fill="rgba(255,255,255,.5)"/><path d="M26 36h12" stroke="rgba(255,255,255,.85)" stroke-width="3" stroke-linecap="round"/>',
+    variations: ["#581c87,#a855f7,#ec4899", "#1e1b4b,#7c3aed,#f472b6", "#3b0764,#9333ea,#fb923c"],
+  },
+  {
+    id: "food",
+    label: "Gastronomie / Food Festival",
+    keywords: ["gastronomie", "food", "cuisine", "restaurant", "festival culinaire", "brunch", "dîner", "diner", "banquet", "street food", "marché", "gourmand"],
+    base: "#c2410c",
+    accent: "#fbbf24",
+    icon: '<ellipse cx="32" cy="36" rx="20" ry="8" fill="none" stroke="rgba(255,255,255,.7)" stroke-width="2.5"/><path d="M32 28v-10M26 18h12" stroke="rgba(255,255,255,.85)" stroke-width="3" stroke-linecap="round"/><path d="M18 36c0-6 6.3-10 14-10s14 4 14 10" fill="none" stroke="rgba(255,255,255,.5)" stroke-width="2"/>',
+    variations: ["#c2410c,#ea580c,#fbbf24", "#7c2d12,#b45309,#fde68a", "#9a3412,#f97316,#fcd34d"],
+  },
+  {
+    id: "charity",
+    label: "Caritatif / Solidaire",
+    keywords: ["caritatif", "solidarité", "solidarite", "charity", "don", "donation", "humanitaire", "bienfaisance", "galà", "gala", "solidaire", "entraide"],
+    base: "#059669",
+    accent: "#34d399",
+    icon: '<path d="M32 46c-12-8-24-16-24-24a12 12 0 0 1 24 0 12 12 0 0 1 24 0c0 8-12 16-24 24z" fill="rgba(255,255,255,.35)" stroke="rgba(255,255,255,.75)" stroke-width="2.5"/><path d="M22 30l6 6 12-14" stroke="rgba(255,255,255,.9)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>',
+    variations: ["#059669,#10b981,#6ee7b7", "#047857,#34d399,#a7f3d0", "#065f46,#059669,#d1fae5"],
+  },
+  {
     id: "general",
     label: "Générique",
     keywords: [],
@@ -206,7 +233,7 @@ function buildSvg(c1: string, c2: string, c3: string, icon: string): string {
 
 // ============ FONCTIONS PUBLIQUES ============
 
-// Retourne toutes les couvertures suggérées : SVG gradient + Unsplash (100 images).
+// Retourne toutes les couvertures suggérées : SVG gradient + Unsplash (160 images).
 export function coverSuggestions(type: string): CoverSuggestion[] {
   const cat = matchCategory(type);
 
@@ -219,7 +246,7 @@ export function coverSuggestions(type: string): CoverSuggestion[] {
     };
   });
 
-  // 2. Images Unsplash de la bibliothèque (~100 images, 12 catégories)
+  // 2. Images Unsplash de la bibliothèque (~160 images, 15 catégories)
   const libraryImages = COVERS_BY_CATEGORY[cat.id] ?? [];
   const unsplashSuggestions: CoverSuggestion[] = libraryImages.map((img) => ({
     label: img.title,

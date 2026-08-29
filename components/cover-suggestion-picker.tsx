@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { coverSuggestions, allCategories, categoryImages } from "@/lib/cover-suggestions";
 
 // Sélecteur de couverture enrichi :
-// - Onglets par catégorie (12 catégories, ~100 images)
+// - Onglets par catégorie (15 catégories, ~160 images)
 // - 3 variations SVG gradient par catégorie
 // - Filtrage par type saisi + navigation par catégorie
 // - Images Unsplash (1600×900) avec thumbnails (640×360)
