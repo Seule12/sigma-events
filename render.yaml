@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: sigma-events
+    runtime: node
+    plan: starter
+    buildCommand: npm install && npx prisma generate --schema prisma/schema.postgres.prisma && npm run build
+    startCommand: npm run start
+    autoDeploy: true
+    branch: main
+    healthCheckPath: /
+    envVars:
+      - key: NODE_VERSION
+        value: 22
+      - key: NODE_ENV
+        value: production

@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "postinstall": "npx prisma generate --schema prisma/schema.prisma && npx prisma generate --schema prisma/schema.postgres.prisma",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
