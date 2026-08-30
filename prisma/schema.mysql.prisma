@@ -1,0 +1,404 @@
+// ============================================================
+// SCHÉMA MySQL (production — LWS Cloud cPanel)
+// Adapté depuis prisma/schema.postgres.prisma
+// ============================================================
+// Sigma Events — Modèle de données
+// Plateforme de contrôle d'accès et de sécurité événementielle
+
+generator client {
+  provider = "prisma-client"
+  output   = "../app/generated/prisma-mysql"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+// ============ ENUMS ============
+
+enum Role {
+  SUPER_ADMIN
+  ORGANIZER
+  AGENT
+}
+
+enum EventStatus {
+  DRAFT
+  LIVE
+  DONE
+}
+
+enum TicketStatus {
+  ISSUED
+  ENTERED
+  BLACKLISTED
+}
+
+enum EventMode {
+  PUBLIC
+  INVITE
+  COMBINED
+}
+
+enum InvitationStatus {
+  CREATED
+  GENERATED
+  SENT
+  OPENED
+  CONFIRMED
+  ENTERED
+  CANCELLED
+}
+
+enum DeliveryMethod {
+  DOWNLOAD
+  EMAIL
+  WHATSAPP
+}
+
+enum UserProfileType {
+  PARTICULIER
+  ORGANISATION
+  PRO
+}
+
+enum OrderStatus {
+  PENDING
+  PAID
+  CANCELLED
+}
+
+enum PayoutStatus {
+  PENDING
+  PENDING_ADMIN
+  PROCESSING
+  PAID
+  FAILED
+  CANCELLED
+}
+
+enum CheckInStatus {
+  VALID
+  ENTRY
+  ALREADY_SCANNED
+  INVALID
+  FULL
+  BLACKLISTED
+  TOO_EARLY
+  EXPIRED
+  WRONG_ZONE
+  SUSPENDED
+}
+
+enum TerminalStatus {
+  INACTIVE
+  ACTIVE
+  DISABLED
+  REVOKED
+}
+
+// ============ MODÈLES ============
+
+model User {
+  id             String          @id @default(cuid())
+  name           String
+  phone          String?         @unique
+  pin            String?
+  email          String?         @unique
+  authProvider   String?
+  providerId     String?
+  role           Role            @default(ORGANIZER)
+  profileType    UserProfileType @default(PARTICULIER)
+  orgName             String?
+  orgEmail            String?
+  responsibleName     String?
+  proPhone            String?
+  avgEventsPerMonth   String?
+  avgParticipants     String?
+  active         Boolean         @default(true)
+  commissionRate Int             @default(3)
+  createdAt      DateTime        @default(now())
+
+  organizedEvents  Event[]   @relation("OrganizedEvents")
+  assignments      EventAgent[]
+  checkIns         CheckIn[]
+  sessions         Session[]
+  terminals        Terminal[]
+  payoutsRequested Payout[]  @relation("PayoutsRequested")
+  payoutsProcessed Payout[]  @relation("PayoutsProcessed")
+  alerts           Alert[]
+  alertResponses   AlertResponse[]
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  token     String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  expiresAt DateTime
+}
+
+model Event {
+  id          String      @id @default(cuid())
+  organizerId String
+  organizer   User        @relation("OrganizedEvents", fields: [organizerId], references: [id])
+  name        String
+  type        String?
+  location    String
+  date        DateTime
+  endDate     DateTime?
+  capacity    Int         @default(0)
+  status      EventStatus @default(DRAFT)
+  mode        EventMode   @default(PUBLIC)
+  salesSlug     String?     @unique
+  salesOpen     Boolean     @default(true)
+  zones         String?
+  description   String?
+  imageUrl      String?
+  doorsOpen     String?
+  contactName   String?
+  contactPhone  String?
+  salesAtDoor   Boolean     @default(true)
+  maxPerCustomer Int        @default(10)
+  entranceBlocked Boolean    @default(false)
+  createdAt   DateTime    @default(now())
+
+  categories      TicketCategory[]
+  orders          Order[]
+  tickets         Ticket[]
+  checkIns        CheckIn[]
+  agents          EventAgent[]
+  capacityAlerts  CapacityAlert[]
+  terminals       Terminal[]
+  alerts          Alert[]
+}
+
+model TicketCategory {
+  id        String   @id @default(cuid())
+  eventId   String
+  event     Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  name      String
+  capacity  Int
+  price     Int      @default(0)
+  color     String?
+  zones     String?
+  tickets   Ticket[]
+  orders    Order[]
+}
+
+model Ticket {
+  id          String       @id @default(cuid())
+  eventId     String
+  event       Event        @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  categoryId  String?
+  category    TicketCategory? @relation(fields: [categoryId], references: [id])
+  code        String       @unique
+  guestName   String
+  guestPhone  String?
+  guestEmail  String?
+  guestCount  Int          @default(1)
+  entriesCount Int         @default(0)
+  inviteStatus InvitationStatus @default(CREATED)
+  status      TicketStatus @default(ISSUED)
+  blacklistReason String?
+  createdAt   DateTime     @default(now())
+
+  checkIns CheckIn[]
+  orderId  String?
+  order    Order?     @relation(fields: [orderId], references: [id], onDelete: SetNull)
+}
+
+model Order {
+  id            String          @id @default(cuid())
+  reference     String          @unique
+  eventId       String
+  event         Event           @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  categoryId    String?
+  category      TicketCategory? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  customerName  String
+  customerPhone String
+  customerEmail String?
+  amount        Int             @default(0)
+  quantity      Int             @default(1)
+  status        OrderStatus     @default(PENDING)
+  paymentMethod String?
+  externalPaymentId   String?  @unique
+  externalProvider    String?
+  externalStatus      String?
+  deliveryMethod DeliveryMethod?
+  deliveryFee   Int             @default(0)
+  tickets       Ticket[]
+  createdAt     DateTime        @default(now())
+  paidAt        DateTime?
+}
+
+model OtpCode {
+  id        String   @id @default(cuid())
+  phone     String
+  code      String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  consumed  Boolean  @default(false)
+  purpose   String   @default("inscription")
+
+  @@index([phone])
+}
+
+model CheckIn {
+  id        String        @id @default(cuid())
+  ticketId  String?
+  ticket    Ticket?       @relation(fields: [ticketId], references: [id], onDelete: SetNull)
+  eventId   String
+  event     Event         @relation(fields: [eventId], references: [id])
+  agentId   String?
+  agent     User?         @relation(fields: [agentId], references: [id])
+  terminalId String?
+  terminal  Terminal?     @relation(fields: [terminalId], references: [id], onDelete: SetNull)
+  status    CheckInStatus
+  lat       Float?
+  lng       Float?
+  source    String        @default("ONLINE")
+  syncId    String?       @unique
+  scannedAt DateTime      @default(now())
+}
+
+model CapacityAlert {
+  id          String   @id @default(cuid())
+  eventId     String
+  event       Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  threshold   Int
+  triggeredAt DateTime @default(now())
+
+  @@unique([eventId, threshold])
+}
+
+model EventAgent {
+  id      String @id @default(cuid())
+  eventId String
+  event   Event  @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  agentId String
+  agent   User   @relation(fields: [agentId], references: [id], onDelete: Cascade)
+
+  @@unique([eventId, agentId])
+}
+
+model Terminal {
+  id      String @id @default(cuid())
+  eventId String
+  event   Event  @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  name  String
+  zone  String?
+  code  String  @unique
+
+  status TerminalStatus @default(INACTIVE)
+
+  activationCode       String?
+  activationCodeExpiresAt DateTime?
+  token        String?  @unique
+  tokenExpiresAt DateTime?
+
+  agentId String?
+  agent   User?   @relation(fields: [agentId], references: [id], onDelete: SetNull)
+
+  lastSeenAt   DateTime?
+  lastScanAt   DateTime?
+  scansCount   Int      @default(0)
+  createdAt    DateTime @default(now())
+
+  checkIns CheckIn[]
+
+  @@index([eventId])
+}
+
+model RateLimitHit {
+  id        Int      @id @default(autoincrement())
+  key       String
+  createdAt DateTime @default(now())
+
+  @@index([key, createdAt])
+}
+
+model Payout {
+  id          String       @id @default(cuid())
+  organizerId String
+  organizer   User         @relation("PayoutsRequested", fields: [organizerId], references: [id], onDelete: Cascade)
+  amount      Int
+  phone       String
+  network     String
+  status      PayoutStatus @default(PENDING)
+  fedapayId   String?      @unique
+  otpVerifiedAt DateTime?
+  adminNote   String?
+  createdAt   DateTime     @default(now())
+  processedAt DateTime?
+  processedById String?
+  processedBy   User?      @relation("PayoutsProcessed", fields: [processedById], references: [id], onDelete: SetNull)
+
+  @@index([organizerId])
+  @@index([status])
+}
+
+// ============ SIGMA ALERT ============
+
+enum AlertLevel {
+  INFO
+  WARNING
+  CRITICAL
+}
+
+enum AlertStatus {
+  OPEN
+  ACKNOWLEDGED
+  RESOLVED
+  CLOSED
+}
+
+enum AlertSource {
+  SYSTEM
+  AGENT
+  USER
+}
+
+model AlertCategory {
+  id           String     @id @default(cuid())
+  name         String     @unique
+  icon         String?
+  defaultLevel AlertLevel @default(WARNING)
+  createdAt    DateTime   @default(now())
+  alerts       Alert[]
+}
+
+model Alert {
+  id         String      @id @default(cuid())
+  categoryId String
+  category   AlertCategory @relation(fields: [categoryId], references: [id])
+  level      AlertLevel
+  source     AlertSource
+  content    String
+  location   String?
+  status     AlertStatus @default(OPEN)
+  userId     String?
+  user       User?       @relation(fields: [userId], references: [id])
+  eventId    String?
+  event      Event?      @relation(fields: [eventId], references: [id], onDelete: SetNull)
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+  responses  AlertResponse[]
+
+  @@index([eventId])
+  @@index([status])
+  @@index([level])
+}
+
+model AlertResponse {
+  id        String   @id @default(cuid())
+  alertId   String
+  alert     Alert    @relation(fields: [alertId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User?    @relation(fields: [userId], references: [id])
+  action    String
+  createdAt DateTime @default(now())
+}

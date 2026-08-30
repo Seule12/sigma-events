@@ -10,6 +10,7 @@
     "db:seed": "tsx prisma/seed.ts",
     "db:sync:pg": "node scripts/sync-postgres-schema.mjs",
     "db:generate:pg": "prisma generate --schema prisma/schema.postgres.prisma",
+    "db:generate:mysql": "prisma generate --schema prisma/schema.mysql.prisma",
     "db:deploy:pg": "prisma migrate deploy",
     "db:seed:pg": "tsx prisma/seed.ts",
     "db:uppercase-codes": "tsx scripts/uppercase-ticket-codes.ts",
